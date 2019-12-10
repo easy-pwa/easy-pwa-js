@@ -1,4 +1,4 @@
-# Easy PWA JS
+# easy-pwa-js
 
 Tools for managing your Progressive Web App.
 
@@ -9,7 +9,7 @@ Tools for managing your Progressive Web App.
 * When you are offline, the css class "offline" is added on the body tag. `<body class="... offline">`
 
 
-## Install
+## Get started
 
 #### With npm
 
@@ -22,6 +22,13 @@ Add this script on your page.
 
 `<script src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa.js"></script>` 
 
+#### Install Service Worker
+
+Create a JavaScript file at the root of your project. This is your Service Worker. Import easy-pwa Service Worker.
+```
+importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa-sw.js');
+``` 
+
 
 ## Use it
 
@@ -30,7 +37,9 @@ Add this script on your page.
 #### Register a Service Worker
 Set the third argument if you want to use Push Notifications.
 ````
-PwaManager.registerServiceWorker('./sw.js', {scope: './'}, FIREBASE_MESSAGING_JS);
+PwaManager.registerServiceWorker('./sw.js', {scope: './'}, FIREBASE_MESSAGING_JS).then(function(registration) {
+    console.log('SW correctly registered');
+});
 ````
 
 #### Debug mode
@@ -41,7 +50,7 @@ PwaManager.enableDebug();
 
 
 ### Manage Homescreen Install
-Access to the HomeScreenManager: `PwaManager.getHomeScreenManager()`
+Access to the home screen manager: `PwaManager.getHomeScreenManager()`
 
 #### Enable Desktop PWA (only Chrome)
 ````
@@ -58,9 +67,9 @@ PwaManager.getHomeScreenManager().onEventInstallPromptEmitted(function() {
 #### Check if a helper for installing is available
 Chrome/Edge: TRUE if event has been received.
 
-Other browsers: we propose a helper to indicate how install app. TRUE If a helper is available for the used current browser version.
+Other browsers: we propose a helper to indicate how install the app. TRUE If a helper is available for the used current browser version.
 ````
-PwaManager.getHomeScrenManager().helperAvailable();
+PwaManager.getHomeScrenManager().helperIsAvailable();
 ````
 
 #### Show the helper if helper is available.
@@ -97,7 +106,7 @@ PwaManager.getPushManager().initialize(serviceWorkerRegistration, messagingSende
 });
 ````
 
-##### Request permission to send notification
+#### Request permission to send notification
 First, you need to ask permission.
 ````
 PwaManager.getPushManager().requestPermission().then(function() {

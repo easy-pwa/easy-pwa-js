@@ -63,15 +63,15 @@ export default class {
     }
 
     if (bo.os === 'iOS' && (bo.browser === 'safari' || bo.browser === 'ios') && bo.version >= 11.3) {
-      return this.showIOS;
+      return this.showIOSHelper;
     }
 
     if (bo.os === 'Android OS' && bo.browser === 'firefox') {
-      return this.showFirefox;
+      return this.showFirefoxHelper;
     }
 
     if (bo.os === 'Android OS' && bo.browser === 'samsung' && bo.version >= 4) {
-      return this.showSamsung;
+      return this.showSamsungHelper;
     }
 
     return null;
@@ -80,7 +80,7 @@ export default class {
   /**
    * Check if a addHomeScreen prompt is available
    */
-  public helperAvailable(): boolean {
+  public helperIsAvailable(): boolean {
     return !this.isAppMode() && typeof this.getHelperByBrowser() === 'function';
   }
 
@@ -106,6 +106,27 @@ export default class {
   }
 
   /**
+   * IOS Helper: this function should be only called to test
+   */
+  public showIOSHelper(): void {
+    this.createPopup(require('../../templates/ios.html'), 'pwa-ios');
+  }
+
+  /**
+   * Firefox Helper: this function should be only called to test
+   */
+  public showFirefoxHelper(): void {
+    this.createPopup(require('../../templates/firefox.html'), 'pwa-firefox');
+  }
+
+  /**
+   * Samsung Helper: this function should be only called to test
+   */
+  public showSamsungHelper(): void {
+    this.createPopup(require('../../templates/samsung.html'), 'pwa-samsung');
+  }
+
+  /**
    * Init all events about add home screen
    */
   private initEvents(): void {
@@ -113,7 +134,7 @@ export default class {
       e.preventDefault();
       Logger.info('Event beforeinstallprompt received.');
       this.homeScreenPrompt = e;
-      if (this.callbackInstallPrompt && this.helperAvailable()) {
+      if (this.callbackInstallPrompt && this.helperIsAvailable()) {
         this.callbackInstallPrompt(e);
       }
     });
@@ -144,13 +165,14 @@ export default class {
     const mask = document.createElement('div');
     mask.classList.add('pwa-homescreen-helper-mask');
 
-    popup.addEventListener('click', () => {
+    const closeHelper = () => {
       document.body.classList.remove('pwa-helper-active');
-    });
+      document.getElementsByClassName('pwa-homescreen-helper')[0].remove();
+      document.getElementsByClassName('pwa-homescreen-helper-mask')[0].remove();
+    };
 
-    window.setTimeout(() => {
-      document.body.classList.remove('pwa-helper-active');
-    }, 10000);
+    popup.addEventListener('click', closeHelper);
+    window.setTimeout(closeHelper, 10000);
 
     document.body.appendChild(popup);
     document.body.appendChild(mask);
@@ -168,27 +190,6 @@ export default class {
       browser: bo.name,
       version: parseFloat(bo.version),
     };
-  }
-
-  /**
-   * IOS case
-   */
-  private showIOS(): void {
-    this.createPopup(require('../../templates/ios.html'), 'pwa-ios');
-  }
-
-  /**
-   * Firefox case
-   */
-  private showFirefox(): void {
-    this.createPopup(require('../../templates/firefox.html'), 'pwa-firefox');
-  }
-
-  /**
-   * Samsung case
-   */
-  private showSamsung(): void {
-    this.createPopup(require('../../templates/samsung.html'), 'pwa-samsung');
   }
 }
 

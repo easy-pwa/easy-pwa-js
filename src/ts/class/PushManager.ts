@@ -135,11 +135,12 @@ export default class PushManager {
       }
 
       firebase.initializeApp({
-        messagingSenderId: messagingSenderId,
+        messagingSenderId,
       });
+
       this.sw = sw;
       this.messaging = firebase.messaging();
-      this.messaging.useServiceWorker(sw);
+      this.messaging.useServiceWorker(this.sw);
       this.messaging.onTokenRefresh(this.fetchToken);
       this.messaging.onMessage(onForegroundMessage ? onForegroundMessage : this.foregroundNotification);
       this.tokenChecker();

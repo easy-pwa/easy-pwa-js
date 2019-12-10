@@ -21,20 +21,25 @@
         -   [Parameters][17]
     -   [onAppInstalled][18]
         -   [Parameters][19]
-    -   [helperAvailable][20]
+    -   [helperIsAvailable][20]
     -   [showHelper][21]
     -   [enableDesktopPwa][22]
--   [PushManager][23]
-    -   [isInitialized][24]
-    -   [requestPermission][25]
-    -   [fetchToken][26]
-    -   [getToken][27]
-    -   [deleteToken][28]
-        -   [Parameters][29]
-    -   [initialize][30]
-        -   [Parameters][31]
-    -   [showNotification][32]
-        -   [Parameters][33]
+    -   [showIOSHelper][23]
+    -   [showFirefoxHelper][24]
+    -   [showSamsungHelper][25]
+-   [PushManager][26]
+    -   [isInitialized][27]
+    -   [requestPermission][28]
+    -   [fetchToken][29]
+    -   [getToken][30]
+    -   [deleteToken][31]
+        -   [Parameters][32]
+    -   [initialize][33]
+        -   [Parameters][34]
+    -   [onTokenFetched][35]
+        -   [Parameters][36]
+    -   [showNotification][37]
+        -   [Parameters][38]
 
 ## PwaManager
 
@@ -42,8 +47,8 @@ All methods for managing PWA.
 
 ### Parameters
 
--   `homeScreenManager` **[HomeScreenManager][34]** 
--   `pushManager` **[PushManager][35]** 
+-   `homeScreenManager` **[HomeScreenManager][39]** 
+-   `pushManager` **[PushManager][40]** 
 
 ### registerServiceWorker
 
@@ -51,23 +56,23 @@ Register service worker
 
 #### Parameters
 
--   `swUrl` **[string][36]** Path to service worker
+-   `swUrl` **[string][41]** Path to service worker
 -   `options` **RegistrationOptions?** Options to pass to register
--   `messagingSenderId` **[string][36]?** If you want to use push notifications.
+-   `messagingSenderId` **[string][41]?** If you want to use push notifications.
 
-Returns **[Promise][37]&lt;ServiceWorkerRegistration>** 
+Returns **[Promise][42]&lt;ServiceWorkerRegistration>** 
 
 ### getPushManager
 
 Get the Push Manager for managing Notification Push.
 
-Returns **[PushManager][35]** 
+Returns **[PushManager][40]** 
 
 ### getHomeScreenManager
 
 Get the Home Screen Manager for managing HomeScreen.
 
-Returns **[HomeScreenManager][34]** 
+Returns **[HomeScreenManager][39]** 
 
 ### onUpdateFound
 
@@ -114,7 +119,7 @@ Methods for managing about Homescreen.
 
 Check if site is launched in fullscreen (app)
 
-Returns **[boolean][38]** 
+Returns **[boolean][43]** 
 
 ### onEventInstallPromptEmitted
 
@@ -136,21 +141,39 @@ Function to execute when app is successfully installed
 
 Returns **void** 
 
-### helperAvailable
+### helperIsAvailable
 
 Check if a addHomeScreen prompt is available
 
-Returns **[boolean][38]** 
+Returns **[boolean][43]** 
 
 ### showHelper
 
 If a helper is available, show it
 
-Returns **[Function][39]** 
+Returns **[Function][44]** 
 
 ### enableDesktopPwa
 
 Enable desktop Pwa
+
+Returns **void** 
+
+### showIOSHelper
+
+IOS Helper: this function should be only called to test
+
+Returns **void** 
+
+### showFirefoxHelper
+
+Firefox Helper: this function should be only called to test
+
+Returns **void** 
+
+### showSamsungHelper
+
+Samsung Helper: this function should be only called to test
 
 Returns **void** 
 
@@ -162,25 +185,25 @@ PWA - Push Manager
 
 Check if firebase is initialized
 
-Returns **[boolean][38]** 
+Returns **[boolean][43]** 
 
 ### requestPermission
 
 Requests permission
 
-Returns **[Promise][37]&lt;(void | [Error][40])>** 
+Returns **[Promise][42]&lt;(void | [Error][45])>** 
 
 ### fetchToken
 
 Fetch token and notify server
 
-Returns **[Promise][37]&lt;([string][36] \| [Error][40])>** 
+Returns **[Promise][42]&lt;([string][41] \| [Error][45])>** 
 
 ### getToken
 
 Get user token
 
-Returns **[Promise][37]&lt;([string][36] \| [Error][40])>** 
+Returns **[Promise][42]&lt;([string][41] \| [Error][45])>** 
 
 ### deleteToken
 
@@ -188,9 +211,9 @@ delete user token
 
 #### Parameters
 
--   `token` **[string][36]** 
+-   `token` **[string][41]** 
 
-Returns **[Promise][37]&lt;([string][36] \| [Error][40])>** 
+Returns **[Promise][42]&lt;([string][41] \| [Error][45])>** 
 
 ### initialize
 
@@ -198,10 +221,21 @@ Initialize Firebase Push Notification
 
 #### Parameters
 
--   `sw` **ServiceWorkerRegistration** 
--   `config` **PushManagerConfiguration** 
+-   `sw` **ServiceWorkerRegistration** The Service Worker reference
+-   `messagingSenderId` **[string][41]** The firebase messaging id
+-   `onForegroundMessage` **function (payload: FirebasePayloadMessage): void?** Callback to execute if notification is received when user is currently on the site
 
-Returns **[Promise][37]&lt;([Error][40] | this)>** 
+Returns **[Promise][42]&lt;([Error][45] | this)>** 
+
+### onTokenFetched
+
+When a token is fetched, function to execute (send it to server for example)
+
+#### Parameters
+
+-   `callback` **function (token: [string][41]): void** 
+
+Returns **void** 
 
 ### showNotification
 
@@ -209,10 +243,10 @@ Show a notification.
 
 #### Parameters
 
--   `title` **[string][36]** 
+-   `title` **[string][41]** 
 -   `options` **NotificationOptions** 
 
-Returns **[Promise][37]&lt;void>** 
+Returns **[Promise][42]&lt;void>** 
 
 [1]: #pwamanager
 
@@ -252,44 +286,54 @@ Returns **[Promise][37]&lt;void>**
 
 [19]: #parameters-6
 
-[20]: #helperavailable
+[20]: #helperisavailable
 
 [21]: #showhelper
 
 [22]: #enabledesktoppwa
 
-[23]: #pushmanager
+[23]: #showioshelper
 
-[24]: #isinitialized
+[24]: #showfirefoxhelper
 
-[25]: #requestpermission
+[25]: #showsamsunghelper
 
-[26]: #fetchtoken
+[26]: #pushmanager
 
-[27]: #gettoken
+[27]: #isinitialized
 
-[28]: #deletetoken
+[28]: #requestpermission
 
-[29]: #parameters-7
+[29]: #fetchtoken
 
-[30]: #initialize
+[30]: #gettoken
 
-[31]: #parameters-8
+[31]: #deletetoken
 
-[32]: #shownotification
+[32]: #parameters-7
 
-[33]: #parameters-9
+[33]: #initialize
 
-[34]: #homescreenmanager
+[34]: #parameters-8
 
-[35]: #pushmanager
+[35]: #ontokenfetched
 
-[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[36]: #parameters-9
 
-[37]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[37]: #shownotification
 
-[38]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[38]: #parameters-10
 
-[39]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[39]: #homescreenmanager
 
-[40]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
+[40]: #pushmanager
+
+[41]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[42]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[43]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[44]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[45]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
