@@ -1,7 +1,6 @@
 import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import { FirebaseMessaging } from '@firebase/messaging-types';
-import { NextFn } from '@firebase/util';
 import Logger from './Logger';
 import { FirebasePayloadMessage } from '../type';
 
@@ -13,22 +12,17 @@ export default class PushManager {
 
   public static readonly STORAGE_DATE_TOKEN_CHECK: string = 'PWA-PUSH-TOKEN-CHECK';
 
-  private messaging: FirebaseMessaging = null;
+  public static readonly TOKEN_CHECK_INTERVAL: number = 24 * 60 * 60;
 
-  private configuration: PushManagerConfiguration;
+  private messaging: FirebaseMessaging = null;
 
   private sw: ServiceWorkerRegistration;
 
+  private tokenFetchedCallback: (token: string) => void;
+
   constructor() {
-    this.configuration = {
-      messagingSenderId: null,
-      onMessage: (payload: FirebasePayloadMessage): void => {
-        this.foregroundNotification(payload);
-      },
-      sendTokenToServer: (token: string): void => {
-        Logger.info(`Token to send to server: ${token}`);
-      },
-      intervalTokenCheck: 24 * 60 * 60,
+    this.tokenFetchedCallback = (token: string): void => {
+      Logger.info(`Token to send to server: ${token}`);
     };
   }
 
@@ -63,7 +57,7 @@ export default class PushManager {
       this.getToken()
         .then((token: string) => {
           if (token) {
-            this.configuration.sendTokenToServer(token);
+            this.tokenFetchedCallback(token);
             PushManager.setCurrentToken(token);
             PushManager.setDateLastTokenCheck();
             resolve(token);
@@ -86,7 +80,7 @@ export default class PushManager {
         reject(new Error('Firebase should be initialized before'));
       }
 
-      const timeout: NodeJS.Timeout = global.setTimeout(() => {
+      const timeout = global.setTimeout(() => {
         reject(new Error('getToken Timeout exceeded'));
       }, 25000);
 
@@ -126,27 +120,39 @@ export default class PushManager {
 
   /**
    * Initialize Firebase Push Notification
+   * @param sw The Service Worker reference
+   * @param messagingSenderId The firebase messaging id
+   * @param onForegroundMessage Callback to execute if notification is received when user is currently on the site
    */
-  public initialize(sw: ServiceWorkerRegistration, config: PushManagerConfiguration): Promise<Error | this> {
+  public initialize(
+    sw: ServiceWorkerRegistration,
+    messagingSenderId: string,
+    onForegroundMessage?: (payload: FirebasePayloadMessage) => void
+  ): Promise<Error | this> {
     return new Promise((resolve, reject): void => {
       if (!('Notification' in window)) {
         reject(new Error('Notification not supported'));
       }
 
-      this.configuration = Object.assign(this.configuration, config);
-      const firebaseConfiguration = {
-        messagingSenderId: this.configuration.messagingSenderId,
-      };
-
-      firebase.initializeApp(firebaseConfiguration);
+      firebase.initializeApp({
+        messagingSenderId: messagingSenderId,
+      });
       this.sw = sw;
       this.messaging = firebase.messaging();
       this.messaging.useServiceWorker(sw);
       this.messaging.onTokenRefresh(this.fetchToken);
-      this.messaging.onMessage(this.configuration.onMessage);
+      this.messaging.onMessage(onForegroundMessage ? onForegroundMessage : this.foregroundNotification);
       this.tokenChecker();
       resolve(this);
     });
+  }
+
+  /**
+   * When a token is fetched, function to execute (send it to server for example)
+   * @param callback
+   */
+  public onTokenFetched(callback: (token: string) => void): void {
+    this.tokenFetchedCallback = callback;
   }
 
   /**
@@ -185,14 +191,14 @@ export default class PushManager {
 
     const dateLastTokenCheck = PushManager.getDateLastTokenCheck();
     if (dateLastTokenCheck !== null) {
-      if (dateLastTokenCheck.getTime() > Date.now() - this.configuration.intervalTokenCheck * 1000) {
+      if (dateLastTokenCheck.getTime() > Date.now() - PushManager.TOKEN_CHECK_INTERVAL * 1000) {
         return;
       }
     }
 
     PushManager.setDateLastTokenCheck();
 
-    if (tokenMemory !== null) {
+    if (tokenMemory) {
       this.messaging.getToken().then((token: string) => {
         if (tokenMemory !== null && token !== tokenMemory) {
           this.fetchToken().then(() => {
@@ -227,11 +233,4 @@ export default class PushManager {
       localStorage.removeItem(PushManager.STORAGE_CURRENT_TOKEN);
     }
   }
-}
-
-interface PushManagerConfiguration {
-  messagingSenderId: string;
-  onMessage?: NextFn<object>;
-  sendTokenToServer?: Function;
-  intervalTokenCheck?: number;
 }

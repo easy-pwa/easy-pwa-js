@@ -4,8 +4,8 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    'pwa-manager': './src/ts/index.ts',
-    'service-worker-base': './src/ts/service-worker-base.ts'
+    'easy-pwa': './src/ts/index.ts',
+    'easy-pwa-sw': './src/ts/service-worker-base.ts'
   },
   output: {
     filename: '[name].js',
@@ -29,11 +29,11 @@ module.exports = {
         }
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.scss$/i,
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader',
+          //'sass-loader',
         ],
       },
       {
