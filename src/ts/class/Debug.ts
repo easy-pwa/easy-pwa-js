@@ -2,13 +2,15 @@ import { detect } from 'detect-browser';
 import Logger from './Logger';
 import { WebManifest, WebManifestIcon, WebManifestDisplay } from '../type';
 
-export default new (class {
+export default class Debug {
   private sw: ServiceWorkerRegistration = null;
 
   public analyse(): void {
+
     this.browser();
 
     if ('serviceWorker' in navigator) {
+
       this.testProtocol();
 
       this.loadServiceWorker().then(() => {
@@ -72,7 +74,7 @@ export default new (class {
           this.showErr('Service Worker is not correctly registered');
           reject();
         }
-      }, 10000);
+      }, 5000);
 
       navigator.serviceWorker.ready.then(reg => {
         this.sw = reg;
@@ -113,4 +115,4 @@ export default new (class {
   private showErr(txt: string): void {
     Logger.error(`PWA Debug : ${txt}`);
   }
-})();
+};

@@ -1,21 +1,25 @@
 import { detect } from 'detect-browser';
 import { BeforeInstallPromptEvent, WindowNavigator } from '../type';
 import Logger from './Logger';
+import {translator} from "../service";
 
 /**
  * Methods for managing about Homescreen.
  */
-export default class {
+export default class HomeScreenManager {
   private homeScreenPrompt?: BeforeInstallPromptEvent = null;
 
   private callbackInstallPrompt: (e: BeforeInstallPromptEvent) => void;
 
-  private callbackAppInstalled: () => void = () => {};
+  private callbackAppInstalled: () => void;
 
   private desktopPwaEnabled: boolean = false;
 
   constructor() {
     this.initEvents();
+    this.callbackAppInstalled = (): void => {
+      Logger.info('App is installed');
+    };
   }
 
   /**
@@ -109,21 +113,25 @@ export default class {
    * IOS Helper: this function should be only called to test
    */
   public showIOSHelper(): void {
-    this.createPopup(require('../../templates/ios.html'), 'pwa-ios');
+
+    const template = require('../../templates/ios.html.twig');
+    this.createPopup(template(translator.getTranslations()), 'pwa-ios');
   }
 
   /**
    * Firefox Helper: this function should be only called to test
    */
   public showFirefoxHelper(): void {
-    this.createPopup(require('../../templates/firefox.html'), 'pwa-firefox');
+    const template = require('../../templates/firefox.html.twig');
+    this.createPopup(template(translator.getTranslations()), 'pwa-firefox');
   }
 
   /**
    * Samsung Helper: this function should be only called to test
    */
   public showSamsungHelper(): void {
-    this.createPopup(require('../../templates/samsung.html'), 'pwa-samsung');
+    const template = require('../../templates/samsung.html.twig');
+    this.createPopup(template(translator.getTranslations()), 'pwa-samsung');
   }
 
   /**
@@ -165,7 +173,7 @@ export default class {
     const mask = document.createElement('div');
     mask.classList.add('pwa-homescreen-helper-mask');
 
-    const closeHelper = () => {
+    const closeHelper = (): void => {
       document.body.classList.remove('pwa-helper-active');
       document.getElementsByClassName('pwa-homescreen-helper')[0].remove();
       document.getElementsByClassName('pwa-homescreen-helper-mask')[0].remove();

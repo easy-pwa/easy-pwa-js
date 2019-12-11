@@ -1,0 +1,1 @@
+importScripts('../dist/easy-pwa-sw.js');

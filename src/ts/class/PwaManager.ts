@@ -1,7 +1,7 @@
 import HomeScreenManager from './HomeScreenManager';
 import PushManager from './PushManager';
-import Debug from './Debug';
 import Logger, { LoggerParameter } from './Logger';
+import {debug, homeScreenManager, pushManager} from "../service";
 
 /**
  * All methods for managing PWA.
@@ -9,13 +9,9 @@ import Logger, { LoggerParameter } from './Logger';
 export default class {
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
-  private readonly homeScreenManager: HomeScreenManager;
+  private serviceWorkerRegistration?: ServiceWorkerRegistration;
 
-  private readonly pushManager: PushManager;
-
-  constructor(homeScreenManager: HomeScreenManager, pushManager: PushManager) {
-    this.homeScreenManager = homeScreenManager;
-    this.pushManager = pushManager;
+  constructor() {
     this.init();
   }
 
@@ -40,6 +36,12 @@ export default class {
       navigator.serviceWorker
         .register(url, options)
         .then((reg: ServiceWorkerRegistration) => {
+          this.serviceWorkerRegistration = reg;
+
+          if (messagingSenderId) {
+            this.getPushManager().initializeFirebase(reg, messagingSenderId);
+          }
+
           if (reg.active) {
             reg.addEventListener('updatefound', (): void => {
               const worker = reg.installing;
@@ -79,14 +81,22 @@ export default class {
    * Get the Push Manager for managing Notification Push.
    */
   public getPushManager(): PushManager {
-    return this.pushManager;
+    if (!this.serviceWorkerRegistration) {
+      throw new Error('A Service worker has to be registered before.')
+    }
+
+    return pushManager;
   }
 
   /**
    * Get the Home Screen Manager for managing HomeScreen.
    */
   public getHomeScreenManager(): HomeScreenManager {
-    return this.homeScreenManager;
+    if (!this.serviceWorkerRegistration) {
+      throw new Error('A Service worker has to be registered before.')
+    }
+
+    return homeScreenManager;
   }
 
   /**
@@ -139,12 +149,19 @@ export default class {
   }
 
   /**
+   * Get the service worker registration
+   */
+  public getServiceWorkerRegistration(): ServiceWorkerRegistration|null {
+    return this.serviceWorkerRegistration;
+  }
+
+  /**
    * Enable debug mode
    */
   public enableDebug(): void {
     LoggerParameter.enableDebug();
     Logger.warn('DEBUG ENABLED');
-    Debug.analyse();
+    debug.analyse();
   }
 
   /**

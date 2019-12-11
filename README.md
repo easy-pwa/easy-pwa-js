@@ -35,7 +35,7 @@ importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa-sw
 ### PwaManager
 
 #### Register a Service Worker
-Set the third argument if you want to use Push Notifications.
+Set the third argument if you want to use Firebase Push Notifications.
 ````
 PwaManager.registerServiceWorker('./sw.js', {scope: './'}, FIREBASE_MESSAGING_JS).then(function(registration) {
     console.log('SW correctly registered');
@@ -49,7 +49,7 @@ PwaManager.enableDebug();
 ````
 
 
-### Manage Homescreen Install
+### Manage Home Screen Install
 Access to the home screen manager: `PwaManager.getHomeScreenManager()`
 
 #### Enable Desktop PWA (only Chrome)
@@ -95,52 +95,74 @@ PwaManager.onPageLoading(function() {
 ### Manage Push notification (with Firebase)
 Access to the Push Manager: `PwaManager.getPushManager()`.
 
-#### Initialize Push Manager
-You have to initialize the manager with:
-- registered Service Worker
-- Firebase messaging sender id
-- An optional callback function if you want to manage foreground notifications differently.
+#### Check if notification is supported on this current browser
 ````
-PwaManager.getPushManager().initialize(serviceWorkerRegistration, messagingSenderId, foregroundCallback).then(function () {
-    console.log('Push Manager initialized');
-});
+if (PwaManager.getPushManager().isNotificationSupported()) {
+    console.log('Notification is supported on this browser.');
+}
 ````
 
 #### Request permission to send notification
 First, you need to ask permission.
 ````
 PwaManager.getPushManager().requestPermission().then(function() {
-    console.log('Accepted. You can get a token.');
+    console.log('Accepted. You can get a token with Firebase.');
 }).catch(function() {
     console.log('denied. User must authorize notifications in their bowser settings.');
 });
 ````
 
-#### Get a token and send it to the server
+#### Show a notification
 ````
-PwaManager.getPushManager().fetchToken().then( function(token) {
+PwaManager.getPushManager().showNotification('title', {
+    icon: ...,
+    vibrate: [50, 300, 50]
+});
+````
+
+#### Firebase
+
+##### Get a token and send it to the server
+````
+PwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
     console.log("new token: "+token);
 });
 ````
 
-#### Get current token
+##### Get a token and send it to the server
 ````
-PwaManager.getPushManager().getToken().then( function(token) {
+PwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
+    console.log("new token: "+token);
+});
+````
+
+##### Get current token
+````
+PwaManager.getPushManager().getFirebase().getToken().then( function(token) {
     console.log('new token: '+token);
 });
 ````
 
-#### Delete current token
+##### Delete current token
 ````
-PwaManager.getPushManager().deleteToken(token).then(function(){
+PwaManager.getPushManager().getFirebase().deleteToken(token).then(function(){
     console.log('Token deleted');
 });
 ````
 
-## JS Documentation
-More information with the doc.
+##### Manage Foreground notification differently
+````
+PwaManager.getPushManager().getFirebase().onForegroundNotification(function() {
+    console.log('Your are currently on the the site and you received a notification.');
+});
+````
 
-[Documentation](doc/JS_DOC.md)
+##### Manage token (send to server) when you fetch a token
+````
+PwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
+    console.log('You fetch a new token, you can send it to server.');
+});
+````
 
 
 ## External library included

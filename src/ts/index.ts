@@ -1,18 +1,15 @@
 import '@babel/polyfill';
 
-import '../../node_modules/pwacompat/pwacompat.min.js';
-
-import PushManager from './class/PushManager';
-import PwaManager from './class/PwaManager';
-import HomeScreenManager from './class/HomeScreenManager';
-
+import {pwaManager} from "./service";
 import '../css/base.scss';
 
-const Pwa: PwaManager = new PwaManager(new HomeScreenManager(), new PushManager());
+if (document.head.querySelector('link[rel="manifest"]')) {
+  require('../../node_modules/pwacompat/pwacompat.min.js');
+}
 
 if (typeof exports === 'object') {
-  module.exports = Pwa;
+  module.exports = pwaManager;
 } else {
   /* eslint-disable */
-  (window as any).PwaManager = Pwa;
+  (window as any).EasyPwaManager = pwaManager;
 }

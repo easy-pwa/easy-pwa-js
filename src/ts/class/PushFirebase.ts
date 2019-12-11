@@ -1,0 +1,137 @@
+import * as firebase from 'firebase/app';
+import 'firebase/messaging';
+import { FirebaseMessaging } from '@firebase/messaging-types';
+import {pushManager} from "../service";
+import Logger from "./Logger";
+import {FirebasePayloadMessage} from "../type";
+
+export default class PushFirebase {
+  private messagingSenderId: string;
+
+  private readonly messaging: FirebaseMessaging;
+
+  private tokenFetchedCallback: (token: string) => void;
+
+  private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
+
+  constructor(serviceWorker: ServiceWorkerRegistration, messagingSenderId: string) {
+      this.messagingSenderId = messagingSenderId;
+
+    this.tokenFetchedCallback = (token: string): void => {
+      Logger.info(`Token to send to server: ${token}`);
+    };
+
+    firebase.initializeApp({
+      messagingSenderId,
+    });
+
+    this.messaging = firebase.messaging();
+    this.messaging.useServiceWorker(serviceWorker);
+    this.messaging.onTokenRefresh(this.fetchToken);
+    this.messaging.onMessage(this.foregroundNotification);
+  }
+
+  /**
+   * Check if firebase is initialized
+   */
+  public isInitialized(): boolean {
+    return firebase.apps.length > 0 && this.messaging != null;
+  }
+
+  /**
+   * @param callback Callback to execute if notification is received when user is currently on the site
+   */
+  public onForegroundNotification(callback: (payload: FirebasePayloadMessage) => void): void {
+    this.foregroundMessageCallback = callback;
+  }
+
+  /**
+   * When a token is fetched, function to execute (send it to server for example)
+   * @param callback
+   */
+  public onTokenFetched(callback: (token: string) => void): void {
+    this.tokenFetchedCallback = callback;
+  }
+
+  /**
+   * Fetch token and notify server
+   */
+  public fetchToken(): Promise<string | Error> {
+    return new Promise((resolve, reject): void => {
+      this.getToken()
+        .then((token: string) => {
+          if (token) {
+            this.tokenFetchedCallback(token);
+            resolve(token);
+          } else {
+            reject(new Error('No Instance ID token available. Request permission to generate one.'));
+          }
+        })
+        .catch((err: Error) => {
+          reject(new Error(`Error when fetch token ${err}`));
+        });
+    });
+  }
+
+  /**
+   * Get user token
+   */
+  public getToken(): Promise<string | Error> {
+    return new Promise<string | Error>((resolve, reject): void => {
+      const timeout = global.setTimeout(() => {
+        reject(new Error('getToken Timeout exceeded'));
+      }, 25000);
+
+      this.messaging
+        .getToken()
+        .then((token: string) => {
+          clearTimeout(timeout);
+          resolve(token);
+        })
+        .catch((err: Error) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+    });
+  }
+
+  /**
+   * delete user token
+   */
+  public deleteToken(token: string): Promise<string | Error> {
+    return new Promise<string | Error>((resolve, reject): void => {
+      if (token !== null) {
+        this.messaging
+          .deleteToken(token)
+          .then(() => {
+            Logger.info(`Token deleted: ${token}`);
+            resolve();
+          })
+          .catch(reject);
+      }
+    });
+  }
+
+  /**
+   * ForegroundNotification
+   */
+  private foregroundNotification(payload: FirebasePayloadMessage): void {
+    if (this.foregroundMessageCallback) {
+      this.foregroundMessageCallback(payload);
+      return;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(payload, 'notification')) {
+      const notificationSettings = payload.notification;
+      notificationSettings.data = { ...notificationSettings.data };
+
+      // Request managed by FCM
+      notificationSettings.data.FCM_MSG = {};
+      notificationSettings.data.FCM_MSG.notification = payload.notification;
+
+      pushManager.showNotification(notificationSettings.title, notificationSettings).then(() => {
+        Logger.info('Notification received in foreground and transmitted to SW.');
+      });
+    }
+  }
+}

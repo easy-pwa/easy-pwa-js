@@ -24,16 +24,19 @@
     "firebase": "^6.5.0",
     "iconv-lite": "^0.5.0",
     "js-logger": "^1.6.0",
+    "node-sass": "^4.13.0",
     "npm": "^6.13.3",
-    "pwacompat": "^2.0.7",
-    "raw-loader": "^0.5.1"
+    "pwacompat": "^2.0.10",
+    "raw-loader": "^0.5.1",
+    "template-file": "^3.1.0",
+    "twig": "^1.14.0",
+    "twig-loader": "^0.5.1"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^0.28.0",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
     "babel-loader": "^8.0.6",
-    "documentation": "^12.1.4",
     "eslint": "^6.3.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.2.0",
@@ -42,10 +45,10 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
-    "node-sass": "^4.9.4",
+    "json-loader": "^0.5.7",
     "prettier": "^1.18.2",
     "progress-bar-webpack-plugin": "^1.11.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^8.0.0",
     "ts-loader": "^5.4.5",
     "typescript": "^3.7.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
@@ -58,8 +61,7 @@
     "prettier": "prettier \"src/ts/**/*.ts\" --check",
     "prettier-fix": "prettier \"src/ts/**/*.ts\" --write",
     "watch": "webpack --watch",
-    "build": "webpack",
-    "jsdoc": "documentation build src/ts/class/* -f md --shallow -o doc/JS_DOC.md -c ./doc/documentation.yml"
+    "build": "webpack"
   },
   "keywords": [
     "pwa",

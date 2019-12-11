@@ -3,7 +3,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     'easy-pwa': './src/ts/index.ts',
     'easy-pwa-sw': './src/ts/service-worker-base.ts'
@@ -34,17 +34,22 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader',
+          //'sass-loader',
         ],
       },
       {
-        test: /\.html$/,
-        use: 'raw-loader',
+        test: /\.twig$/,
+        use: {
+          loader: 'twig-loader',
+          options: {
+            // See options section below
+          },
+        }
       }
     ]
   },
   plugins: [new ProgressBarPlugin()],
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
+    //minimizer: [new UglifyJsPlugin()],
   },
 };
