@@ -52,6 +52,14 @@ PwaManager.enableDebug();
 ### Manage Home Screen Install
 Access to the home screen manager: `PwaManager.getHomeScreenManager()`
 
+
+#### Check if PWA is in standalone mode
+````
+if (PwaManager.isAppMode()) {
+    console.log('');
+}
+````
+
 #### Enable Desktop PWA (only Chrome)
 ````
 PwaManager.getHomeScreenManager().enableDesktopPwa();
@@ -167,8 +175,8 @@ PwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
 
 ## External library included
 
-[PWACompat](https://github.com/GoogleChromeLabs/pwacompat) is a library that brings the Web App Manifest to non-compliant browsers for better Progressive Web Apps.
-[Firebase](https://github.com/firebase/) Firebase features
+* [PWACompat](https://github.com/GoogleChromeLabs/pwacompat) is a library that brings the Web App Manifest to non-compliant browsers for better Progressive Web Apps.
+* [Firebase](https://github.com/firebase/) Firebase Messaging features
 
 ## Example
 

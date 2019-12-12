@@ -1,1 +1,6 @@
-@import "popupArrow.scss";
+$borderSize: 1px;
+$borderColor: #c2c1c1;
+$color: #eae9e9;
+$helperZIndex: 10000;
+
+@import "helper.scss";

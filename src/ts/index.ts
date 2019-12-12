@@ -1,11 +1,18 @@
 import '@babel/polyfill';
+import  webManifestReader from 'web-manifest-reader';
 
 import {pwaManager} from "./service";
 import '../css/base.scss';
 
+
 if (document.head.querySelector('link[rel="manifest"]')) {
   require('../../node_modules/pwacompat/pwacompat.min.js');
 }
+
+
+webManifestReader.read().then((data: any ) => {
+  console.log(data);
+});
 
 if (typeof exports === 'object') {
   module.exports = pwaManager;

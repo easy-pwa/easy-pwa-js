@@ -9,15 +9,15 @@ module.exports = {
       'prettier',
     ],
     rules: {
-      '@typescript-eslint/no-inferrable-types': "off",
       '@typescript-eslint/no-var-requires': "off",
-      'import/extensions': 'off',
       'class-methods-use-this': 'off',
       'max-len': ['error', {
         "code": 130
       }],
       'global-require': 'off',
-      'import/prefer-default-export': 'off',
+      'import/extensions': ['error', {
+         'ts': 'never'
+      }]
     },
     env: {
       browser: true,
@@ -30,11 +30,7 @@ module.exports = {
       }
     }],
     settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['.ts', '.d.ts']
-        }
-      },
+      'import/resolver': 'webpack',
     },
     parserOptions:  {
         ecmaVersion:  2018,

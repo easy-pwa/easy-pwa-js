@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: [ '.ts', '.js' ],
+    extensions: ['.ts', '.js', '.d.ts'],
   },
   module: {
     rules: [
@@ -34,7 +34,7 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          //'sass-loader',
+          'sass-loader'
         ],
       },
       {

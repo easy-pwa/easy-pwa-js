@@ -1,8 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <title>Titre de la page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
     <script src="../dist/easy-pwa.js"></script>
 </head>
 <body>
@@ -11,11 +13,11 @@
         EasyPwaManager.enableDebug();
 
         EasyPwaManager.registerServiceWorker('./sw.js', {scope: './'}, '123456789').then(function(registration) {
-          EasyPwaManager.getPushManager().requestPermission();
+          /*EasyPwaManager.getPushManager().requestPermission();
           EasyPwaManager.getPushManager().getFirebase().getToken().then(function(token) {
             console.log('token', token);
-          });
-          EasyPwaManager.getPushManager().showNotification('test');
+          });*/
+          //EasyPwaManager.getPushManager().showNotification('test');
           EasyPwaManager.getHomeScreenManager().showIOSHelper();
         });
 

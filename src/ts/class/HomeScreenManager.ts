@@ -13,7 +13,7 @@ export default class HomeScreenManager {
 
   private callbackAppInstalled: () => void;
 
-  private desktopPwaEnabled: boolean = false;
+  private desktopPwaEnabled = false;
 
   constructor() {
     this.initEvents();
@@ -165,10 +165,10 @@ export default class HomeScreenManager {
    * @param browserClass
    */
   private createPopup(text: string, browserClass: string): void {
-    const popup = document.createElement('div');
-    popup.classList.add('pwa-homescreen-helper');
-    popup.classList.add(browserClass);
-    popup.innerHTML = text;
+    const popupContent = document.createElement('div');
+    popupContent.classList.add(browserClass);
+    popupContent.classList.add('pwa-homescreen-helper');
+    popupContent.innerHTML = text;
 
     const mask = document.createElement('div');
     mask.classList.add('pwa-homescreen-helper-mask');
@@ -179,10 +179,10 @@ export default class HomeScreenManager {
       document.getElementsByClassName('pwa-homescreen-helper-mask')[0].remove();
     };
 
-    popup.addEventListener('click', closeHelper);
-    window.setTimeout(closeHelper, 10000);
+    popupContent.addEventListener('click', closeHelper);
+    window.setTimeout(closeHelper, 1000000);
 
-    document.body.appendChild(popup);
+    document.body.appendChild(popupContent);
     document.body.appendChild(mask);
     document.body.classList.add('pwa-helper-active');
   }
