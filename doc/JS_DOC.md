@@ -15,7 +15,7 @@
     -   [forceUpdateApp][11]
         -   [Parameters][12]
     -   [enableDebug][13]
--   [HomeScreenManager][14]
+-   [InstallManager][14]
     -   [isAppMode][15]
     -   [onEventInstallPromptEmitted][16]
         -   [Parameters][17]
@@ -47,7 +47,7 @@ All methods for managing PWA.
 
 ### Parameters
 
--   `homeScreenManager` **[HomeScreenManager][39]** 
+-   `homeScreenManager` **[InstallManager][39]** 
 -   `pushManager` **[PushManager][40]** 
 
 ### registerServiceWorker
@@ -72,7 +72,7 @@ Returns **[PushManager][40]**
 
 Get the Home Screen Manager for managing HomeScreen.
 
-Returns **[HomeScreenManager][39]** 
+Returns **[InstallManager][39]** 
 
 ### onUpdateFound
 
@@ -111,7 +111,7 @@ Enable debug mode
 
 Returns **void** 
 
-## HomeScreenManager
+## InstallManager
 
 Methods for managing about Homescreen.
 

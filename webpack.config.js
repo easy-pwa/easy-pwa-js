@@ -19,16 +19,17 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
         }
       },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+
       {
         test: /\.scss$/i,
         use: [
@@ -48,7 +49,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ProgressBarPlugin()],
+  //plugins: [new ProgressBarPlugin()],
   optimization: {
     //minimizer: [new UglifyJsPlugin()],
   },

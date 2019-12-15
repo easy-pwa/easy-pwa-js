@@ -1,11 +1,11 @@
 import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import { FirebaseMessaging } from '@firebase/messaging-types';
-import {pushManager} from "../service";
-import Logger from "./Logger";
-import {FirebasePayloadMessage} from "../type";
+import { pushManager } from '../service';
+import Logger from '../tool/Logger';
+import { FirebasePayloadMessage } from '../type';
 
-export default class PushFirebase {
+export default class FirebaseProvider {
   private messagingSenderId: string;
 
   private readonly messaging: FirebaseMessaging;
@@ -15,7 +15,7 @@ export default class PushFirebase {
   private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
 
   constructor(serviceWorker: ServiceWorkerRegistration, messagingSenderId: string) {
-      this.messagingSenderId = messagingSenderId;
+    this.messagingSenderId = messagingSenderId;
 
     this.tokenFetchedCallback = (token: string): void => {
       Logger.info(`Token to send to server: ${token}`);

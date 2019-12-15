@@ -1,11 +1,11 @@
-import PushManager from '../class/PushManager';
-import HomeScreenManager from '../class/HomeScreenManager';
-import Translator from '../class/Translator';
-import PwaManager from "../class/PwaManager";
-import Debug from "../class/Debug";
+import PushManager from '../manager/PushManager';
+import InstallManager from '../manager/InstallManager';
+import Translator from '../tool/Translator';
+import PwaManager from '../manager/PwaManager';
+import Debug from '../tool/Debug';
 
 export const pwaManager = new PwaManager();
-export const homeScreenManager = new HomeScreenManager();
+export const homeScreenManager = new InstallManager();
 export const pushManager = new PushManager();
 export const translator = new Translator();
 export const debug = new Debug();

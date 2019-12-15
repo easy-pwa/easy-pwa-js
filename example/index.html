@@ -12,13 +12,21 @@
     <script>
         EasyPwaManager.enableDebug();
 
-        EasyPwaManager.registerServiceWorker('./sw.js', {scope: './'}, '123456789').then(function(registration) {
+
+        EasyPwaManager.init('./sw.js', {scope: './'}).then(function() {
+          EasyPwaManager.getInstallManager().enableDesktopPwa();
           /*EasyPwaManager.getPushManager().requestPermission();
           EasyPwaManager.getPushManager().getFirebase().getToken().then(function(token) {
             console.log('token', token);
           });*/
           //EasyPwaManager.getPushManager().showNotification('test');
-          EasyPwaManager.getHomeScreenManager().showIOSHelper();
+          //EasyPwaManager.getHomeScreenManager().showIOSHelper();
+        });
+
+        window.addEventListener('easy-pwa-helper-available', function(e) {
+            console.log('eventListener', e);
+            var helperAvailableEvent = e.detail;
+            helperAvailableEvent.showInvite();
         });
 
     </script>

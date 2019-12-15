@@ -1,25 +1,23 @@
 import { detect } from 'detect-browser';
+import manifest, { WebManifest, WebManifestIcon } from 'web-manifest-reader';
 import Logger from './Logger';
-import { WebManifest, WebManifestIcon, WebManifestDisplay } from '../type';
 
 export default class Debug {
   private sw: ServiceWorkerRegistration = null;
 
   public analyse(): void {
-
     this.browser();
 
     if ('serviceWorker' in navigator) {
-
       this.testProtocol();
 
       this.loadServiceWorker().then(() => {
-        this.loadManifest().then(manifest => {
-          this.testManifest(manifest);
+        this.loadManifest().then(webManifestData => {
+          this.testManifest(webManifestData);
         });
       });
     } else {
-      this.showErr('Service Worker is not supported by current browser');
+      this.showErr('Service Worker is not supported by the current browser');
     }
   }
 
@@ -34,19 +32,15 @@ export default class Debug {
    * Test if basic elements exist
    */
   private testManifest(data: WebManifest): void {
-    if ((!('short_name' in data) || data.short_name === '') && (!('name' in data) || data.name === '')) {
+    if (!data.short_name || !data.name) {
       this.showErr('Manifest must includes short_name or name property');
     }
 
-    if (!('start_url' in data)) {
+    if (!data.start_url) {
       this.showErr('start_url is not specified.');
     }
 
-    if (!data.display || data.display !== WebManifestDisplay.STANDALONE) {
-      this.showErr('display property is not defined or is not configured for standalone');
-    }
-
-    if (!data.icons || data.icons.find((i: WebManifestIcon) => i.sizes && i.sizes === '512x512') === null) {
+    if (!data.icons || !data.icons.find((i: WebManifestIcon) => i.sizes && i.sizes === '512x512')) {
       this.showErr('A 512px sized icon must be specified');
     }
   }
@@ -60,7 +54,7 @@ export default class Debug {
       !window.location.host.includes('localhost') &&
       !window.location.host.includes('127.0.0.1')
     ) {
-      this.showErr('Https protocol is required.');
+      this.showErr('https protocol is required or test in localhost.');
     }
   }
 
@@ -86,26 +80,8 @@ export default class Debug {
   /**
    * Search, load and check manifest
    */
-  private loadManifest(): Promise<WebManifest> {
-    return new Promise((resolve, reject): void => {
-      const manifestEl: HTMLLinkElement = document.head.querySelector('link[rel="manifest"]');
-      const manifestHref = manifestEl ? manifestEl.href : '';
-
-      if (manifestHref === '') {
-        this.showErr('Manifest file is not declared in head page');
-        reject();
-      }
-
-      fetch(manifestHref)
-        .then(response => response.json())
-        .then((data): void => {
-          resolve(data);
-        })
-        .catch((): void => {
-          this.showErr("Manifest file specified doesn't exist");
-          reject();
-        });
-    });
+  private async loadManifest(): Promise<WebManifest> {
+    return manifest.read();
   }
 
   /**
@@ -115,4 +91,4 @@ export default class Debug {
   private showErr(txt: string): void {
     Logger.error(`PWA Debug : ${txt}`);
   }
-};
+}

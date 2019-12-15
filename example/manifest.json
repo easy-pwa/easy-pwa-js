@@ -1,6 +1,15 @@
 {
-  "name": "Google I/O 2015",
+  "name": "Twitter",
   "short_name": "I/O 2015",
   "start_url": "./?utm_source=web_app_manifest",
-  "display": "standalone"
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/example/icon-default.3c3b2244.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "zer": "test"
 }
+

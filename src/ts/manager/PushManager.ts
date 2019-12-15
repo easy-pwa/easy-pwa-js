@@ -1,19 +1,18 @@
-import {pwaManager} from "../service";
-import PushFirebase from "./PushFirebase";
+import { pwaManager } from '../service';
+import FirebaseProvider from '../push/FirebaseProvider';
 
 /**
  * PWA - Push Manager
  */
 export default class PushManager {
-
-  private firebase: PushFirebase|null;
+  private firebase: FirebaseProvider | null;
 
   /**
    * Requests permission
    */
   public requestPermission(): Promise<NotificationPermission> {
     return new Promise((resolve, reject): void => {
-      Notification.requestPermission().then((permission) => {
+      Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
           resolve(permission);
         } else {
@@ -37,13 +36,16 @@ export default class PushManager {
     return 'Notification' in window;
   }
 
-  public initializeFirebase(serviceWorker: ServiceWorkerRegistration, messagingSenderId: string): void {
-    this.firebase = new PushFirebase(serviceWorker, messagingSenderId);
+  public initFirebase(messagingSenderId: string): FirebaseProvider {
+    navigator.serviceWorker.controller.postMessage(`firebaseMessagingSenderId=${messagingSenderId}`);
+    this.firebase = new FirebaseProvider(pwaManager.getServiceWorkerRegistration(), messagingSenderId);
+
+    return this.firebase;
   }
 
-  public getFirebase(): PushFirebase|null {
+  public getFirebase(): FirebaseProvider | null {
     if (!this.firebase) {
-      throw new Error('You have to provide a messagingSenderId when you register the service worker.');
+      throw new Error('You have to call initFirebase method before');
     }
 
     return this.firebase;

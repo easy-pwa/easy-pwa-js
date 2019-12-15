@@ -1,5 +1,4 @@
 export default class Translator {
-
   private readonly availableLang: string[] = ['fr', 'en'];
 
   private lang: string;
@@ -18,10 +17,13 @@ export default class Translator {
   }
 
   public getTranslations(): JSON {
-    switch(this.lang) {
-      case 'fr': return require('../../translations/fr.json');
-      case 'en': return require('../../translations/en.json');
-      default: return require('../../translations/en.json');
+    switch (this.lang) {
+      case 'fr':
+        return require('../../translations/fr.json');
+      case 'en':
+        return require('../../translations/en.json');
+      default:
+        return require('../../translations/en.json');
     }
   }
 }

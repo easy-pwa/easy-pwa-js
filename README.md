@@ -34,95 +34,144 @@ importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa-sw
 
 ### PwaManager
 
-#### Register a Service Worker
-Set the third argument if you want to use Firebase Push Notifications.
-````
-PwaManager.registerServiceWorker('./sw.js', {scope: './'}, FIREBASE_MESSAGING_JS).then(function(registration) {
-    console.log('SW correctly registered');
+#### Initialize PwaManager
+
+```` javascript
+EasyPwaManager.init('./sw.js', {scope: './'}).then(function() {
+    console.log('Manager initialized. Get manifest and registered service worker.');
 });
 ````
 
-#### Debug mode
-More information in your console for debugging your PWA.
-````
-PwaManager.enableDebug();
+#### Get your service worker reference
+```` javascript
+var mySw = EasyPwaManager.getServiceWorkerRegistration();
 ````
 
-
-### Manage Home Screen Install
-Access to the home screen manager: `PwaManager.getHomeScreenManager()`
+#### Get manifest data
+```` javascript
+var manifest = EasyPwaManager.getManifest();
+console.log('The name is: '+manifest.name);
+````
 
 
 #### Check if PWA is in standalone mode
-````
-if (PwaManager.isAppMode()) {
-    console.log('');
+```` javascript
+if (EasyPwaManager.getInstallManager().isAppMode()) {
+    console.log('Site is open as an app');
 }
-````
-
-#### Enable Desktop PWA (only Chrome)
-````
-PwaManager.getHomeScreenManager().enableDesktopPwa();
-````
-
-#### Waiting install prompt event sent by browser (currently only Chrome & Edge)
-````
-PwaManager.getHomeScreenManager().onEventInstallPromptEmitted(function() {
-    console.log('Event install prompt received.');
-});
-````
-
-#### Check if a helper for installing is available
-Chrome/Edge: TRUE if event has been received.
-
-Other browsers: we propose a helper to indicate how install the app. TRUE If a helper is available for the used current browser version.
-````
-PwaManager.getHomeScrenManager().helperIsAvailable();
-````
-
-#### Show the helper if helper is available.
-````
-PwaManager.getHomeScrenManager().showHelper();
-````
-
-#### Know if app is successfully installed
-````
-PwaManager.getHomeScrenManager().onAppInstalled(function() {
-    console.log('App is just installed successfully.');
-});
 ````
 
 #### Show a loader when page is loading
 In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader.
 ````
-PwaManager.onPageLoading(function() {
+EasyPwaManager.onPageLoading(function() {
     console.log('Page is loading...')
 });
 ````
 
-### Manage Push notification (with Firebase)
-Access to the Push Manager: `PwaManager.getPushManager()`.
+#### Debug mode
+More information in your console for debugging your PWA.
+```` javascript
+EasyPwaManager.enableDebug();
+````
+
+
+### Manage Home Screen Install
+Access to the home screen manager: `EasyPwaManager.getInstallManager()`
+
+
+#### Enable Desktop PWA (only Chrome)
+Propose install on desktop browsers.
+```` javascript
+EasyPwaManager.getInstallManager().enableDesktopPwa();
+````
+
+#### Set interval before invitation to install again
+When an event is proposed, set the number of days before invite again. (default: 50)
+```` javascript
+EasyPwaManager.getInstallManager().setIntervalBetweenInvitation(30);
+````
+
+#### Additional criteria before propose invite
+You can add criteria before propose invite. The callback function has to respond a boolean.
+```` javascript
+EasyPwaManager.getInstallManager().addInviteCriteria(function() {
+    if (user.id === 1) {
+        return false;
+    }
+
+    return true;
+});
+````
+
+#### Show an invite/ Show a helper
+You have to listen an event.
+
+```` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    console.log('A helper is available for this browser!');
+    var helperAvailableEvent = e.detail;
+});
+````
+
+##### For an automatic invite system
+```` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    var helperAvailableEvent = e.detail;
+    helperAvailableEvent.showInvite();
+});
+````
+
+##### For a custom invite system
+My html invite:
+```` html
+<div id="my_custom_invite">
+Install my app ?
+<button id="invite_accept">yes</button>
+<button id="invite_dismiss">no</button>
+</div>
+```` 
+My Javascript invite:
+```` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    var helperAvailableEvent = e.detail;
+
+    document.getElementById('invite_accept').addEventListener('click', function() {
+        document.getElementById('my_custom_invite').display = 'none';
+        helperAvailableEvent.acceptInvite();
+    });
+
+document.getElementById('invite_dismiss').addEventListener('click', function() {
+        document.getElementById('my_custom_invite').display = 'none';
+        helperAvailableEvent.dismissInvite();
+    });
+});
+````
+
+
+### Manage Push notification
+Access to the Push Manager: `EasyPwaManager.getPushManager()`.
 
 #### Check if notification is supported on this current browser
-````
-if (PwaManager.getPushManager().isNotificationSupported()) {
+```` javascript
+if (EasyPwaManager.getPushManager().isNotificationSupported()) {
     console.log('Notification is supported on this browser.');
 }
 ````
 
 #### Request permission to send notification
 First, you need to ask permission.
-````
-PwaManager.getPushManager().requestPermission().then(function() {
+```` javascript
+EasyPwaManager.getPushManager().requestPermission().then(function() {
     console.log('Accepted. You can get a token with Firebase.');
 }).catch(function() {
     console.log('denied. User must authorize notifications in their bowser settings.');
 });
 ````
 
-#### Show a notification
-````
-PwaManager.getPushManager().showNotification('title', {
+#### Show a local notification
+```` javascript
+EasyPwaManager.getPushManager().showNotification('title', {
     icon: ...,
     vibrate: [50, 300, 50]
 });
@@ -130,44 +179,37 @@ PwaManager.getPushManager().showNotification('title', {
 
 #### Firebase
 
-##### Get a token and send it to the server
-````
-PwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
-    console.log("new token: "+token);
-});
-````
-
-##### Get a token and send it to the server
-````
-PwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
+##### Get a token and forward it to the server
+```` javascript
+EasyPwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
     console.log("new token: "+token);
 });
 ````
 
 ##### Get current token
-````
+```` javascript
 PwaManager.getPushManager().getFirebase().getToken().then( function(token) {
     console.log('new token: '+token);
 });
 ````
 
 ##### Delete current token
-````
-PwaManager.getPushManager().getFirebase().deleteToken(token).then(function(){
+```` javascript
+EasyPwaManager.getPushManager().getFirebase().deleteToken(token).then(function(){
     console.log('Token deleted');
 });
 ````
 
 ##### Manage Foreground notification differently
-````
-PwaManager.getPushManager().getFirebase().onForegroundNotification(function() {
+```` javascript
+EasyPwaManager.getPushManager().getFirebase().onForegroundNotification(function() {
     console.log('Your are currently on the the site and you received a notification.');
 });
 ````
 
 ##### Manage token (send to server) when you fetch a token
-````
-PwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
+```` javascript
+EasyPwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
     console.log('You fetch a new token, you can send it to server.');
 });
 ````
@@ -182,5 +224,9 @@ PwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
 
 You can find a full example here (soon).
 
+## Help
+Use chrome browser for testing you PWA, there are more available tools:
+* Inspect element => Application
+* Inpect your service worker: [chrome://inspect/#service-workers]()
 
 
