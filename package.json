@@ -28,7 +28,8 @@
     "raw-loader": "^0.5.1",
     "template-file": "^3.1.0",
     "twig": "^1.14.0",
-    "twig-loader": "^0.5.1"
+    "twig-loader": "^0.5.1",
+    "web-manifest-reader": "^1.1.0"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^0.28.0",
@@ -52,7 +53,6 @@
     "ts-loader": "^5.4.5",
     "typescript": "^3.7.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "web-manifest-reader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },

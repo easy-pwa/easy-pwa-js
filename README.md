@@ -63,7 +63,7 @@ if (EasyPwaManager.getInstallManager().isAppMode()) {
 
 #### Show a loader when page is loading
 In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader.
-````
+```` javascript
 EasyPwaManager.onPageLoading(function() {
     console.log('Page is loading...')
 });
