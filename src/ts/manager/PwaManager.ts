@@ -1,8 +1,7 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
 import InstallManager from './InstallManager';
 import PushManager from './PushManager';
-import Logger, { LoggerParameter } from '../tool/Logger';
-import { debug, homeScreenManager, pushManager } from '../service';
+import {debug, homeScreenManager, logger, loggerParameter, pushManager} from '../service';
 import { WindowNavigator } from '../type';
 
 /**
@@ -160,8 +159,8 @@ export default class {
    * Enable debug mode
    */
   public enableDebug(): void {
-    LoggerParameter.enableDebug();
-    Logger.warn('DEBUG ENABLED');
+    loggerParameter.enableDebug();
+    logger.warn('DEBUG ENABLED');
     debug.analyse();
   }
 

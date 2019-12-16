@@ -2,7 +2,7 @@
   "name": "@easy-pwa/easy-pwa-js",
   "version": "0.0.1",
   "description": "JavaScript library for managing PWA application.",
-  "main": "dist/pwa-manager.js",
+  "main": "dist/easy-pwa.js",
   "author": "Adrien Peyre",
   "license": "MIT",
   "files": [
@@ -69,5 +69,6 @@
     "easy",
     "build",
     "tool"
-  ]
+  ],
+  "typings": "./dist/ts/index.d.ts"
 }

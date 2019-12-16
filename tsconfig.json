@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "module": "es6",
+    "module": "commonjs",
     "target": "es5",
-    "allowJs": true,
     "lib": [
-      "es5",
-      "es2015",
-      "dom",
-      "scripthost"
+      "es2017",
+      "es7",
+      "es6",
+      "dom"
     ]
   }
 }

@@ -1,7 +1,7 @@
 import { detect } from 'detect-browser';
 import { BeforeInstallPromptEvent } from '../type';
 import Logger from '../tool/Logger';
-import { pwaManager, translator } from '../service';
+import { pwaManager, translator, logger } from '../service';
 import HelperAvailableEvent from '../event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
 
@@ -145,7 +145,7 @@ export default class InstallManager {
   private initEvents(): void {
     window.addEventListener('beforeinstallprompt', (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
-      Logger.info('Event beforeinstallprompt received.');
+      logger.info('Event beforeinstallprompt received.');
       this.homeScreenPrompt = e;
 
       this.emitHelperAvailableEvent();

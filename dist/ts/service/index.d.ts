@@ -1,0 +1,13 @@
+import PushManager from '../manager/PushManager';
+import InstallManager from '../manager/InstallManager';
+import Translator from '../tool/Translator';
+import PwaManager from '../manager/PwaManager';
+import Debug from '../tool/Debug';
+import Logger from "../tool/Logger";
+export declare const pwaManager: PwaManager;
+export declare const homeScreenManager: InstallManager;
+export declare const pushManager: PushManager;
+export declare const translator: Translator;
+export declare const debug: Debug;
+export declare const loggerParameter: Logger;
+export declare const logger: import("js-logger/src/types").ILogger;

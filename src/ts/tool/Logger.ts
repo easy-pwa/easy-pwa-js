@@ -1,7 +1,7 @@
 import * as JsLogger from 'js-logger';
 import { ILogger } from 'js-logger/src/types';
 
-const pwaLogger = new (class {
+export default class Logger {
   private readonly logger: ILogger;
 
   constructor() {
@@ -27,7 +27,4 @@ const pwaLogger = new (class {
   enableDebug(): void {
     this.logger.setLevel(JsLogger.INFO);
   }
-})();
-
-export { pwaLogger as LoggerParameter };
-export default pwaLogger.getLogger();
+};

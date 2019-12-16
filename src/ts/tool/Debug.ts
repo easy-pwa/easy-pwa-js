@@ -1,6 +1,6 @@
 import { detect } from 'detect-browser';
 import manifest, { WebManifest, WebManifestIcon } from 'web-manifest-reader';
-import Logger from './Logger';
+import { logger } from '../service';
 
 export default class Debug {
   private sw: ServiceWorkerRegistration = null;
@@ -25,7 +25,7 @@ export default class Debug {
    * Info about current browser
    */
   private browser(): void {
-    Logger.info(detect());
+    logger.info(detect());
   }
 
   /**
@@ -89,6 +89,6 @@ export default class Debug {
    * @param {string} txt
    */
   private showErr(txt: string): void {
-    Logger.error(`PWA Debug : ${txt}`);
+    logger.error(`PWA Debug : ${txt}`);
   }
 }

@@ -10,7 +10,9 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd',
+    library: 'EasyPwaManager'
   },
   resolve: {
     extensions: ['.ts', '.js', '.d.ts'],
@@ -49,8 +51,8 @@ module.exports = {
       }
     ]
   },
-  //plugins: [new ProgressBarPlugin()],
+  plugins: [new ProgressBarPlugin()],
   optimization: {
-    //minimizer: [new UglifyJsPlugin()],
+    minimizer: [new UglifyJsPlugin()],
   },
 };
