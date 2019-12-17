@@ -1,6 +1,7 @@
 const path = require('path');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+//const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -51,8 +52,8 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ProgressBarPlugin()],
+  plugins: [new LodashModuleReplacementPlugin()],//, new ProgressBarPlugin()],
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
+    //minimizer: [new UglifyJsPlugin()],
   },
 };

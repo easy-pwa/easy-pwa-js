@@ -1,4 +1,4 @@
-# easy-pwa-js
+# Easy Pwa
 
 Tools for managing your Progressive Web App.
 

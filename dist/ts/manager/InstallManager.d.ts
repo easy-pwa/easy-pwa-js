@@ -2,8 +2,8 @@
  * Methods for managing about Installing
  */
 export default class InstallManager {
-    static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION = 50;
-    static readonly KEY_STORAGE_INVITATION = "easy-pwa-last-invitation-answered";
+    private static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION;
+    private static readonly KEY_STORAGE_INVITATION;
     private homeScreenPrompt?;
     private desktopPwaEnabled;
     private inviteCriteria;
@@ -11,23 +11,28 @@ export default class InstallManager {
     constructor();
     /**
      * Set interval in day before to invite again
+     * @param dayInterval Interval in day between invitation
      */
     setIntervalBetweenInvitation(dayInterval: number): void;
     /**
      * Add additional criteria before propose invite to install
+     * @param A function which has to respond a boolean. True if you are ready to show invite, false overwise
      */
     addInviteCriteria(callback: () => boolean): void;
+    /**
+     * Show an automatic invite to add to Home Screen.
+     */
     private showInvite;
     /**
      * When event has been sent by browser, it's possible to call prompt method to add to home screen
      */
     private showInstallPrompt;
     /**
-     * Get invite. Method differs between browsers
+     * Get the corresponding helper to the current browser. Helper differs between browsers
      */
     private getHelperByBrowser;
     /**
-     * Check if a helper is available
+     * Check if a helper is available for the current browser
      */
     private helperIsAvailable;
     /**

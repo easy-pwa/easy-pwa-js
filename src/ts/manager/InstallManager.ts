@@ -9,9 +9,9 @@ import BrowserInfo from '../../model/BrowserInfo';
  * Methods for managing about Installing
  */
 export default class InstallManager {
-  public static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION = 50;
+  private static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION = 50;
 
-  public static readonly KEY_STORAGE_INVITATION = 'easy-pwa-last-invitation-answered';
+  private static readonly KEY_STORAGE_INVITATION = 'easy-pwa-last-invitation-answered';
 
   private homeScreenPrompt?: BeforeInstallPromptEvent = null;
 
@@ -27,6 +27,7 @@ export default class InstallManager {
 
   /**
    * Set interval in day before to invite again
+   * @param dayInterval Interval in day between invitation
    */
   public setIntervalBetweenInvitation(dayInterval: number): void {
     this.intervalBetweenInvitation = dayInterval;
@@ -34,11 +35,15 @@ export default class InstallManager {
 
   /**
    * Add additional criteria before propose invite to install
+   * @param A function which has to respond a boolean. True if you are ready to show invite, false overwise
    */
   public addInviteCriteria(callback: () => boolean): void {
     this.inviteCriteria = callback;
   }
 
+  /**
+   * Show an automatic invite to add to Home Screen.
+   */
   private async showInvite(): Promise<void> {
     const template = require('../../templates/invite.html.twig');
     this.createInvitePopup(
@@ -60,7 +65,7 @@ export default class InstallManager {
   }
 
   /**
-   * Get invite. Method differs between browsers
+   * Get the corresponding helper to the current browser. Helper differs between browsers
    */
   private getHelperByBrowser(): Function | null {
     const bo = this.getBrowserInfo();
@@ -85,7 +90,7 @@ export default class InstallManager {
   }
 
   /**
-   * Check if a helper is available
+   * Check if a helper is available for the current browser
    */
   private helperIsAvailable(): boolean {
     return !pwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';

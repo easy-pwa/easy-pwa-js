@@ -7,15 +7,27 @@ import { WindowNavigator } from '../type';
 /**
  * All methods for managing PWA.
  */
-export default class {
+export default class PwaManager {
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
-  private serviceWorkerRegistration?: ServiceWorkerRegistration;
+  private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
 
-  private manifest?: WebManifest;
+  private manifest?: WebManifest = null;
 
   /**
-   * Get the Push Manager for managing Notification Push.
+   * Call this function, first.
+   * @param swPath The path to the service worker
+   * @param options options to pass to service worker registration.
+   * @return Return a promise when treatment is finished.
+   */
+  public async init(swPath: string, options?: RegistrationOptions): Promise<void> {
+    this.initOfflineClass();
+    this.manifest = await manifest.read();
+    this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
+  }
+
+  /**
+   * Get the Push Manager for managing push notification.
    */
   public getPushManager(): PushManager {
     if (!this.serviceWorkerRegistration) {
@@ -26,7 +38,7 @@ export default class {
   }
 
   /**
-   * Get the Home Screen Manager for managing HomeScreen.
+   * Get the Install Manager for managing Home Screen.
    */
   public getInstallManager(): InstallManager {
     if (!this.serviceWorkerRegistration) {
@@ -38,6 +50,7 @@ export default class {
 
   /**
    * Check if site is launched in fullscreen (app)
+   * @return true if you are in PWA mode.
    */
   public isAppMode(): boolean {
     return (
@@ -49,7 +62,7 @@ export default class {
   /**
    * Function to execute when a new update can be proposed to user
    */
-  public onUpdateFound(callback: (reg: ServiceWorkerRegistration) => void): void {
+  private onUpdateFound(callback: (reg: ServiceWorkerRegistration) => void): void {
     this.onUpdateFoundCallback = callback;
     navigator.serviceWorker.oncontrollerchange = (): void => {
       window.location.reload();
@@ -58,9 +71,10 @@ export default class {
 
   /**
    * Function to execute when browser starts to changes page.
-   * Browser loader is not visible in standalone mode
+   * because browser loader is not visible in standalone mode
+   * @param callback A function to execute when page is changing.
    */
-  public onPageLoading(callback: () => void): void {
+  public onPageChanging(callback: () => void): void {
     if (!this.isAppMode()) {
       return;
     }
@@ -91,7 +105,7 @@ export default class {
   /**
    * When you want to update app (get a service worker refresh)
    */
-  public forceUpdateApp(reg: ServiceWorkerRegistration): void {
+  private forceUpdateApp(reg: ServiceWorkerRegistration): void {
     reg.waiting.postMessage('skipWaiting');
   }
 
@@ -146,31 +160,27 @@ export default class {
 
   /**
    * Get the service worker registration
+   * @return Get the service worker registration or null if it's bad registered.
    */
   public getServiceWorkerRegistration(): ServiceWorkerRegistration | null {
     return this.serviceWorkerRegistration;
   }
 
+  /**
+   * Get the manifest content.
+   * @return Get the manifest's content if it was read successfly, null otherwise.
+   */
   public getManifest(): WebManifest | null {
     return this.manifest;
   }
 
   /**
-   * Enable debug mode
+   * Enable debug mode. More information is showed in the console for helping to debug your PWA.
    */
   public enableDebug(): void {
     loggerParameter.enableDebug();
     logger.warn('DEBUG ENABLED');
     debug.analyse();
-  }
-
-  /**
-   * Init PWA
-   */
-  public async init(swPath: string, options?: RegistrationOptions): Promise<void> {
-    this.initOfflineClass();
-    this.manifest = await manifest.read();
-    this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
   }
 
   private initOfflineClass(): void {
