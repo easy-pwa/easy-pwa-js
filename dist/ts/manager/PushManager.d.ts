@@ -26,7 +26,7 @@ export default class PushManager {
      * @param messagingSenderId: The firebase messaging sender id
      * @return Return the firebase provider created.
      */
-    initFirebase(messagingSenderId: string): FirebaseProvider;
+    initFirebase(projectId: string, messagingSenderId: string): FirebaseProvider;
     /**
      * Get the Firebase provider. Call initFirebase before.
      * @return Firebase provider or null if init function was not called.

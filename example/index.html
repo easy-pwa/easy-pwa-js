@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Titre de la page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="example/manifest.json">
+    <link rel="manifest" href="/example/manifest.json">
     <script src="../dist/easy-pwa.js"></script>
 </head>
 <body>
@@ -12,8 +12,8 @@
     <script>
         EasyPwaManager.enableDebug();
 
+        EasyPwaManager.init('/example/sw.js', {scope: '/example/'}).then(function(reg) {
 
-        EasyPwaManager.init('./sw.js', {scope: './'}).then(function() {
           EasyPwaManager.getInstallManager().enableDesktopPwa();
           /*EasyPwaManager.getPushManager().requestPermission();
           EasyPwaManager.getPushManager().getFirebase().getToken().then(function(token) {

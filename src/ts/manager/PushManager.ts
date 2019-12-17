@@ -46,9 +46,9 @@ export default class PushManager {
    * @param messagingSenderId: The firebase messaging sender id
    * @return Return the firebase provider created.
    */
-  public initFirebase(messagingSenderId: string): FirebaseProvider {
+  public initFirebase(projectId: string, messagingSenderId: string): FirebaseProvider {
     navigator.serviceWorker.controller.postMessage(`firebaseMessagingSenderId=${messagingSenderId}`);
-    this.firebase = new FirebaseProvider(pwaManager.getServiceWorkerRegistration(), messagingSenderId);
+    this.firebase = new FirebaseProvider(pwaManager.getServiceWorkerRegistration(), projectId, messagingSenderId);
 
     return this.firebase;
   }

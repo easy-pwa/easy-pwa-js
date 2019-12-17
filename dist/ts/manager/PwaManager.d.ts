@@ -5,6 +5,7 @@ import PushManager from './PushManager';
  * All methods for managing PWA.
  */
 export default class PwaManager {
+    static readonly EVENT_READY = "easy-pwa-ready";
     private onUpdateFoundCallback;
     private serviceWorkerRegistration?;
     private manifest?;
@@ -14,7 +15,7 @@ export default class PwaManager {
      * @param options options to pass to service worker registration.
      * @return Return a promise when treatment is finished.
      */
-    init(swPath: string, options?: RegistrationOptions): Promise<void>;
+    init(swPath: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration>;
     /**
      * Get the Push Manager for managing push notification.
      */

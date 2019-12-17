@@ -64,7 +64,7 @@ if (EasyPwaManager.getInstallManager().isAppMode()) {
 #### Show a loader when page is loading
 In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader.
 ```` javascript
-EasyPwaManager.onPageLoading(function() {
+EasyPwaManager.onPageChanging(function() {
     console.log('Page is loading...')
 });
 ````
@@ -178,6 +178,11 @@ EasyPwaManager.getPushManager().showNotification('title', {
 ````
 
 #### Firebase
+
+##### Initialize Firebase
+```` javascript
+EasyPwaManager.getPushManager().initFirebase('project_id', 'messagingSenderId');
+````
 
 ##### Get a token and forward it to the server
 ```` javascript

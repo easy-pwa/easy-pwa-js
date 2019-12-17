@@ -8,6 +8,8 @@ import { WindowNavigator } from '../type';
  * All methods for managing PWA.
  */
 export default class PwaManager {
+  public static readonly EVENT_READY = 'easy-pwa-ready';
+
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
   private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
@@ -20,10 +22,15 @@ export default class PwaManager {
    * @param options options to pass to service worker registration.
    * @return Return a promise when treatment is finished.
    */
-  public async init(swPath: string, options?: RegistrationOptions): Promise<void> {
+  public async init(swPath: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
     this.initOfflineClass();
     this.manifest = await manifest.read();
     this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
+
+    const event = new Event(PwaManager.EVENT_READY);
+    window.dispatchEvent(event);
+
+    return this.serviceWorkerRegistration;
   }
 
   /**

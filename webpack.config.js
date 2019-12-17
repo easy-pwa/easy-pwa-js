@@ -1,22 +1,17 @@
 const path = require('path');
-//const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
-module.exports = {
+const config = {
   mode: 'development',
-  entry: {
-    'easy-pwa': './src/ts/index.ts',
-    'easy-pwa-sw': './src/ts/service-worker-base.ts'
-  },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'umd',
-    library: 'EasyPwaManager'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.d.ts'],
+    extensions: ['.ts', '.d.ts', '.js'],
   },
   module: {
     rules: [
@@ -50,10 +45,45 @@ module.exports = {
           },
         }
       }
-    ]
+    ],
   },
-  plugins: [new LodashModuleReplacementPlugin()],//, new ProgressBarPlugin()],
   optimization: {
-    //minimizer: [new UglifyJsPlugin()],
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
 };
+
+const swConfig = Object.assign({}, config, {
+  entry: {
+    'easy-pwa-sw': './src/ts/service-worker-base.ts'
+  },
+});
+
+const frontConfig = Object.assign({}, config, {
+  entry: {
+    'easy-pwa': './src/ts/index.ts',
+  },
+  output: {
+    libraryTarget: 'umd',
+    library: 'EasyPwaManager'
+  },
+  plugins: [
+    new LodashModuleReplacementPlugin(),
+    new ProgressBarPlugin(),
+    new TypedocWebpackPlugin({
+      out: '../docs',
+      mode: 'file',
+      excludePrivate: true,
+      excludeProtected: true,
+      excludeExternals: true,
+      includeDeclarations: false,
+      readme: 'none',
+      hideBreadcrumbs: true,
+      name: 'Easy PWA'
+    }, ['./src/ts/manager', './src/ts/push'])
+  ],
+});
+
+module.exports = [
+  frontConfig, swConfig
+];

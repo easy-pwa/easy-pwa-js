@@ -1,5 +1,5 @@
 {
-  "name": "@easy-pwa/easy-pwa-js",
+  "name": "easy-pwa-js",
   "version": "0.0.1",
   "description": "JavaScript library for managing PWA application.",
   "main": "dist/easy-pwa.js",
@@ -51,11 +51,12 @@
     "prettier": "^1.18.2",
     "progress-bar-webpack-plugin": "^1.11.0",
     "sass-loader": "^7.3.1",
+    "terser-webpack-plugin": "^2.3.1",
     "ts-loader": "^5.4.5",
     "typedoc": "^0.15.5",
     "typedoc-plugin-markdown": "^2.2.14",
+    "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^3.7.3",
-    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
@@ -63,7 +64,6 @@
     "eslint": "eslint ./src --ext .ts,.js,.d.ts",
     "eslint-fix": "eslint ./src --ext .ts,.js,.d.ts --fix",
     "prettier": "prettier \"src/ts/**/*.ts\" --write",
-    "doc": "typedoc  --excludePrivate --excludeProtected --excludeExternals --out ./docs ./src/ts/manager ./src/ts/push --plugin typedoc-plugin-markdown --hideBreadcrumbs",
     "watch": "webpack --watch",
     "build": "webpack"
   },

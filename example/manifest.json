@@ -1,7 +1,7 @@
 {
   "name": "Twitter",
   "short_name": "I/O 2015",
-  "start_url": "./?utm_source=web_app_manifest",
+  "start_url": "/example/",
   "display": "standalone",
   "icons": [
     {

@@ -4,6 +4,7 @@ import Logger from '../tool/Logger';
 import { pwaManager, translator, logger } from '../service';
 import HelperAvailableEvent from '../event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
+import PwaManager from "./PwaManager";
 
 /**
  * Methods for managing about Installing
@@ -157,10 +158,12 @@ export default class InstallManager {
     });
 
     // Artificial helper is available right now
-    window.addEventListener('load', () => {
-      if (this.helperIsAvailable()) {
-        this.emitHelperAvailableEvent();
-      }
+    window.addEventListener(PwaManager.EVENT_READY, () => {
+      navigator.serviceWorker.ready.then(() => {
+        if (this.helperIsAvailable()) {
+          this.emitHelperAvailableEvent();
+        }
+      });
     });
   }
 
@@ -210,7 +213,7 @@ export default class InstallManager {
     };
 
     popupContent.addEventListener('click', closeHelper);
-    window.setTimeout(closeHelper, 1000000);
+    window.setTimeout(closeHelper, 9000);
 
     document.body.appendChild(popupContent);
     document.body.appendChild(mask);

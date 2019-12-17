@@ -13,7 +13,7 @@ export default class FirebaseProvider {
 
   private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
 
-  constructor(serviceWorker: ServiceWorkerRegistration, messagingSenderId: string) {
+  constructor(serviceWorker: ServiceWorkerRegistration, projectId: string, messagingSenderId: string) {
     this.messagingSenderId = messagingSenderId;
 
     this.tokenFetchedCallback = (token: string): void => {
@@ -22,6 +22,7 @@ export default class FirebaseProvider {
 
     firebase.initializeApp({
       messagingSenderId,
+      projectId,
     });
 
     this.messaging = firebase.messaging();

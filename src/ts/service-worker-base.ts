@@ -5,6 +5,7 @@
 > NOTIFICATIONS
 ---------------------
  */
+
 import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 
@@ -15,7 +16,6 @@ self.addEventListener('message', (messageEvent): void => {
 
   const firebaseMessagingSenderId = messageEvent.data.match(/firebaseMessagingSenderId=([\w]+)/);
   if (firebaseMessagingSenderId) {
-    /** Notification * */
     firebase.initializeApp({
       messagingSenderId: firebaseMessagingSenderId[1],
     });

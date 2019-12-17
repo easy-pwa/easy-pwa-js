@@ -5,7 +5,7 @@ export default class FirebaseProvider {
     private readonly messaging;
     private tokenFetchedCallback;
     private foregroundMessageCallback;
-    constructor(serviceWorker: ServiceWorkerRegistration, messagingSenderId: string);
+    constructor(serviceWorker: ServiceWorkerRegistration, projectId: string, messagingSenderId: string);
     /**
      * Check if firebase is initialized
      */
