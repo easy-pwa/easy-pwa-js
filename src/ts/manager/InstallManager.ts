@@ -1,10 +1,10 @@
 import { detect } from 'detect-browser';
 import { BeforeInstallPromptEvent } from '../type';
 import Logger from '../tool/Logger';
-import { pwaManager, translator, logger } from '../service';
+import { PwaManager, Translator, logger } from '../service';
 import HelperAvailableEvent from '../event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
-import PwaManager from "./PwaManager";
+import { default as PwaManagerClass } from "./PwaManager";
 
 /**
  * Methods for managing about Installing
@@ -36,7 +36,7 @@ export default class InstallManager {
 
   /**
    * Add additional criteria before propose invite to install
-   * @param A function which has to respond a boolean. True if you are ready to show invite, false overwise
+   * @param callback A function which has to respond a boolean. True if you are ready to show invite, false overwise
    */
   public addInviteCriteria(callback: () => boolean): void {
     this.inviteCriteria = callback;
@@ -49,8 +49,8 @@ export default class InstallManager {
     const template = require('../../templates/invite.html.twig');
     this.createInvitePopup(
       template({
-        trans: translator.getTranslations(),
-        manifest: pwaManager.getManifest(),
+        trans: Translator.getTranslations(),
+        manifest: PwaManager.getManifest(),
       }),
     );
   }
@@ -94,7 +94,7 @@ export default class InstallManager {
    * Check if a helper is available for the current browser
    */
   private helperIsAvailable(): boolean {
-    return !pwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
+    return !PwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
   }
 
   /**
@@ -119,7 +119,7 @@ export default class InstallManager {
    */
   private showIOSHelper(): void {
     const template = require('../../templates/helper/ios.html.twig');
-    this.createHelperPopup(template(translator.getTranslations()), 'pwa-ios');
+    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-ios');
   }
 
   /**
@@ -127,7 +127,7 @@ export default class InstallManager {
    */
   private showFirefoxHelper(): void {
     const template = require('../../templates/helper/firefox.html.twig');
-    this.createHelperPopup(template(translator.getTranslations()), 'pwa-firefox');
+    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-firefox');
   }
 
   /**
@@ -135,7 +135,7 @@ export default class InstallManager {
    */
   private showSamsungHelper(): void {
     const template = require('../../templates/helper/samsung.html.twig');
-    this.createHelperPopup(template(translator.getTranslations()), 'pwa-samsung');
+    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-samsung');
   }
 
   /**
@@ -158,7 +158,7 @@ export default class InstallManager {
     });
 
     // Artificial helper is available right now
-    window.addEventListener(PwaManager.EVENT_READY, () => {
+    window.addEventListener(PwaManagerClass.EVENT_READY, () => {
       navigator.serviceWorker.ready.then(() => {
         if (this.helperIsAvailable()) {
           this.emitHelperAvailableEvent();

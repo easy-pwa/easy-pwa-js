@@ -5,12 +5,28 @@
     <title>Titre de la page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="/example/manifest.json">
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
     <script src="../dist/easy-pwa.js"></script>
 </head>
 <body>
 
     <script>
-        EasyPwaManager.enableDebug();
+
+      var firebaseConfig = {
+        apiKey: "AIzaSyAUZfZCz4oiRDEdG4DfTgLFSV80mWfiJcU",
+        authDomain: "easy-pwa-a0aa2.firebaseapp.com",
+        databaseURL: "https://easy-pwa-a0aa2.firebaseio.com",
+        projectId: "easy-pwa-a0aa2",
+        storageBucket: "easy-pwa-a0aa2.appspot.com",
+        messagingSenderId: "380272041893",
+        appId: "1:380272041893:web:fa3bdc93937359eac9924c"
+      };
+      // Initialize Firebase
+      var firebaseApp = firebase.initializeApp(firebaseConfig);
+
+      console.log(firebaseApp);
+      EasyPwaManager.enableDebug();
 
         EasyPwaManager.init('/example/sw.js', {scope: '/example/'}).then(function(reg) {
 
@@ -21,6 +37,8 @@
           });*/
           //EasyPwaManager.getPushManager().showNotification('test');
           //EasyPwaManager.getHomeScreenManager().showIOSHelper();
+          EasyPwaManager.getPushManager().initFirebase(firebaseApp)
+          EasyPwaManager.getPushManager().getFirebase();
         });
 
         window.addEventListener('easy-pwa-helper-available', function(e) {
@@ -28,6 +46,8 @@
             var helperAvailableEvent = e.detail;
             helperAvailableEvent.showInvite();
         });
+
+
 
     </script>
 

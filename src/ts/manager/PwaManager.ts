@@ -1,7 +1,7 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
-import InstallManager from './InstallManager';
-import PushManager from './PushManager';
-import {debug, homeScreenManager, logger, loggerParameter, pushManager} from '../service';
+import { default as InstallManagerClass } from './InstallManager';
+import { default as PushManagerClass } from './PushManager';
+import {Debug, InstallManager, logger, loggerParameter, PushManager} from '../service';
 import { WindowNavigator } from '../type';
 
 /**
@@ -36,23 +36,23 @@ export default class PwaManager {
   /**
    * Get the Push Manager for managing push notification.
    */
-  public getPushManager(): PushManager {
+  public getPushManager(): PushManagerClass {
     if (!this.serviceWorkerRegistration) {
       throw new Error('A Service worker has to be registered before.');
     }
 
-    return pushManager;
+    return PushManager;
   }
 
   /**
    * Get the Install Manager for managing Home Screen.
    */
-  public getInstallManager(): InstallManager {
+  public getInstallManager(): InstallManagerClass {
     if (!this.serviceWorkerRegistration) {
       throw new Error('A Service worker has to be registered before.');
     }
 
-    return homeScreenManager;
+    return InstallManager;
   }
 
   /**
@@ -182,12 +182,12 @@ export default class PwaManager {
   }
 
   /**
-   * Enable debug mode. More information is showed in the console for helping to debug your PWA.
+   * Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
    */
   public enableDebug(): void {
     loggerParameter.enableDebug();
     logger.warn('DEBUG ENABLED');
-    debug.analyse();
+    Debug.analyse();
   }
 
   private initOfflineClass(): void {

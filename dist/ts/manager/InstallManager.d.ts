@@ -16,7 +16,7 @@ export default class InstallManager {
     setIntervalBetweenInvitation(dayInterval: number): void;
     /**
      * Add additional criteria before propose invite to install
-     * @param A function which has to respond a boolean. True if you are ready to show invite, false overwise
+     * @param callback A function which has to respond a boolean. True if you are ready to show invite, false overwise
      */
     addInviteCriteria(callback: () => boolean): void;
     /**

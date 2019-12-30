@@ -1,5 +1,7 @@
-import { pwaManager } from '../service';
+import { PwaManager } from '../service';
 import FirebaseProvider from '../push/FirebaseProvider';
+import {FirebaseMessaging} from "@firebase/messaging-types";
+import { FirebaseApp } from '@firebase/app-types';
 
 /**
  * Methods for managing about Push
@@ -30,7 +32,7 @@ export default class PushManager {
    * @return Return a promise when notification is showed.
    */
   public showNotification(title: string, options: NotificationOptions): Promise<void> {
-    return pwaManager.getServiceWorkerRegistration().showNotification(title, options);
+    return PwaManager.getServiceWorkerRegistration().showNotification(title, options);
   }
 
   /**
@@ -43,12 +45,11 @@ export default class PushManager {
 
   /**
    * Init firebase Notifications
-   * @param messagingSenderId: The firebase messaging sender id
+   * @param firebaseApp initialized firebase app
    * @return Return the firebase provider created.
    */
-  public initFirebase(projectId: string, messagingSenderId: string): FirebaseProvider {
-    navigator.serviceWorker.controller.postMessage(`firebaseMessagingSenderId=${messagingSenderId}`);
-    this.firebase = new FirebaseProvider(pwaManager.getServiceWorkerRegistration(), projectId, messagingSenderId);
+  public initFirebase(firebaseApp: FirebaseApp): FirebaseProvider {
+    this.firebase = new FirebaseProvider(PwaManager.getServiceWorkerRegistration(), firebaseApp);
 
     return this.firebase;
   }

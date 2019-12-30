@@ -1,11 +1,11 @@
-import 'firebase/messaging';
+import { FirebaseApp } from '@firebase/app-types';
 import { FirebasePayloadMessage } from '../type';
 export default class FirebaseProvider {
-    private messagingSenderId;
+    private firebaseApp;
     private readonly messaging;
     private tokenFetchedCallback;
     private foregroundMessageCallback;
-    constructor(serviceWorker: ServiceWorkerRegistration, projectId: string, messagingSenderId: string);
+    constructor(serviceWorker: ServiceWorkerRegistration, firebaseApp: FirebaseApp);
     /**
      * Check if firebase is initialized
      */

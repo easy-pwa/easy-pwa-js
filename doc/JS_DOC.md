@@ -47,8 +47,8 @@ All methods for managing PWA.
 
 ### Parameters
 
--   `homeScreenManager` **[InstallManager][39]** 
--   `pushManager` **[PushManager][40]** 
+-   `InstallManager` **[InstallManager][39]** 
+-   `PushManager` **[PushManager][40]** 
 
 ### registerServiceWorker
 
@@ -107,7 +107,7 @@ Returns **void**
 
 ### enableDebug
 
-Enable debug mode
+Enable Debug mode
 
 Returns **void** 
 

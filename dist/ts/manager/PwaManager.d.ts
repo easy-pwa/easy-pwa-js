@@ -1,6 +1,6 @@
 import { WebManifest } from 'web-manifest-reader';
-import InstallManager from './InstallManager';
-import PushManager from './PushManager';
+import { default as InstallManagerClass } from './InstallManager';
+import { default as PushManagerClass } from './PushManager';
 /**
  * All methods for managing PWA.
  */
@@ -19,11 +19,11 @@ export default class PwaManager {
     /**
      * Get the Push Manager for managing push notification.
      */
-    getPushManager(): PushManager;
+    getPushManager(): PushManagerClass;
     /**
      * Get the Install Manager for managing Home Screen.
      */
-    getInstallManager(): InstallManager;
+    getInstallManager(): InstallManagerClass;
     /**
      * Check if site is launched in fullscreen (app)
      * @return true if you are in PWA mode.
@@ -60,7 +60,7 @@ export default class PwaManager {
      */
     getManifest(): WebManifest | null;
     /**
-     * Enable debug mode. More information is showed in the console for helping to debug your PWA.
+     * Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
      */
     enableDebug(): void;
     private initOfflineClass;

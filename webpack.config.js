@@ -69,7 +69,7 @@ const frontConfig = Object.assign({}, config, {
   },
   plugins: [
     new LodashModuleReplacementPlugin(),
-    new ProgressBarPlugin(),
+    //new ProgressBarPlugin(),
     new TypedocWebpackPlugin({
       out: '../docs',
       mode: 'file',

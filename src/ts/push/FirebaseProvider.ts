@@ -1,11 +1,10 @@
-import * as firebase from 'firebase/app';
-import 'firebase/messaging';
 import { FirebaseMessaging } from '@firebase/messaging-types';
-import { pushManager, logger } from '../service';
+import { FirebaseApp } from '@firebase/app-types';
+import { PushManager, logger } from '../service';
 import { FirebasePayloadMessage } from '../type';
 
 export default class FirebaseProvider {
-  private messagingSenderId: string;
+  private firebaseApp: FirebaseApp;
 
   private readonly messaging: FirebaseMessaging;
 
@@ -13,19 +12,14 @@ export default class FirebaseProvider {
 
   private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
 
-  constructor(serviceWorker: ServiceWorkerRegistration, projectId: string, messagingSenderId: string) {
-    this.messagingSenderId = messagingSenderId;
+  constructor(serviceWorker: ServiceWorkerRegistration, firebaseApp: FirebaseApp) {
 
     this.tokenFetchedCallback = (token: string): void => {
       logger.info(`Token to send to server: ${token}`);
     };
 
-    firebase.initializeApp({
-      messagingSenderId,
-      projectId,
-    });
-
-    this.messaging = firebase.messaging();
+    this.firebaseApp = firebaseApp;
+    this.messaging = firebaseApp.messaging();
     this.messaging.useServiceWorker(serviceWorker);
     this.messaging.onTokenRefresh(this.fetchToken);
     this.messaging.onMessage(this.foregroundNotification);
@@ -35,7 +29,7 @@ export default class FirebaseProvider {
    * Check if firebase is initialized
    */
   public isInitialized(): boolean {
-    return firebase.apps.length > 0 && this.messaging != null;
+    return this.firebaseApp !== null && this.messaging !== null;
   }
 
   /**
@@ -129,7 +123,7 @@ export default class FirebaseProvider {
       notificationSettings.data.FCM_MSG = {};
       notificationSettings.data.FCM_MSG.notification = payload.notification;
 
-      pushManager.showNotification(notificationSettings.title, notificationSettings).then(() => {
+      PushManager.showNotification(notificationSettings.title, notificationSettings).then(() => {
         logger.info('Notification received in foreground and transmitted to SW.');
       });
     }

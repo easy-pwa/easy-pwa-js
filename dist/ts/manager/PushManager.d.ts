@@ -1,4 +1,5 @@
 import FirebaseProvider from '../push/FirebaseProvider';
+import { FirebaseApp } from '@firebase/app-types';
 /**
  * Methods for managing about Push
  */
@@ -23,10 +24,10 @@ export default class PushManager {
     isNotificationSupported(): boolean;
     /**
      * Init firebase Notifications
-     * @param messagingSenderId: The firebase messaging sender id
+     * @param firebaseApp initialized firebase app
      * @return Return the firebase provider created.
      */
-    initFirebase(projectId: string, messagingSenderId: string): FirebaseProvider;
+    initFirebase(firebaseApp: FirebaseApp): FirebaseProvider;
     /**
      * Get the Firebase provider. Call initFirebase before.
      * @return Firebase provider or null if init function was not called.
