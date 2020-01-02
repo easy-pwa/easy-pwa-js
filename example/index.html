@@ -7,7 +7,7 @@
     <link rel="manifest" href="/example/manifest.json">
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
-    <script src="../dist/easy-pwa.js"></script>
+    <script src="../dist/front.js"></script>
 </head>
 <body>
 
@@ -47,9 +47,15 @@
             helperAvailableEvent.showInvite();
         });
 
+      window.addEventListener('easy-pwa-page-changing', function(e) {
+        console.log('page changing');
+      });
+
 
 
     </script>
+
+<a href="index.html">Go</a>
 
 </body>
 </html>

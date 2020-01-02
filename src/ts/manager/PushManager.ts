@@ -1,13 +1,12 @@
 import { PwaManager } from '../service';
 import FirebaseProvider from '../push/FirebaseProvider';
-import {FirebaseMessaging} from "@firebase/messaging-types";
-import { FirebaseApp } from '@firebase/app-types';
+import {FirebaseAppMessaging} from "../push/FirebaseAppMessaging";
 
 /**
  * Methods for managing about Push
  */
 export default class PushManager {
-  private firebase: FirebaseProvider | null;
+  private firebaseInstance: FirebaseProvider | null;
 
   /**
    * Requests permission
@@ -44,25 +43,23 @@ export default class PushManager {
   }
 
   /**
-   * Init firebase Notifications
+   * Get the Firebase provider. First time, you have to pass a firebase app initialized
    * @param firebaseApp initialized firebase app
-   * @return Return the firebase provider created.
-   */
-  public initFirebase(firebaseApp: FirebaseApp): FirebaseProvider {
-    this.firebase = new FirebaseProvider(PwaManager.getServiceWorkerRegistration(), firebaseApp);
-
-    return this.firebase;
-  }
-
-  /**
-   * Get the Firebase provider. Call initFirebase before.
    * @return Firebase provider or null if init function was not called.
    */
-  public getFirebase(): FirebaseProvider | null {
-    if (!this.firebase) {
-      throw new Error('You have to call initFirebase method before');
+  public firebase(firebaseApp?: FirebaseAppMessaging): FirebaseProvider | null {
+    if (!firebaseApp.messaging) {
+      throw new Error('Firebase messaging script is not loaded.');
     }
 
-    return this.firebase;
+    if (firebaseApp) {
+      this.firebaseInstance = new FirebaseProvider(PwaManager.getServiceWorkerRegistration(), firebaseApp);
+    }
+
+    if (!this.firebaseInstance) {
+      throw new Error('You have to provide a firebase app initialized');
+    }
+
+    return this.firebaseInstance;
   }
 }

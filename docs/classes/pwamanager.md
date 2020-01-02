@@ -31,7 +31,7 @@ All methods for managing PWA.
 
 ▪ **EVENT_READY**: *"easy-pwa-ready"* = "easy-pwa-ready"
 
-*Defined in [manager/PwaManager.ts:11](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L11)*
+*Defined in [manager/PwaManager.ts:11](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L11)*
 
 ## Methods
 
@@ -39,7 +39,7 @@ All methods for managing PWA.
 
 ▸ **enableDebug**(): *void*
 
-*Defined in [manager/PwaManager.ts:187](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L187)*
+*Defined in [manager/PwaManager.ts:187](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L187)*
 
 Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
 
@@ -51,7 +51,7 @@ ___
 
 ▸ **getInstallManager**(): *InstallManagerClass*
 
-*Defined in [manager/PwaManager.ts:50](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L50)*
+*Defined in [manager/PwaManager.ts:50](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L50)*
 
 Get the Install Manager for managing Home Screen.
 
@@ -63,7 +63,7 @@ ___
 
 ▸ **getManifest**(): *WebManifest | null*
 
-*Defined in [manager/PwaManager.ts:180](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L180)*
+*Defined in [manager/PwaManager.ts:180](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L180)*
 
 Get the manifest content.
 
@@ -77,7 +77,7 @@ ___
 
 ▸ **getPushManager**(): *PushManagerClass*
 
-*Defined in [manager/PwaManager.ts:39](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L39)*
+*Defined in [manager/PwaManager.ts:39](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L39)*
 
 Get the Push Manager for managing push notification.
 
@@ -89,7 +89,7 @@ ___
 
 ▸ **getServiceWorkerRegistration**(): *ServiceWorkerRegistration | null*
 
-*Defined in [manager/PwaManager.ts:172](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L172)*
+*Defined in [manager/PwaManager.ts:172](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L172)*
 
 Get the service worker registration
 
@@ -103,7 +103,7 @@ ___
 
 ▸ **init**(`swPath`: string, `options?`: RegistrationOptions): *Promise‹ServiceWorkerRegistration›*
 
-*Defined in [manager/PwaManager.ts:25](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L25)*
+*Defined in [manager/PwaManager.ts:25](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L25)*
 
 Call this function, first.
 
@@ -124,7 +124,7 @@ ___
 
 ▸ **isAppMode**(): *boolean*
 
-*Defined in [manager/PwaManager.ts:62](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L62)*
+*Defined in [manager/PwaManager.ts:62](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L62)*
 
 Check if site is launched in fullscreen (app)
 
@@ -138,7 +138,7 @@ ___
 
 ▸ **onPageChanging**(`callback`: function): *void*
 
-*Defined in [manager/PwaManager.ts:84](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PwaManager.ts#L84)*
+*Defined in [manager/PwaManager.ts:84](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L84)*
 
 Function to execute when browser starts to changes page.
 because browser loader is not visible in standalone mode

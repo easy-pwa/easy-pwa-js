@@ -26,7 +26,7 @@ Methods for managing about Installing
 
 \+ **new InstallManager**(): *[InstallManager](installmanager.md)*
 
-*Defined in [manager/InstallManager.ts:23](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/InstallManager.ts#L23)*
+*Defined in [manager/InstallManager.ts:23](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/InstallManager.ts#L23)*
 
 **Returns:** *[InstallManager](installmanager.md)*
 
@@ -36,7 +36,7 @@ Methods for managing about Installing
 
 ▸ **addInviteCriteria**(`callback`: function): *void*
 
-*Defined in [manager/InstallManager.ts:41](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/InstallManager.ts#L41)*
+*Defined in [manager/InstallManager.ts:41](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/InstallManager.ts#L41)*
 
 Add additional criteria before propose invite to install
 
@@ -56,7 +56,7 @@ ___
 
 ▸ **enableDesktopPwa**(): *void*
 
-*Defined in [manager/InstallManager.ts:113](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/InstallManager.ts#L113)*
+*Defined in [manager/InstallManager.ts:113](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/InstallManager.ts#L113)*
 
 Enable desktop Pwa
 
@@ -68,7 +68,7 @@ ___
 
 ▸ **setIntervalBetweenInvitation**(`dayInterval`: number): *void*
 
-*Defined in [manager/InstallManager.ts:33](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/InstallManager.ts#L33)*
+*Defined in [manager/InstallManager.ts:33](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/InstallManager.ts#L33)*
 
 Set interval in day before to invite again
 

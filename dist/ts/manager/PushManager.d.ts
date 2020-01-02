@@ -1,10 +1,10 @@
 import FirebaseProvider from '../push/FirebaseProvider';
-import { FirebaseApp } from '@firebase/app-types';
+import { FirebaseAppMessaging } from "../push/FirebaseAppMessaging";
 /**
  * Methods for managing about Push
  */
 export default class PushManager {
-    private firebase;
+    private firebaseInstance;
     /**
      * Requests permission
      * @return Return a promise with the notification permission status.
@@ -23,14 +23,9 @@ export default class PushManager {
      */
     isNotificationSupported(): boolean;
     /**
-     * Init firebase Notifications
+     * Get the Firebase provider. First time, you have to pass a firebase app initialized
      * @param firebaseApp initialized firebase app
-     * @return Return the firebase provider created.
-     */
-    initFirebase(firebaseApp: FirebaseApp): FirebaseProvider;
-    /**
-     * Get the Firebase provider. Call initFirebase before.
      * @return Firebase provider or null if init function was not called.
      */
-    getFirebase(): FirebaseProvider | null;
+    firebase(firebaseApp?: FirebaseAppMessaging): FirebaseProvider | null;
 }

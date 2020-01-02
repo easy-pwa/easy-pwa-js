@@ -5,7 +5,6 @@ import { default as PushManagerClass } from './PushManager';
  * All methods for managing PWA.
  */
 export default class PwaManager {
-    static readonly EVENT_READY = "easy-pwa-ready";
     private onUpdateFoundCallback;
     private serviceWorkerRegistration?;
     private manifest?;
@@ -34,12 +33,6 @@ export default class PwaManager {
      */
     private onUpdateFound;
     /**
-     * Function to execute when browser starts to changes page.
-     * because browser loader is not visible in standalone mode
-     * @param callback A function to execute when page is changing.
-     */
-    onPageChanging(callback: () => void): void;
-    /**
      * When you want to update app (get a service worker refresh)
      */
     private forceUpdateApp;
@@ -56,12 +49,17 @@ export default class PwaManager {
     getServiceWorkerRegistration(): ServiceWorkerRegistration | null;
     /**
      * Get the manifest content.
-     * @return Get the manifest's content if it was read successfly, null otherwise.
+     * @return Get the manifest's content if it was read successfully, null otherwise.
      */
     getManifest(): WebManifest | null;
     /**
      * Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
      */
     enableDebug(): void;
+    /**
+     * Function to execute when browser starts to changes page.
+     * because browser loader is not visible in standalone mode
+     */
+    private initPageChangingEvent;
     private initOfflineClass;
 }

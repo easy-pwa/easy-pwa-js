@@ -5,7 +5,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 const config = {
-  mode: 'development',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
@@ -55,13 +54,13 @@ const config = {
 
 const swConfig = Object.assign({}, config, {
   entry: {
-    'easy-pwa-sw': './src/ts/service-worker-base.ts'
+    'sw': './src/ts/service-worker-base.ts'
   },
 });
 
-const frontConfig = Object.assign({}, config, {
+let frontConfig = Object.assign({}, config, {
   entry: {
-    'easy-pwa': './src/ts/index.ts',
+    'front': './src/ts/index.ts',
   },
   output: {
     libraryTarget: 'umd',
@@ -69,21 +68,28 @@ const frontConfig = Object.assign({}, config, {
   },
   plugins: [
     new LodashModuleReplacementPlugin(),
-    //new ProgressBarPlugin(),
-    new TypedocWebpackPlugin({
-      out: '../docs',
-      mode: 'file',
-      excludePrivate: true,
-      excludeProtected: true,
-      excludeExternals: true,
-      includeDeclarations: false,
-      readme: 'none',
-      hideBreadcrumbs: true,
-      name: 'Easy PWA'
-    }, ['./src/ts/manager', './src/ts/push'])
+    new ProgressBarPlugin()
   ],
 });
-
+/*
+if (process.env.npm_lifecycle_event !== 'watch') {
+  frontConfig = Object.assign({}, config, {
+    plugins: [
+      new TypedocWebpackPlugin({
+        out: '../docs',
+        mode: 'file',
+        excludePrivate: true,
+        excludeProtected: true,
+        excludeExternals: true,
+        includeDeclarations: false,
+        readme: 'none',
+        hideBreadcrumbs: true,
+        name: 'Easy PWA'
+      }, ['./src/ts/manager', './src/ts/push'])
+    ]
+  });
+}
+*/
 module.exports = [
   frontConfig, swConfig
 ];

@@ -24,7 +24,7 @@ Methods for managing about Push
 
 ▸ **getFirebase**(): *[FirebaseProvider](firebaseprovider.md) | null*
 
-*Defined in [manager/PushManager.ts:72](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PushManager.ts#L72)*
+*Defined in [manager/PushManager.ts:65](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PushManager.ts#L65)*
 
 Get the Firebase provider. Call initFirebase before.
 
@@ -36,19 +36,17 @@ ___
 
 ###  initFirebase
 
-▸ **initFirebase**(`projectId`: string, `messagingSenderId`: string, `firebaseMessaging`: FirebaseMessaging | null): *[FirebaseProvider](firebaseprovider.md)*
+▸ **initFirebase**(`firebaseApp`: FirebaseAppMessaging): *[FirebaseProvider](firebaseprovider.md)*
 
-*Defined in [manager/PushManager.ts:52](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PushManager.ts#L52)*
+*Defined in [manager/PushManager.ts:52](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PushManager.ts#L52)*
 
 Init firebase Notifications
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`projectId` | string | - | Firebase project id |
-`messagingSenderId` | string | - | - |
-`firebaseMessaging` | FirebaseMessaging &#124; null |  null | If you want to initialize firebase yourself: an instance of firebase messaging. |
+Name | Type | Description |
+------ | ------ | ------ |
+`firebaseApp` | FirebaseAppMessaging | initialized firebase app |
 
 **Returns:** *[FirebaseProvider](firebaseprovider.md)*
 
@@ -60,7 +58,7 @@ ___
 
 ▸ **isNotificationSupported**(): *boolean*
 
-*Defined in [manager/PushManager.ts:41](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PushManager.ts#L41)*
+*Defined in [manager/PushManager.ts:43](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PushManager.ts#L43)*
 
 Check if notifications are supported in the current browser
 
@@ -74,7 +72,7 @@ ___
 
 ▸ **requestPermission**(): *Promise‹NotificationPermission›*
 
-*Defined in [manager/PushManager.ts:15](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PushManager.ts#L15)*
+*Defined in [manager/PushManager.ts:17](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PushManager.ts#L17)*
 
 Requests permission
 
@@ -88,7 +86,7 @@ ___
 
 ▸ **showNotification**(`title`: string, `options`: NotificationOptions): *Promise‹void›*
 
-*Defined in [manager/PushManager.ts:33](https://github.com/easy-pwa/easy-pwa-js/blob/0d7653b/src/ts/manager/PushManager.ts#L33)*
+*Defined in [manager/PushManager.ts:35](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PushManager.ts#L35)*
 
 Show a notification.
 

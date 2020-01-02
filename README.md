@@ -9,18 +9,34 @@ Tools for managing your Progressive Web App.
 * When you are offline, the css class "offline" is added on the body tag. `<body class="... offline">`
 
 
-## Get started
+## Install
 
-#### With npm
+#### ES6
 
-```
+``` bash
 npm install easy-pwa-js
 ```
 
-#### Without npm
-Add this script on your page.
+Use it in your modules:
+``` javascript
+import EasyPwaManager from 'easy-pwa-js/front';
+```
 
-`<script src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa.js"></script>` 
+In your service worker:
+``` javascript
+import 'easy-pwa-js/sw';
+```
+
+#### Standard method
+Add this script on your page:
+``` html
+<script src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/front.js"></script>
+```
+
+Add this script in your service worker:
+``` javascript
+importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/sw.js');
+```
 
 #### Install Service Worker
 
@@ -28,6 +44,53 @@ Create a JavaScript file at the root of your project. This is your Service Worke
 ```
 importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa-sw.js');
 ``` 
+
+## Example
+
+``` javascript
+EasyPwaManager.init('/example/sw.js', {scope: '/'}).then(function(reg) {
+    // All interaction with EasyPwaManager should be done when EasyPwaManager is successfully initialized.
+
+    EasyPwaManager.enableDebug(); // Enable debug for showing more information
+    
+    var installManager = EasyPwaManager.getInstallManager();
+    installManager.enableDesktopPwa(); // Enable desktop PWA
+    
+});
+```
+
+### Enable push notifications (with Firebase)
+Add firebase library and initialize en new app.
+
+``` javascript
+var firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+};
+
+var firebaseApp = firebase.initializeApp(firebaseConfig); // firebase initializing
+window.addEventListener('easy-pwa-ready', function(e) {
+    var pushManager = EasyPwaManager.getPushManager();
+    var firebasePush = pushManager.firebase(firebaseApp);
+
+    pushManager.requestPermission().then(function() {
+        // Permissions granted
+
+        // 
+        firebasePwa.getToken().then(function(token) {
+           console.log('token', token);
+        });
+    });
+    
+    
+    firebasePwa.
+});
+```
 
 
 ## Use it
@@ -59,14 +122,6 @@ console.log('The name is: '+manifest.name);
 if (EasyPwaManager.getInstallManager().isAppMode()) {
     console.log('Site is open as an app');
 }
-````
-
-#### Show a loader when page is loading
-In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader.
-```` javascript
-EasyPwaManager.onPageChanging(function() {
-    console.log('Page is loading...')
-});
 ````
 
 #### Debug mode
@@ -219,6 +274,16 @@ EasyPwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
 });
 ````
 
+### Available Events
+
+#### Detect page is changing
+In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader when page is changing.
+
+```` javascript
+window.addEventListener('easy-pwa-page-changing', function(e) {
+    console.log('Show a loader, page is changing!');
+});
+````
 
 ## External library included
 

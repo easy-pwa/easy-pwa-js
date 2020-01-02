@@ -3,13 +3,13 @@ import { default as InstallManagerClass } from './InstallManager';
 import { default as PushManagerClass } from './PushManager';
 import {Debug, InstallManager, logger, loggerParameter, PushManager} from '../service';
 import { WindowNavigator } from '../type';
+import PageChangingEvent from "../event/PageChangingEvent";
+import ReadyEvent from "../event/ReadyEvent";
 
 /**
  * All methods for managing PWA.
  */
 export default class PwaManager {
-  public static readonly EVENT_READY = 'easy-pwa-ready';
-
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
   private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
@@ -24,11 +24,11 @@ export default class PwaManager {
    */
   public async init(swPath: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
     this.initOfflineClass();
+    this.initPageChangingEvent();
     this.manifest = await manifest.read();
     this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
 
-    const event = new Event(PwaManager.EVENT_READY);
-    window.dispatchEvent(event);
+    window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
 
     return this.serviceWorkerRegistration;
   }
@@ -76,38 +76,6 @@ export default class PwaManager {
     };
   }
 
-  /**
-   * Function to execute when browser starts to changes page.
-   * because browser loader is not visible in standalone mode
-   * @param callback A function to execute when page is changing.
-   */
-  public onPageChanging(callback: () => void): void {
-    if (!this.isAppMode()) {
-      return;
-    }
-
-    // iosCase
-    const addCheckLoader = (event: Event): void => {
-      const isA = event.composedPath().find((elem: HTMLLinkElement) => {
-        if (elem.localName === 'a') {
-          const origin = window.location.href.split('#')[0];
-          const target = elem.href.split('#')[0];
-          return origin !== target && !RegExp('javascript').test(elem.href);
-        }
-        return false;
-      });
-      if (isA) {
-        callback();
-      }
-    };
-
-    document.body.addEventListener('click', addCheckLoader);
-    window.addEventListener('beforeunload', () => {
-      if (document.visibilityState === 'visible') {
-        callback();
-      }
-    });
-  }
 
   /**
    * When you want to update app (get a service worker refresh)
@@ -175,7 +143,7 @@ export default class PwaManager {
 
   /**
    * Get the manifest content.
-   * @return Get the manifest's content if it was read successfly, null otherwise.
+   * @return Get the manifest's content if it was read successfully, null otherwise.
    */
   public getManifest(): WebManifest | null {
     return this.manifest;
@@ -188,6 +156,25 @@ export default class PwaManager {
     loggerParameter.enableDebug();
     logger.warn('DEBUG ENABLED');
     Debug.analyse();
+  }
+
+  /**
+   * Function to execute when browser starts to changes page.
+   * because browser loader is not visible in standalone mode
+   */
+  private initPageChangingEvent(): void {
+    if (!this.isAppMode()) {
+      return;
+    }
+
+    const pageChanging = () => {
+      if (document.visibilityState === 'visible') {
+        window.dispatchEvent(new Event(PageChangingEvent.EVENT_NAME));
+      }
+    };
+
+    window.addEventListener('beforeunload', pageChanging);
+    window.addEventListener('pagehide', pageChanging);
   }
 
   private initOfflineClass(): void {

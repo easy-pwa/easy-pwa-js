@@ -5,6 +5,7 @@ import { PwaManager, Translator, logger } from '../service';
 import HelperAvailableEvent from '../event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
 import { default as PwaManagerClass } from "./PwaManager";
+import ReadyEvent from "../event/ReadyEvent";
 
 /**
  * Methods for managing about Installing
@@ -158,7 +159,7 @@ export default class InstallManager {
     });
 
     // Artificial helper is available right now
-    window.addEventListener(PwaManagerClass.EVENT_READY, () => {
+    window.addEventListener(ReadyEvent.EVENT_NAME, () => {
       navigator.serviceWorker.ready.then(() => {
         if (this.helperIsAvailable()) {
           this.emitHelperAvailableEvent();
