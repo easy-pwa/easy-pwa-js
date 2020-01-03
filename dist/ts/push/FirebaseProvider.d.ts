@@ -1,5 +1,5 @@
-import { FirebasePayloadMessage } from '../type';
-import { FirebaseAppMessaging } from "./FirebaseAppMessaging";
+import FirebaseAppMessaging from './FirebaseAppMessaging';
+import { FirebasePayloadMessage } from "../type";
 export default class FirebaseProvider {
     private readonly firebaseApp;
     private readonly messaging;
@@ -26,7 +26,7 @@ export default class FirebaseProvider {
     /**
      * Get user token
      */
-    getToken(): Promise<string | Error>;
+    getToken(): Promise<string>;
     /**
      * delete user token
      */

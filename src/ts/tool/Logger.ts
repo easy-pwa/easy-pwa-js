@@ -27,4 +27,4 @@ export default class Logger {
   enableDebug(): void {
     this.logger.setLevel(JsLogger.INFO);
   }
-};
+}

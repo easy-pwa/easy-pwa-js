@@ -17,13 +17,17 @@ module.exports = {
       'global-require': 'off',
       'import/extensions': ['error', {
          'ts': 'never'
-      }]
+      }],
+      'import/no-named-default': 'off'
     },
     env: {
       browser: true,
     },
     'overrides': [{
-      'files': ['service-worker-base.ts'],
+      'files': ['service-worker-base.ts', 'src/ts/sw/**/*'],
+      env: {
+        serviceworker: true
+      }
       rules: {
         'no-restricted-globals': 'off',
         'no-throw-literal': 'off',

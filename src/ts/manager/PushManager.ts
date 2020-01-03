@@ -1,6 +1,6 @@
 import { PwaManager } from '../service';
 import FirebaseProvider from '../push/FirebaseProvider';
-import {FirebaseAppMessaging} from "../push/FirebaseAppMessaging";
+import FirebaseAppMessaging from '../push/FirebaseAppMessaging';
 
 /**
  * Methods for managing about Push

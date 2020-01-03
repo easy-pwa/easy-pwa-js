@@ -55,7 +55,7 @@ const config = {
 const swConfig = Object.assign({}, config, {
   entry: {
     'sw': './src/ts/service-worker-base.ts'
-  },
+  }
 });
 
 let frontConfig = Object.assign({}, config, {

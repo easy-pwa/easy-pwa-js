@@ -1,7 +1,7 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
 import { PushManager, logger } from '../service';
-import { FirebasePayloadMessage } from '../type';
-import {FirebaseAppMessaging} from "./FirebaseAppMessaging";
+import FirebaseAppMessaging from './FirebaseAppMessaging';
+import {FirebasePayloadMessage} from "../type";
 
 export default class FirebaseProvider {
   private readonly firebaseApp: FirebaseAppMessaging;
@@ -13,7 +13,6 @@ export default class FirebaseProvider {
   private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
 
   constructor(serviceWorker: ServiceWorkerRegistration, firebaseApp: FirebaseAppMessaging) {
-
     this.tokenFetchedCallback = (token: string): void => {
       logger.info(`Token to send to server: ${token}`);
     };
@@ -54,15 +53,11 @@ export default class FirebaseProvider {
     return new Promise((resolve, reject): void => {
       this.getToken()
         .then((token: string) => {
-          if (token) {
-            this.tokenFetchedCallback(token);
-            resolve(token);
-          } else {
-            reject(new Error('No Instance ID token available. Request permission to generate one.'));
-          }
+          this.tokenFetchedCallback(token);
+          resolve(token);
         })
         .catch((err: Error) => {
-          reject(new Error(`Error when fetch token ${err}`));
+          reject(new Error(`Error when fetching token ${err}`));
         });
     });
   }
@@ -70,17 +65,21 @@ export default class FirebaseProvider {
   /**
    * Get user token
    */
-  public getToken(): Promise<string | Error> {
-    return new Promise<string | Error>((resolve, reject): void => {
+  public getToken(): Promise<string> {
+    return new Promise<string>((resolve, reject): void => {
       const timeout = global.setTimeout(() => {
-        reject(new Error('getToken Timeout exceeded'));
+        reject(new Error('getToken timeout exceeded'));
       }, 25000);
 
       this.messaging
         .getToken()
-        .then((token: string) => {
+        .then((token?: string) => {
           clearTimeout(timeout);
-          resolve(token);
+          if (token) {
+            resolve(token);
+          } else {
+            reject(new Error('Request permission before'));
+          }
         })
         .catch((err: Error) => {
           clearTimeout(timeout);

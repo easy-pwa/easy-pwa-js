@@ -1,15 +1,4 @@
-/* eslint-env serviceworker */
+import ServiceWorkerManager from './sw/ServiceWorkerManager';
 
-/*
----------------------
-> NOTIFICATIONS
----------------------
- */
-
-
-
-self.addEventListener('message', (messageEvent): void => {
-  if (messageEvent.data === 'skipWaiting') {
-    skipWaiting();
-  }
-});
+// eslint-disable-next-line
+(self as any).EasyPwaSW = new ServiceWorkerManager();

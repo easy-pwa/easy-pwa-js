@@ -1,10 +1,10 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
 import { default as InstallManagerClass } from './InstallManager';
 import { default as PushManagerClass } from './PushManager';
-import {Debug, InstallManager, logger, loggerParameter, PushManager} from '../service';
+import { Debug, InstallManager, logger, loggerParameter, PushManager } from '../service';
 import { WindowNavigator } from '../type';
-import PageChangingEvent from "../event/PageChangingEvent";
-import ReadyEvent from "../event/ReadyEvent";
+import PageChangingEvent from '../event/PageChangingEvent';
+import ReadyEvent from '../event/ReadyEvent';
 
 /**
  * All methods for managing PWA.
@@ -75,7 +75,6 @@ export default class PwaManager {
       window.location.reload();
     };
   }
-
 
   /**
    * When you want to update app (get a service worker refresh)
@@ -167,7 +166,7 @@ export default class PwaManager {
       return;
     }
 
-    const pageChanging = () => {
+    const pageChanging = (): void => {
       if (document.visibilityState === 'visible') {
         window.dispatchEvent(new Event(PageChangingEvent.EVENT_NAME));
       }

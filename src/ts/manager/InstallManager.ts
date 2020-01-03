@@ -1,11 +1,9 @@
 import { detect } from 'detect-browser';
 import { BeforeInstallPromptEvent } from '../type';
-import Logger from '../tool/Logger';
 import { PwaManager, Translator, logger } from '../service';
 import HelperAvailableEvent from '../event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
-import { default as PwaManagerClass } from "./PwaManager";
-import ReadyEvent from "../event/ReadyEvent";
+import ReadyEvent from '../event/ReadyEvent';
 
 /**
  * Methods for managing about Installing

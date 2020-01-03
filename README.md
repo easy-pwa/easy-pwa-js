@@ -3,10 +3,9 @@
 Tools for managing your Progressive Web App.
 
 ## Features
-* Manage PWA features easly
-* Manage Push Notifications easly.
+* Manage PWA features easily
+* Manage Push Notifications easily.
 * A specific helper is showed for each browser to help people to install your app.
-* When you are offline, the css class "offline" is added on the body tag. `<body class="... offline">`
 
 
 ## Install
@@ -24,7 +23,7 @@ import EasyPwaManager from 'easy-pwa-js/front';
 
 In your service worker:
 ``` javascript
-import 'easy-pwa-js/sw';
+importScripts('easy-pwa-js/sw');
 ```
 
 #### Standard method
@@ -38,13 +37,6 @@ Add this script in your service worker:
 importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/sw.js');
 ```
 
-#### Install Service Worker
-
-Create a JavaScript file at the root of your project. This is your Service Worker. Import easy-pwa Service Worker.
-```
-importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/easy-pwa-sw.js');
-``` 
-
 ## Example
 
 ``` javascript
@@ -55,22 +47,61 @@ EasyPwaManager.init('/example/sw.js', {scope: '/'}).then(function(reg) {
     
     var installManager = EasyPwaManager.getInstallManager();
     installManager.enableDesktopPwa(); // Enable desktop PWA
-    
+
+    if (EasyPwaManager.isAppMode()) {
+        console.log('You are in app version');
+    }
 });
 ```
+
+### Invite the user to install your app
+
+If a helper is available for the current browser, an event is emitted.
+
+#### Automatic method
+``` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    e.detail.showInvite();
+});
+```
+
+#### For a custom invite
+html invite:
+```` html
+<div id="my_custom_invite">
+Install my app ?
+<button id="invite_accept">yes</button>
+<button id="invite_dismiss">no</button>
+</div>
+```` 
+
+javascript invite:
+```` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    var helperAvailableEvent = e.detail;
+
+    document.getElementById('invite_accept').addEventListener('click', function() {
+        document.getElementById('my_custom_invite').display = 'none';
+        helperAvailableEvent.acceptInvite();
+    });
+
+document.getElementById('invite_dismiss').addEventListener('click', function() {
+        document.getElementById('my_custom_invite').display = 'none';
+        helperAvailableEvent.dismissInvite();
+    });
+});
+````
+
 
 ### Enable push notifications (with Firebase)
 Add firebase library and initialize en new app.
 
 ``` javascript
 var firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "...",
+    projectId: "...",
+    messagingSenderId: "...",
+    appId: "..."
 };
 
 var firebaseApp = firebase.initializeApp(firebaseConfig); // firebase initializing
@@ -78,17 +109,19 @@ window.addEventListener('easy-pwa-ready', function(e) {
     var pushManager = EasyPwaManager.getPushManager();
     var firebasePush = pushManager.firebase(firebaseApp);
 
-    pushManager.requestPermission().then(function() {
+    pushManager.requestPermission().then( function() {
         // Permissions granted
 
-        // 
-        firebasePwa.getToken().then(function(token) {
+        // I don't have a token
+        firebasePwa.getToken().then( function(token) {
+           console.log('token', token);
+        });
+        
+        // Get a token a manage it (send to server for example)
+        firebasePwa.fetchToken().then( function(token) {
            console.log('token', token);
         });
     });
-    
-    
-    firebasePwa.
 });
 ```
 
@@ -119,7 +152,7 @@ console.log('The name is: '+manifest.name);
 
 #### Check if PWA is in standalone mode
 ```` javascript
-if (EasyPwaManager.getInstallManager().isAppMode()) {
+if (EasyPwaManager.isAppMode()) {
     console.log('Site is open as an app');
 }
 ````
@@ -159,51 +192,6 @@ EasyPwaManager.getInstallManager().addInviteCriteria(function() {
 });
 ````
 
-#### Show an invite/ Show a helper
-You have to listen an event.
-
-```` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
-    console.log('A helper is available for this browser!');
-    var helperAvailableEvent = e.detail;
-});
-````
-
-##### For an automatic invite system
-```` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
-    var helperAvailableEvent = e.detail;
-    helperAvailableEvent.showInvite();
-});
-````
-
-##### For a custom invite system
-My html invite:
-```` html
-<div id="my_custom_invite">
-Install my app ?
-<button id="invite_accept">yes</button>
-<button id="invite_dismiss">no</button>
-</div>
-```` 
-My Javascript invite:
-```` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
-    var helperAvailableEvent = e.detail;
-
-    document.getElementById('invite_accept').addEventListener('click', function() {
-        document.getElementById('my_custom_invite').display = 'none';
-        helperAvailableEvent.acceptInvite();
-    });
-
-document.getElementById('invite_dismiss').addEventListener('click', function() {
-        document.getElementById('my_custom_invite').display = 'none';
-        helperAvailableEvent.dismissInvite();
-    });
-});
-````
-
-
 ### Manage Push notification
 Access to the Push Manager: `EasyPwaManager.getPushManager()`.
 
@@ -236,45 +224,69 @@ EasyPwaManager.getPushManager().showNotification('title', {
 
 ##### Initialize Firebase
 ```` javascript
-EasyPwaManager.getPushManager().initFirebase('project_id', 'messagingSenderId');
+var firebaseApp = firebase.initializeApp({...});
+EasyPwaManager.getPushManager().firebase(firebaseApp);
 ````
 
-##### Get a token and forward it to the server
+##### Manage token (send to server) when you fetch a token
 ```` javascript
-EasyPwaManager.getPushManager().getFirebase().fetchToken().then( function(token) {
+EasyPwaManager.getPushManager().firebase.onTokenFetched( function(token) {
+    console.log('You fetch a new token, you can send it to server.');
+});
+````
+
+##### Get a token and manage it (previous declared callback is called)
+```` javascript
+EasyPwaManager.getPushManager().firebase.fetchToken().then( function(token) {
     console.log("new token: "+token);
 });
 ````
 
 ##### Get current token
 ```` javascript
-PwaManager.getPushManager().getFirebase().getToken().then( function(token) {
+PwaManager.getPushManager().firebase.getToken().then( function(token) {
     console.log('new token: '+token);
 });
 ````
 
-##### Delete current token
+##### Delete a token
 ```` javascript
-EasyPwaManager.getPushManager().getFirebase().deleteToken(token).then(function(){
+EasyPwaManager.getPushManager().firebase.deleteToken(token).then(function(){
     console.log('Token deleted');
 });
 ````
 
 ##### Manage Foreground notification differently
 ```` javascript
-EasyPwaManager.getPushManager().getFirebase().onForegroundNotification(function() {
+EasyPwaManager.getPushManager().firebase.onForegroundNotification(function() {
     console.log('Your are currently on the the site and you received a notification.');
 });
 ````
 
-##### Manage token (send to server) when you fetch a token
+### Available Events
+
+#### Wait EasyPwa is fully initialized 
+
 ```` javascript
-EasyPwaManager.getPushManager().getFirebase().onTokenFetched(function(token) {
-    console.log('You fetch a new token, you can send it to server.');
+window.addEventListener('easy-pwa-ready', function(e) {
+    console.log('I'm ready!');
 });
 ````
 
-### Available Events
+#### Listening if install prompt is available
+
+```` javascript
+window.addEventListener('easy-pwa-helper-available', function(e) {
+    console.log('A helper is available for this browser!');
+    var helperAvailableEvent = e.detail;
+
+
+    helperAvailableEvent.showInvite();
+    // OR
+    helperAvailableEvent.acceptInvite();
+    helperAvailableEvent.dismissInvite();
+});
+````
 
 #### Detect page is changing
 In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader when page is changing.
@@ -285,10 +297,42 @@ window.addEventListener('easy-pwa-page-changing', function(e) {
 });
 ````
 
+### Other tools
+
+#### Managing online/offline view by css
+
+When you are offline, the css class "offline" is added on the body tag.
+```` html
+<body class="... offline">
+    <div class="text-offline">You are offline but you can still access to your favorite website.</div>
+</body>
+````
+
+```` css
+.text-offline {
+    display: none;
+}
+
+.offline .text-offline {
+    display: block;
+}
+````
+
+## Service worker
+
+### Plugins
+
+#### Substitution Page
+
+Show a substitution page when the user is offline
+```` javascript
+self.EasyPwaSW.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.html');
+````
+
+
 ## External library included
 
 * [PWACompat](https://github.com/GoogleChromeLabs/pwacompat) is a library that brings the Web App Manifest to non-compliant browsers for better Progressive Web Apps.
-* [Firebase](https://github.com/firebase/) Firebase Messaging features
 
 ## Example
 

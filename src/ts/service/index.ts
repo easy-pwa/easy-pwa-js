@@ -3,7 +3,7 @@ import { default as InstallManagerClass } from '../manager/InstallManager';
 import { default as TranslatorClass } from '../tool/Translator';
 import { default as PwaManagerClass } from '../manager/PwaManager';
 import { default as DebugClass } from '../tool/Debug';
-import Logger from "../tool/Logger";
+import Logger from '../tool/Logger';
 
 export const PwaManager = new PwaManagerClass();
 export const InstallManager = new InstallManagerClass();
