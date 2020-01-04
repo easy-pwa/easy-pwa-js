@@ -341,6 +341,6 @@ You can find a full example here (soon).
 ## Help
 Use chrome browser for testing you PWA, there are more available tools:
 * Inspect element => Application
-* Inpect your service worker: [chrome://inspect/#service-workers]()
+* Inspect your service worker: [chrome://inspect/#service-workers]()
 
 

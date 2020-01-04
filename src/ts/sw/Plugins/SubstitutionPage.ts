@@ -1,20 +1,20 @@
 export default class SubstitutionPage {
-  private cacheKey: string;
+  private cacheKey?: string;
 
-  private substitutionFile: string;
+  private substitutionFile?: string;
 
-  run(cacheKey: string, substitutionFile: string): void {
+  public run(cacheKey: string, substitutionFile: string): void {
     this.cacheKey = cacheKey;
     this.substitutionFile = substitutionFile;
 
-    self.addEventListener('install', this.onInstalled);
-    self.addEventListener('fetch', this.onFetched);
+    self.addEventListener('install', this.onInstalled.bind(this));
+    self.addEventListener('fetch', this.onFetched.bind(this));
   }
 
   private onInstalled(event: InstallEvent): void {
     event.waitUntil(
       caches.open(this.cacheKey).then(cache => {
-        return cache.addAll([this.substitutionFile]);
+        return cache.add(this.substitutionFile);
       }),
     );
   }

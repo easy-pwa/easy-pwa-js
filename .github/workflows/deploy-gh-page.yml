@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - lib
+
+jobs:
+  deploy-gh-page:
+    name: deploy-gh-page
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: mkdir ./example/easy-pwa-js
+      - run: cp -r ./dist/* ./example/easy-pwa-js/
+      - run: sed -i 's/..\/dist/easy-pwa-js/g' ./example/index.html ./example/sw.js
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.PUBLISH_EXAMPLE_DEPLOY_KEY }}
+          EXTERNAL_REPOSITORY: easy-pwa/easy-pwa.github.io
+          PUBLISH_BRANCH: master
+          PUBLISH_DIR: ./example

@@ -1,4 +1,3 @@
-[Easy PWA](../README.md) › [PwaManager](pwamanager.md)
 
 # Class: PwaManager
 
@@ -10,10 +9,6 @@ All methods for managing PWA.
 
 ## Index
 
-### Properties
-
-* [EVENT_READY](pwamanager.md#static-event_ready)
-
 ### Methods
 
 * [enableDebug](pwamanager.md#enabledebug)
@@ -23,15 +18,6 @@ All methods for managing PWA.
 * [getServiceWorkerRegistration](pwamanager.md#getserviceworkerregistration)
 * [init](pwamanager.md#init)
 * [isAppMode](pwamanager.md#isappmode)
-* [onPageChanging](pwamanager.md#onpagechanging)
-
-## Properties
-
-### `Static` EVENT_READY
-
-▪ **EVENT_READY**: *"easy-pwa-ready"* = "easy-pwa-ready"
-
-*Defined in [manager/PwaManager.ts:11](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L11)*
 
 ## Methods
 
@@ -39,7 +25,7 @@ All methods for managing PWA.
 
 ▸ **enableDebug**(): *void*
 
-*Defined in [manager/PwaManager.ts:187](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L187)*
+*Defined in [ts/manager/PwaManager.ts:154](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L154)*
 
 Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
 
@@ -51,7 +37,7 @@ ___
 
 ▸ **getInstallManager**(): *InstallManagerClass*
 
-*Defined in [manager/PwaManager.ts:50](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L50)*
+*Defined in [ts/manager/PwaManager.ts:50](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L50)*
 
 Get the Install Manager for managing Home Screen.
 
@@ -63,13 +49,13 @@ ___
 
 ▸ **getManifest**(): *WebManifest | null*
 
-*Defined in [manager/PwaManager.ts:180](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L180)*
+*Defined in [ts/manager/PwaManager.ts:147](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L147)*
 
 Get the manifest content.
 
 **Returns:** *WebManifest | null*
 
-Get the manifest's content if it was read successfly, null otherwise.
+Get the manifest's content if it was read successfully, null otherwise.
 
 ___
 
@@ -77,7 +63,7 @@ ___
 
 ▸ **getPushManager**(): *PushManagerClass*
 
-*Defined in [manager/PwaManager.ts:39](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L39)*
+*Defined in [ts/manager/PwaManager.ts:39](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L39)*
 
 Get the Push Manager for managing push notification.
 
@@ -89,7 +75,7 @@ ___
 
 ▸ **getServiceWorkerRegistration**(): *ServiceWorkerRegistration | null*
 
-*Defined in [manager/PwaManager.ts:172](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L172)*
+*Defined in [ts/manager/PwaManager.ts:139](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L139)*
 
 Get the service worker registration
 
@@ -103,7 +89,7 @@ ___
 
 ▸ **init**(`swPath`: string, `options?`: RegistrationOptions): *Promise‹ServiceWorkerRegistration›*
 
-*Defined in [manager/PwaManager.ts:25](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L25)*
+*Defined in [ts/manager/PwaManager.ts:25](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L25)*
 
 Call this function, first.
 
@@ -124,31 +110,10 @@ ___
 
 ▸ **isAppMode**(): *boolean*
 
-*Defined in [manager/PwaManager.ts:62](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L62)*
+*Defined in [ts/manager/PwaManager.ts:62](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/manager/PwaManager.ts#L62)*
 
 Check if site is launched in fullscreen (app)
 
 **Returns:** *boolean*
 
 true if you are in PWA mode.
-
-___
-
-###  onPageChanging
-
-▸ **onPageChanging**(`callback`: function): *void*
-
-*Defined in [manager/PwaManager.ts:84](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/manager/PwaManager.ts#L84)*
-
-Function to execute when browser starts to changes page.
-because browser loader is not visible in standalone mode
-
-**Parameters:**
-
-▪ **callback**: *function*
-
-A function to execute when page is changing.
-
-▸ (): *void*
-
-**Returns:** *void*

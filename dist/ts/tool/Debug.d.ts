@@ -1,4 +1,5 @@
 export default class Debug {
+    private static readonly TXT;
     private sw;
     analyse(): void;
     /**
@@ -22,8 +23,12 @@ export default class Debug {
      */
     private loadManifest;
     /**
+     * Show an ok in console
+     */
+    private showOk;
+    /**
      * Show an error in console
-     * @param {string} txt
      */
     private showErr;
+    private showResult;
 }
