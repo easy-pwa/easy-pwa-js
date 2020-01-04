@@ -1,4 +1,3 @@
-[Easy PWA](../README.md) › [FirebaseProvider](firebaseprovider.md)
 
 # Class: FirebaseProvider
 
@@ -27,7 +26,7 @@
 
 \+ **new FirebaseProvider**(`serviceWorker`: ServiceWorkerRegistration, `firebaseApp`: FirebaseAppMessaging): *[FirebaseProvider](firebaseprovider.md)*
 
-*Defined in [push/FirebaseProvider.ts:13](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L13)*
+*Defined in [ts/push/FirebaseProvider.ts:13](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L13)*
 
 **Parameters:**
 
@@ -44,7 +43,7 @@ Name | Type |
 
 ▸ **deleteToken**(`token`: string): *Promise‹string | Error›*
 
-*Defined in [push/FirebaseProvider.ts:95](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L95)*
+*Defined in [ts/push/FirebaseProvider.ts:94](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L94)*
 
 delete user token
 
@@ -62,7 +61,7 @@ ___
 
 ▸ **fetchToken**(): *Promise‹string | Error›*
 
-*Defined in [push/FirebaseProvider.ts:53](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L53)*
+*Defined in [ts/push/FirebaseProvider.ts:52](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L52)*
 
 Fetch token and notify server
 
@@ -72,13 +71,13 @@ ___
 
 ###  getToken
 
-▸ **getToken**(): *Promise‹string | Error›*
+▸ **getToken**(): *Promise‹string›*
 
-*Defined in [push/FirebaseProvider.ts:73](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L73)*
+*Defined in [ts/push/FirebaseProvider.ts:68](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L68)*
 
 Get user token
 
-**Returns:** *Promise‹string | Error›*
+**Returns:** *Promise‹string›*
 
 ___
 
@@ -86,7 +85,7 @@ ___
 
 ▸ **isInitialized**(): *boolean*
 
-*Defined in [push/FirebaseProvider.ts:31](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L31)*
+*Defined in [ts/push/FirebaseProvider.ts:30](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L30)*
 
 Check if firebase is initialized
 
@@ -98,7 +97,7 @@ ___
 
 ▸ **onForegroundNotification**(`callback`: function): *void*
 
-*Defined in [push/FirebaseProvider.ts:38](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L38)*
+*Defined in [ts/push/FirebaseProvider.ts:37](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L37)*
 
 **Parameters:**
 
@@ -122,7 +121,7 @@ ___
 
 ▸ **onTokenFetched**(`callback`: function): *void*
 
-*Defined in [push/FirebaseProvider.ts:46](https://github.com/easy-pwa/easy-pwa-js/blob/666dd89/src/ts/push/FirebaseProvider.ts#L46)*
+*Defined in [ts/push/FirebaseProvider.ts:45](https://github.com/easy-pwa/easy-pwa-js/blob/1839738/src/ts/push/FirebaseProvider.ts#L45)*
 
 When a token is fetched, function to execute (send it to server for example)
 

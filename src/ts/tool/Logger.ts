@@ -7,7 +7,7 @@ export default class Logger {
   constructor() {
     const consoleHandler = JsLogger.createDefaultHandler({
       formatter(messages) {
-        messages.unshift('PwaManager: ');
+        messages.unshift('Easy Pwa: ');
       },
     });
     const logger = JsLogger.get('pwa');

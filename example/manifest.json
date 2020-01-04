@@ -1,15 +1,18 @@
 {
-  "name": "Twitter",
-  "short_name": "I/O 2015",
-  "start_url": "/example/",
+  "name": "Progressive Web App",
+  "short_name": "PWA",
+  "description": "A progressive web app to test.",
+  "start_url": "./",
   "display": "standalone",
+  "lang": "fr",
+  "background_color": "#0099ff",
+  "theme_color": "#0099ff",
+  "gcm_sender_id": "380272041893",
   "icons": [
     {
-      "src": "/example/icon-default.3c3b2244.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "images/icon512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  ],
-  "zer": "test"
+  ]
 }
-

@@ -1,5 +1,9 @@
-on: [push]
-
+on:
+  push:
+    branches:
+      - '*'         # matches every branch
+      - '*/*'       # matches every branch containing a single '/'
+      - '!lib'   # excludes lib
 jobs:
   eslint:
     name: eslint
@@ -9,7 +13,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 13.x
       - run: npm install
       - run: npm run eslint
 
@@ -21,6 +25,6 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 13.x
       - run: npm install
       - run: npm run prettier

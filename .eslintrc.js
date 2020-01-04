@@ -27,7 +27,7 @@ module.exports = {
       'files': ['service-worker-base.ts', 'src/ts/sw/**/*'],
       env: {
         serviceworker: true
-      }
+      },
       rules: {
         'no-restricted-globals': 'off',
         'no-throw-literal': 'off',

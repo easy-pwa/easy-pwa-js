@@ -3,22 +3,34 @@ import manifest, { WebManifest, WebManifestIcon } from 'web-manifest-reader';
 import { logger } from '../service';
 
 export default class Debug {
-  private sw: ServiceWorkerRegistration = null;
+  private static readonly TXT: { [key: string]: string } = {
+    SW_SUPPORTED: 'Service Worker is supported by the current browser.',
+    VALID_PROTOCOL: 'You use https protocol or you are in localhost.',
+    COMPLETE_MANIFEST_NAME: 'Manifest includes short_name and name properties.',
+    COMPLETE_MANIFEST_START_URL: 'Manifest includes start_url property.',
+    COMPLETE_MANIFEST_ICON: '512px sized icon is specified.',
+    SW_REGISTERED: 'Service worker is correctly registered.',
+  };
+
+  private sw: ServiceWorkerRegistration;
 
   public analyse(): void {
     this.browser();
 
-    if ('serviceWorker' in navigator) {
-      this.testProtocol();
+    const swSupported = 'serviceWorker' in navigator;
+    this.showResult(Debug.TXT.SW_SUPPORTED, swSupported);
 
-      this.loadServiceWorker().then(() => {
-        this.loadManifest().then(webManifestData => {
-          this.testManifest(webManifestData);
-        });
-      });
-    } else {
-      this.showErr('Service Worker is not supported by the current browser');
+    if (!swSupported) {
+      return;
     }
+
+    this.testProtocol();
+
+    this.loadServiceWorker().then(() => {
+      this.loadManifest().then(webManifestData => {
+        this.testManifest(webManifestData);
+      });
+    });
   }
 
   /**
@@ -32,30 +44,23 @@ export default class Debug {
    * Test if basic elements exist
    */
   private testManifest(data: WebManifest): void {
-    if (!data.short_name || !data.name) {
-      this.showErr('Manifest must includes short_name or name property');
-    }
-
-    if (!data.start_url) {
-      this.showErr('start_url is not specified.');
-    }
-
-    if (!data.icons || !data.icons.find((i: WebManifestIcon) => i.sizes && i.sizes === '512x512')) {
-      this.showErr('A 512px sized icon must be specified');
-    }
+    this.showResult(Debug.TXT.COMPLETE_MANIFEST_NAME, !(!data.short_name || !data.name));
+    this.showResult(Debug.TXT.COMPLETE_MANIFEST_START_URL, data.start_url !== null);
+    this.showResult(
+      Debug.TXT.COMPLETE_MANIFEST_ICONL,
+      data.icons && data.icons.find((i: WebManifestIcon) => i.sizes && i.sizes === '512x512') !== false,
+    );
   }
 
   /**
    * Test if protocol is accepted for pwa
    */
   private testProtocol(): void {
-    if (
+    const isInvalidProtocol =
       window.location.protocol !== 'https:' &&
       !window.location.host.includes('localhost') &&
-      !window.location.host.includes('127.0.0.1')
-    ) {
-      this.showErr('https protocol is required or test in localhost.');
-    }
+      !window.location.host.includes('127.0.0.1');
+    this.showResult(Debug.TXT.VALID_PROTOCOL, !isInvalidProtocol);
   }
 
   /**
@@ -65,13 +70,14 @@ export default class Debug {
     return new Promise((resolve, reject): void => {
       setTimeout(() => {
         if (this.sw === null) {
-          this.showErr('Service Worker is not correctly registered');
+          this.showErr(Debug.TXT.SW_REGISTERED);
           reject();
         }
       }, 5000);
 
       navigator.serviceWorker.ready.then(reg => {
         this.sw = reg;
+        this.showOk(Debug.TXT.SW_REGISTERED);
         resolve();
       });
     });
@@ -85,10 +91,24 @@ export default class Debug {
   }
 
   /**
+   * Show an ok in console
+   */
+  private showOk(txt: string): void {
+    logger.debug(`PWA Debug : OK - ${txt}`);
+  }
+
+  /**
    * Show an error in console
-   * @param {string} txt
    */
   private showErr(txt: string): void {
-    logger.error(`PWA Debug : ${txt}`);
+    logger.error(`PWA Debug : ERR - ${txt}`);
+  }
+
+  private showResult(txt: string, ok: boolean): void {
+    if (ok) {
+      this.showOk(txt);
+    } else {
+      this.showErr(txt);
+    }
   }
 }

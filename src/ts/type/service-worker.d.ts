@@ -1,12 +1,15 @@
 declare function fetch(request: Request | string): Promise<Response>;
 declare function skipWaiting(): void;
 
-interface ExtendableEvent {
-  waitUntil: promise;
+interface ExtendableEvent extends Event {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  waitUntil(data: Promise<any>): void;
 }
 
 interface FetchEvent extends ExtendableEvent {
-  respondWith: promise;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  respondWith(data: Promise<any>): void;
+  readonly request: Request;
 }
 
 interface InstallEvent extends ExtendableEvent {
