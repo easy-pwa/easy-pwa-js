@@ -1,5 +1,5 @@
 import FirebaseAppMessaging from './FirebaseAppMessaging';
-import { FirebasePayloadMessage } from "../type";
+import { FirebasePayloadMessage } from '../type';
 export default class FirebaseProvider {
     private readonly firebaseApp;
     private readonly messaging;

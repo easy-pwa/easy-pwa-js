@@ -1,6 +1,6 @@
 importScripts('https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js');
-importScripts('../dist/sw.js');
+importScripts('easy-pwa-js/sw.js');
 
 var firebaseConfig = {
   apiKey: "AIzaSyAUZfZCz4oiRDEdG4DfTgLFSV80mWfiJcU",
