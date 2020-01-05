@@ -4,10 +4,7 @@ importScripts('easy-pwa-js/sw.js');
 
 var firebaseConfig = {
   apiKey: "AIzaSyAUZfZCz4oiRDEdG4DfTgLFSV80mWfiJcU",
-  authDomain: "easy-pwa-a0aa2.firebaseapp.com",
-  databaseURL: "https://easy-pwa-a0aa2.firebaseio.com",
   projectId: "easy-pwa-a0aa2",
-  storageBucket: "easy-pwa-a0aa2.appspot.com",
   messagingSenderId: "380272041893",
   appId: "1:380272041893:web:fa3bdc93937359eac9924c"
 };

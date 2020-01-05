@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Titre de la page</title>
@@ -7,55 +7,39 @@
     <link rel="manifest" href="/example/manifest.json">
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
-    <script src="easy-pwa-js/front.js"></script>
+    <script type="module" src="easy-pwa-js/front.js"></script>
+    <script type="module" src="./js/pwa.js"></script>
 </head>
 <body>
+    <h1>Easy PWA</h1>
+    <p>You can test EasyPWAjs.</p>
 
-    <script>
+    <h3>Home screen</h3>
 
-      var firebaseConfig = {
-        apiKey: "AIzaSyAUZfZCz4oiRDEdG4DfTgLFSV80mWfiJcU",
-        authDomain: "easy-pwa-a0aa2.firebaseapp.com",
-        databaseURL: "https://easy-pwa-a0aa2.firebaseio.com",
-        projectId: "easy-pwa-a0aa2",
-        storageBucket: "easy-pwa-a0aa2.appspot.com",
-        messagingSenderId: "380272041893",
-        appId: "1:380272041893:web:fa3bdc93937359eac9924c"
-      };
-      // Initialize Firebase
-      var firebaseApp = firebase.initializeApp(firebaseConfig);
+    <p id="homescreen_event_received" style="display: none;">
+        Easy PWA has emitted the install event.
+    </p>
 
-      console.log(firebaseApp);
-      EasyPwaManager.enableDebug();
+    <p>
+        <button id="homescreen_helper_ios">Test iOS helper</button>
+        <button id="homescreen_helper_firefox">Test firefox helper</button>
+        <button id="homescreen_helper_samsung">Test samsung helper</button>
+    </p>
 
-        EasyPwaManager.init('/example/sw.js', {scope: '/example/'}).then(function(reg) {
+    <h3>Push Notification</h3>
+    <p>
+        Notification permission is currently: <strong><span id="permission"></span></strong><br />
+        <small>If your permission is "denied", you have to go in your browser settings.</small>
+    </p>
+    <p>
+        <button id="bt_notification_permission">Ask me permission</button>
+    </p>
+    <p>
+        <button id="bt_notification_send">Send me a notification</button> (after you have granted permission)
+    </p>
 
-          EasyPwaManager.getInstallManager().enableDesktopPwa();
-          /*EasyPwaManager.getPushManager().requestPermission();
-          EasyPwaManager.getPushManager().getFirebase().getToken().then(function(token) {
-            console.log('token', token);
-          });*/
-          //EasyPwaManager.getPushManager().showNotification('test');
-          //EasyPwaManager.getHomeScreenManager().showIOSHelper();
-          EasyPwaManager.getPushManager().firebase(firebaseApp)
-
-        });
-
-        window.addEventListener('easy-pwa-helper-available', function(e) {
-            console.log('eventListener', e);
-            var helperAvailableEvent = e.detail;
-            helperAvailableEvent.showInvite();
-        });
-
-      window.addEventListener('easy-pwa-page-changing', function(e) {
-        console.log('page changing');
-      });
-
-
-
-    </script>
-
-<a href="index.html">Go</a>
+    <h3>Other tools</h3>
+    <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.
 
 </body>
 </html>
