@@ -58,11 +58,13 @@ function setViewPermission(permission) {
   document.getElementById('permission').innerHTML = permission;
 }
 
-navigator.permissions.query({ name: 'notifications' }).then(notificationPerm => {
-  setViewPermission(notificationPerm.state);
-  notificationPerm.onchange = () => {
+window.addEventListener('load', function(e) {
+  navigator.permissions.query({name: 'notifications'}).then(notificationPerm => {
     setViewPermission(notificationPerm.state);
-  }
+    notificationPerm.onchange = () => {
+      setViewPermission(notificationPerm.state);
+    }
+  });
 });
 
 window.addEventListener('easy-pwa-ready', function(e) {
