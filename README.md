@@ -23,13 +23,13 @@ import EasyPwaManager from 'easy-pwa-js/front';
 
 In your service worker:
 ``` javascript
-importScripts('easy-pwa-js/sw');
+importScripts('easy-pwa-js/sw.js');
 ```
 
 #### Standard method
 Add this script on your page:
 ``` html
-<script src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/front.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/front.js"></script>
 ```
 
 Add this script in your service worker:
