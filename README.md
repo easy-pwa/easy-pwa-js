@@ -1,4 +1,4 @@
-# Easy Pwa
+# Easy PWA
 
 Tools for managing your Progressive Web App.
 
@@ -7,6 +7,9 @@ Tools for managing your Progressive Web App.
 * Manage Push Notifications easily.
 * A specific helper is showed for each browser to help people to install your app.
 
+## Example
+
+An example is available here:  [https://easy-pwa.github.io/easy-pwa-js/](https://easy-pwa.github.io/easy-pwa-js/)
 
 ## Install
 
@@ -37,7 +40,7 @@ Add this script in your service worker:
 importScripts('https://cdn.jsdelivr.net/npm/easy-pwa-js@1.0/dist/sw.js');
 ```
 
-## Example
+## How use it
 
 ``` javascript
 EasyPwaManager.init('/example/sw.js', {scope: '/'}).then(function(reg) {
@@ -333,10 +336,6 @@ self.EasyPwaSW.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.h
 ## External library included
 
 * [PWACompat](https://github.com/GoogleChromeLabs/pwacompat) is a library that brings the Web App Manifest to non-compliant browsers for better Progressive Web Apps.
-
-## Example
-
-You can find a full example here (soon).
 
 ## Help
 Use chrome browser for testing you PWA, there are more available tools:

@@ -207,7 +207,9 @@ export default class InstallManager {
 
     const closeHelper = (): void => {
       document.body.classList.remove('pwa-helper-active');
+      // eslint-disable-next-line no-unused-expressions
       document.getElementsByClassName('pwa-homescreen-helper')[0]?.remove();
+      // eslint-disable-next-line no-unused-expressions
       document.getElementsByClassName('pwa-homescreen-helper-mask')[0]?.remove();
     };
 
