@@ -11,7 +11,7 @@ export default class InstallManager {
     constructor();
     /**
      * Set interval in day before to invite again
-     * @param dayInterval Interval in day between invitation
+     * @param dayInterval Interval in day between invitation. Set 0 if you want to disable our system.
      */
     setIntervalBetweenInvitation(dayInterval: number): void;
     /**
