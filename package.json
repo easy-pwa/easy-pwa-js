@@ -1,8 +1,8 @@
 {
   "name": "easy-pwa-js",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.0",
   "description": "JavaScript library for managing PWA application.",
-  "main": "dist/easy-pwa.js",
+  "main": "dist/front.js",
   "author": "Adrien Peyre",
   "license": "MIT",
   "files": [
@@ -63,6 +63,10 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },
+  "engines": {
+    "node": ">=13.5",
+    "npm": ">=6.13"
+  },
   "scripts": {
     "eslint": "eslint ./src --ext .ts,.js,.d.ts",
     "eslint-fix": "eslint ./src --ext .ts,.js,.d.ts --fix",
@@ -70,7 +74,7 @@
     "watch": "webpack --watch --mode development",
     "dev": "webpack --mode development",
     "build": "webpack --mode production && typedoc",
-    "start:dev": "webpack-dev-server --mode development --host 0.0.0.0"
+    "start:dev": "webpack-dev-server --mode development"
   },
   "keywords": [
     "pwa",

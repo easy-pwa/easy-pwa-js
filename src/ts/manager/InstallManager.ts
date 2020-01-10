@@ -27,7 +27,7 @@ export default class InstallManager {
 
   /**
    * Set interval in day before to invite again
-   * @param dayInterval Interval in day between invitation
+   * @param dayInterval Interval in day between invitation. Set 0 if you want to disable our system.
    */
   public setIntervalBetweenInvitation(dayInterval: number): void {
     this.intervalBetweenInvitation = dayInterval;
@@ -207,8 +207,8 @@ export default class InstallManager {
 
     const closeHelper = (): void => {
       document.body.classList.remove('pwa-helper-active');
-      document.getElementsByClassName('pwa-homescreen-helper')[0].remove();
-      document.getElementsByClassName('pwa-homescreen-helper-mask')[0].remove();
+      document.getElementsByClassName('pwa-homescreen-helper')[0]?.remove();
+      document.getElementsByClassName('pwa-homescreen-helper-mask')[0]?.remove();
     };
 
     popupContent.addEventListener('click', closeHelper);

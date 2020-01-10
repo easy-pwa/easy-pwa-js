@@ -6,8 +6,13 @@ const TerserPlugin = require('terser-webpack-plugin');
 const config = {
   devServer: {
     writeToDisk: true,
-    before: () => {
-      console.log('Go to http://localhost:8080/example/');
+    host: '0.0.0.0',
+    disableHostCheck: true,
+    open: true,
+    openPage: '/example/',
+    onListening: (server) => {
+      const port = server.listeningApp.address().port;
+      console.info("\n\nGo to => http://localhost:"+port+"/example/\n");
     }
   },
   output: {
@@ -29,7 +34,7 @@ const config = {
 
 const swConfig = Object.assign({}, config, {
   entry: {
-    'sw': './src/ts/service-worker-base.ts'
+    'sw': './src/ts/sw-index.ts'
   },
   module: {
     rules: [
@@ -47,7 +52,7 @@ const swConfig = Object.assign({}, config, {
 
 let frontConfig = Object.assign({}, config, {
   entry: {
-    'front': './src/ts/index.ts',
+    'front': './src/ts/front-index.ts',
   },
   output: {
     libraryTarget: 'umd',

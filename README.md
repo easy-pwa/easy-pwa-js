@@ -29,12 +29,12 @@ importScripts('easy-pwa-js/sw.js');
 #### Standard method
 Add this script on your page:
 ``` html
-<script type="module" src="https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/front.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/easy-pwa-js@1.0/dist/front.js"></script>
 ```
 
 Add this script in your service worker:
 ``` javascript
-importScripts('https://cdn.jsdelivr.net/gh/easy-pwa/easy-pwa-js/dist/sw.js');
+importScripts('https://cdn.jsdelivr.net/npm/easy-pwa-js@1.0/dist/sw.js');
 ```
 
 ## Example
