@@ -28,7 +28,7 @@
     "raw-loader": "^0.5.1",
     "template-file": "^3.1.0",
     "twig": "^1.14.0",
-    "web-manifest-reader": "^1.2.0"
+    "web-manifest-reader": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
