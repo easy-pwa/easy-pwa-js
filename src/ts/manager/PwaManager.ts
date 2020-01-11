@@ -26,6 +26,7 @@ export default class PwaManager {
     this.initOfflineClass();
     this.initPageChangingEvent();
     this.manifest = await manifest.read();
+    require('../../../node_modules/pwacompat/pwacompat.min.js');
     this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
 
     window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));

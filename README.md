@@ -233,42 +233,42 @@ EasyPwaManager.getPushManager().firebase(firebaseApp);
 
 ##### Manage token (send to server) when you fetch a token
 ```` javascript
-EasyPwaManager.getPushManager().firebase.onTokenFetched( function(token) {
+EasyPwaManager.getPushManager().firebase().onTokenFetched( function(token) {
     console.log('You fetch a new token, you can send it to server.');
 });
 ````
 
 ##### Get a token and manage it (previous declared callback is called)
 ```` javascript
-EasyPwaManager.getPushManager().firebase.fetchToken().then( function(token) {
+EasyPwaManager.getPushManager().firebase().fetchToken().then( function(token) {
     console.log("new token: "+token);
 });
 ````
 
 ##### Get current token
 ```` javascript
-PwaManager.getPushManager().firebase.getToken().then( function(token) {
+PwaManager.getPushManager().firebase().getToken().then( function(token) {
     console.log('new token: '+token);
 });
 ````
 
 ##### Delete a token
 ```` javascript
-EasyPwaManager.getPushManager().firebase.deleteToken(token).then(function(){
+EasyPwaManager.getPushManager().firebase().deleteToken(token).then(function(){
     console.log('Token deleted');
 });
 ````
 
 ##### Manage Foreground notification differently
 ```` javascript
-EasyPwaManager.getPushManager().firebase.onForegroundNotification(function() {
+EasyPwaManager.getPushManager().firebase().onForegroundNotification(function() {
     console.log('Your are currently on the the site and you received a notification.');
 });
 ````
 
 ### Available Events
 
-#### Wait EasyPwa is fully initialized 
+#### Wait Easy PWA is fully initialized 
 
 ```` javascript
 window.addEventListener('easy-pwa-ready', function(e) {

@@ -88,24 +88,7 @@ let frontConfig = Object.assign({}, config, {
     ],
   },
 });
-/*
-console.log(process.env.npm_lifecycle_event);
-if (process.env.npm_lifecycle_event === 'build') {
-  frontConfig.plugins.push(
-      new TypedocWebpackPlugin({
-        out: '../docs',
-        mode: 'file',
-        excludePrivate: true,
-        excludeProtected: true,
-        excludeExternals: true,
-        includeDeclarations: false,
-        readme: 'none',
-        hideBreadcrumbs: true,
-        name: 'Easy PWA'
-      }, ['./src/ts/manager', './src/ts/push'])
-  );
-}
-*/
+
 module.exports = [
   frontConfig, swConfig
 ];
