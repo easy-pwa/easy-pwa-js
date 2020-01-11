@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Titre de la page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+</head>
+<body>
+    <h1>Easy PWA</h1>
+    <p>You can test Easy PWA.</p>
+
+    <h3>Home screen</h3>
+
+    <p id="homescreen_event_received" style="display: none;">
+        Easy PWA has emitted the install event.
+    </p>
+
+    <p>
+        <button id="homescreen_helper_ios">Test iOS helper</button>
+        <button id="homescreen_helper_firefox">Test firefox helper</button>
+        <button id="homescreen_helper_samsung">Test samsung helper</button>
+    </p>
+
+    <h3>Push Notification</h3>
+    <p>
+        Notification permission is currently: <strong><span id="permission"></span></strong><br />
+        <small>If your permission is "denied", you have to go in your browser settings.</small>
+    </p>
+    <p>
+        <button id="bt_notification_permission">Ask me permission</button>
+    </p>
+    <p>
+        <button id="bt_notification_send">Send me a notification</button> (after you have granted permission)
+    </p>
+
+    <h3>Other tools</h3>
+    <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.
+
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
+    <script type="module" src="../dist/front.js"></script>
+    <script type="module" src="./js/pwa.js"></script>
+</body>
+</html>
