@@ -1,0 +1,15 @@
+{
+  "helper": {
+    "ios": {
+      "text_1": "Install this web app on your iPhone: tap",
+      "text_2": "and then",
+      "label": "Add to Home Screen"
+    },
+    "firefox": {
+      "text": "You can easily add this web site to your Home screen to have instant access and browser faster with an app-like experience."
+    },
+    "samsung": {
+      "text": "To install this web app and enjoy an optimal experience, simply press one the icon indicated one your browser."
+    }
+  }
+}
