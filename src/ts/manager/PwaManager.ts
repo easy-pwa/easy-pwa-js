@@ -1,59 +1,28 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
-import { default as InstallManagerClass } from './InstallManager';
-import { default as PushManagerClass } from './PushManager';
-import { Debug, InstallManager, logger, loggerParameter, PushManager } from '../service';
 import { WindowNavigator } from '../type';
 import PageChangingEvent from '../event/PageChangingEvent';
-import ReadyEvent from '../event/ReadyEvent';
+import AbstractManager from "./AbstractManager";
+import App from "../App";
 
 /**
  * All methods for managing PWA.
  */
-export default class PwaManager {
+export default class PwaManager extends AbstractManager {
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
   private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
 
   private manifest?: WebManifest = null;
 
-  /**
-   * Call this function, first.
-   * @param swPath The path to the service worker
-   * @param options options to pass to service worker registration.
-   * @return Return a promise when treatment is finished.
-   */
-  public async init(swPath: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
+  public async init(): Promise<void> {
     this.initOfflineClass();
     this.initPageChangingEvent();
     this.manifest = await manifest.read();
     require('../../../node_modules/pwacompat/pwacompat.min.js');
-    this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
-
-    window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
-
-    return this.serviceWorkerRegistration;
-  }
-
-  /**
-   * Get the Push Manager for managing push notification.
-   */
-  public getPushManager(): PushManagerClass {
-    if (!this.serviceWorkerRegistration) {
-      throw new Error('A Service worker has to be registered before.');
-    }
-
-    return PushManager;
-  }
-
-  /**
-   * Get the Install Manager for managing Home Screen.
-   */
-  public getInstallManager(): InstallManagerClass {
-    if (!this.serviceWorkerRegistration) {
-      throw new Error('A Service worker has to be registered before.');
-    }
-
-    return InstallManager;
+    this.serviceWorkerRegistration = await this.registerServiceWorker(
+        App.configuration.swPath,
+        App.configuration.registrationOptions
+    );
   }
 
   /**
@@ -147,15 +116,6 @@ export default class PwaManager {
    */
   public getManifest(): WebManifest | null {
     return this.manifest;
-  }
-
-  /**
-   * Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
-   */
-  public enableDebug(): void {
-    loggerParameter.enableDebug();
-    logger.warn('DEBUG ENABLED');
-    Debug.analyse();
   }
 
   /**

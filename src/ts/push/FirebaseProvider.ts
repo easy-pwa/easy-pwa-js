@@ -1,7 +1,7 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
-import { PushManager, logger } from '../service';
 import FirebaseAppMessaging from './FirebaseAppMessaging';
 import { FirebasePayloadMessage } from '../type';
+import App from '../App';
 
 export default class FirebaseProvider {
   private readonly firebaseApp: FirebaseAppMessaging;
@@ -14,7 +14,7 @@ export default class FirebaseProvider {
 
   constructor(serviceWorker: ServiceWorkerRegistration, firebaseApp: FirebaseAppMessaging) {
     this.tokenFetchedCallback = (token: string): void => {
-      logger.info(`Token to send to server: ${token}`);
+      App.logger.info(`Token to send to server: ${token}`);
     };
 
     this.firebaseApp = firebaseApp;
@@ -97,7 +97,7 @@ export default class FirebaseProvider {
         this.messaging
           .deleteToken(token)
           .then(() => {
-            logger.info(`Token deleted: ${token}`);
+            App.logger.info(`Token deleted: ${token}`);
             resolve();
           })
           .catch(reject);
@@ -122,8 +122,8 @@ export default class FirebaseProvider {
       notificationSettings.data.FCM_MSG = {};
       notificationSettings.data.FCM_MSG.notification = payload.notification;
 
-      PushManager.showNotification(notificationSettings.title, notificationSettings).then(() => {
-        logger.info('Notification received in foreground and transmitted to SW.');
+      App.pushManager.showNotification(notificationSettings.title, notificationSettings).then(() => {
+        App.logger.info('Notification received in foreground and transmitted to SW.');
       });
     }
   }

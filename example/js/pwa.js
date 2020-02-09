@@ -13,11 +13,13 @@ var firebaseApp = firebase.initializeApp(firebaseConfig);
 Init
 
  */
-EasyPwaManager.enableDebug();
 
-EasyPwaManager.init('./sw.js', {scope: './'}).then( function(reg) {
-  EasyPwaManager.getInstallManager().enableDesktopPwa();
-  EasyPwaManager.getPushManager().firebase(firebaseApp)
+EasyPwa.init({
+  'swPath': './sw.js',
+  'registrationOptions': {scope: './'},
+  'debug': true,
+  'desktop': true,
+  'firebaseApp': firebaseApp,
 });
 
 /*
@@ -27,7 +29,7 @@ Home Screen
  */
 
 window.addEventListener('easy-pwa-ready', function(e) {
-  var installManager = EasyPwaManager.getInstallManager();
+  var installManager = EasyPwa.installManager;
 
   window.addEventListener('easy-pwa-helper-available', function (e) {
     document.getElementById('homescreen_event_received').style.display = "block";
@@ -69,11 +71,11 @@ window.addEventListener('load', function(e) {
 
 window.addEventListener('easy-pwa-ready', function(e) {
   document.getElementById('bt_notification_permission').addEventListener('click', function () {
-    EasyPwaManager.getPushManager().requestPermission();
+    EasyPwa.pushManager.requestPermission();
   });
 
   document.getElementById('bt_notification_send').addEventListener('click', function () {
-    EasyPwaManager.getPushManager().showNotification('Title', {
+    EasyPwa.pushManager.showNotification('Title', {
       icon: 'images/icon512.png',
       body: 'A description for your notification.',
       vibrate: [20, 300, 20]

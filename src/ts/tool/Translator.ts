@@ -26,4 +26,9 @@ export default class Translator {
         return require('../../translations/en.json');
     }
   }
+
+  public static getLangName(): string {
+      const [currentLang] = navigator.language.split('-');
+      return currentLang;
+  }
 }
