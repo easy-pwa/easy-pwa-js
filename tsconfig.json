@@ -9,7 +9,9 @@
     "experimentalDecorators": true,
     "lib": [
       "es2015",
-      "dom"
-    ]
-  }
+      "dom",
+      "ScriptHost"
+    ],
+  },
+  "exclude": ["node_modules", "dist"]
 }

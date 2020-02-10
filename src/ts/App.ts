@@ -1,5 +1,4 @@
-import Configuration from "./Configuration";
-import { validateSync} from "class-validator";
+import Configuration from "./configuration/Configuration";
 import {ILogger} from "js-logger/src/types";
 import Logger from "./tool/Logger";
 import PwaManager from "./manager/PwaManager";
@@ -8,6 +7,7 @@ import PushManager, {default as PushManagerClass} from "./manager/PushManager";
 import ReadyEvent from "./event/ReadyEvent";
 import Translator from "./tool/Translator";
 import Debug from "./tool/Debug";
+import ConfigurationValidator from "./configuration/ConfigurationValidator";
 
 export default new class App {
     public configuration: Configuration;
@@ -24,28 +24,42 @@ export default new class App {
 
     public pushManager?: PushManager;
 
+    public isReady = false;
+
     constructor() {
         this.initLogger();
         this.translator = new Translator();
     }
 
     public init(userConfiguration: Configuration): void {
-        const configuration = Object.assign({}, new Configuration(), userConfiguration);
+        if (!('serviceWorker' in navigator)) {
+            return;
+        }
+
+        const configuration = { ...new Configuration(), ...userConfiguration };
         this.manager = new PwaManager();
         this.installManager = new InstallManager();
         this.pushManager = new PushManager();
-        console.log(configuration);
-        /*const errors = validateSync(configuration);
+
+        const errors = (new ConfigurationValidator()).validates(configuration);
         if (errors.length > 0) {
-            this.logger.error('EasyPwa (validation failed). Errors: ', errors);
+            errors.forEach(error => {
+                this.logger.error(error);
+            });
+
             return;
-        }*/
+        }
 
         this.configuration = configuration;
 
         Promise.all([this.manager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
+            this.isReady = true;
             window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
         });
+
+        if (this.configuration.debug) {
+            this.enableDebug();
+        }
     }
 
     protected initLogger(): void {

@@ -2,7 +2,13 @@
     {% if manifest.icons and manifest.icons.length > 0 %}
         <img src="{{ manifest.icons[0].src }}" class="pwa-homescreen-invite-icon" />
     {% endif %}
-    Installer <strong>{{ manifest.name  }}</strong>
+    Installer <strong>
+        {% if manifest.name|length <= 20 %}
+            {{ manifest.name  }}
+        {% else %}
+            {{ manifest.short_name  }}
+        {% endif %}
+    </strong>
 </span>
 <span class="pwa-homescreen-invite-close">
     <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgNjEyIDYxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjEyIDYxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnIGlkPSJfeDMzX18zXyI+CgkJPGc+CgkJCTxwYXRoIGQ9Ik00MDAuNjY5LDIxMS4zMzFjLTcuNDc5LTcuNDc4LTE5LjU4NC03LjQ3OC0yNy4wNDMsMEwzMDYsMjc4Ljk1N2wtNjcuNjI2LTY3LjYyNmMtNy40NzgtNy40NzgtMTkuNTg0LTcuNDc4LTI3LjA0MywwICAgICBjLTcuNDc4LDcuNDc4LTcuNDc4LDE5LjU4NCwwLDI3LjA0M0wyNzguOTU3LDMwNmwtNjcuNjI2LDY3LjYyNmMtNy40NzgsNy40NzgtNy40NzgsMTkuNTg0LDAsMjcuMDQzICAgICBjNy40NzgsNy40NzgsMTkuNTg0LDcuNDc4LDI3LjA0MywwTDMwNiwzMzMuMDQzbDY3LjYyNiw2Ny42MDZjNy40NzgsNy40NzksMTkuNTg0LDcuNDc5LDI3LjA0MywwICAgICBjNy40NzgtNy40NzgsNy40NzgtMTkuNTg0LDAtMjcuMDQzTDMzMy4wNDMsMzA2bDY3LjYyNi02Ny42MDdDNDA4LjEyOCwyMzAuOTE1LDQwOC4xMjgsMjE4LjgwOSw0MDAuNjY5LDIxMS4zMzF6IE01MzUuNSwwaC00NTkgICAgIEMzNC4yNTMsMCwwLDM0LjI1MywwLDc2LjV2NDU5QzAsNTc3Ljc0NywzNC4yNTMsNjEyLDc2LjUsNjEyaDQ1OWM0Mi4yNDcsMCw3Ni41LTM0LjI1Myw3Ni41LTc2LjV2LTQ1OSAgICAgQzYxMiwzNC4yNTMsNTc3Ljc0NywwLDUzNS41LDB6IE01NzMuNzUsNTM1LjVjMCwyMS4xMzMtMTcuMTE3LDM4LjI1LTM4LjI1LDM4LjI1aC00NTljLTIxLjEzMywwLTM4LjI1LTE3LjExNy0zOC4yNS0zOC4yNXYtNDU5ICAgICBjMC0yMS4xMzMsMTcuMTE3LTM4LjI1LDM4LjI1LTM4LjI1aDQ1OWMyMS4xMzMsMCwzOC4yNSwxNy4xMzYsMzguMjUsMzguMjVWNTM1LjV6IiBmaWxsPSIjMDAwMDAwIi8+CgkJPC9nPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />

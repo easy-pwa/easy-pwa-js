@@ -2,18 +2,27 @@
   z-index: $inviteZIndex;
   position: fixed;
   height: 50px;
-  min-height: 50px;
-  top: 10px;
-  right: -100%;
+  min-height: 60px;
+  top: -60px;
+  right: 0;
+  left: 0;
   text-align: center;
   background-color: white;
-  border: 1px solid black;
+  border-color: black;
+  border-style: solid;
+  border-width: 0 0 2px 0;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: #37383e;
-  line-height: 50px;
+  line-height: 60px;
   cursor: pointer;
   transition-duration: 1s;
+
+  @media screen and (min-width: $breakDesktop) {
+    top: 10px;
+    right: -100%;
+    left: inherit;
+  }
 
   .pwa-homescreen-invite-close {
     height: 100%;
@@ -24,7 +33,7 @@
     img {
       max-height: 63%;
       vertical-align: middle;
-      background-color: #eaeaea;
+      background-color: #0099ff;
     }
   }
 
@@ -37,7 +46,11 @@
 
 .pwa-invite-active {
   .pwa-homescreen-invite {
-    right: 10px;
+    top: 0;
     border-color: #949494;
+    @media screen and (min-width: $breakDesktop) {
+      top: 5px;
+      right: 10px;
+    }
   }
 }

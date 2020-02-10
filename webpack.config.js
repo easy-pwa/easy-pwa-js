@@ -62,12 +62,14 @@ let frontConfig = Object.assign({}, config, {
     rules: [
       {
         test: /\.ts$/,
-        //exclude: /(node_modules)/,
         use: [
           'babel-loader',
-          'ts-loader'
+          'ts-loader',
         ],
-        options: { allowTsInNodeModules: true }
+        include:
+          [
+            path.resolve("src"),
+          ]
       },
       {
         test: /\.scss$/i,

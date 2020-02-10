@@ -128,7 +128,9 @@ export default class InstallManager extends AbstractManager {
       App.logger.info('Event beforeinstallprompt received.');
       this.homeScreenPrompt = e;
 
-      this.emitHelperAvailableEvent();
+      if (App.isReady) {
+        this.emitHelperAvailableEvent();
+      }
     });
 
     // Artificial helper is available right now
@@ -244,7 +246,7 @@ export default class InstallManager extends AbstractManager {
       }
     }
 
-    return App.configuration.additionnalInviteCriteria();
+    return App.configuration.additionalInviteCriteria();
   }
 
   /**

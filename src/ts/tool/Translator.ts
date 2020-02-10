@@ -1,19 +1,9 @@
 export default class Translator {
-  private readonly availableLang: string[] = ['fr', 'en'];
 
-  private lang: string;
+  private readonly lang: string;
 
   constructor() {
-    const metaLang = document.documentElement.lang;
-    if (metaLang) {
-      this.setLang(metaLang);
-    }
-  }
-
-  public setLang(lang: string): void {
-    if (this.availableLang.includes(lang)) {
-      this.lang = lang;
-    }
+    this.lang = Translator.getLangName();
   }
 
   public getTranslations(): JSON {
