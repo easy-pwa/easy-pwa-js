@@ -56,7 +56,7 @@ let frontConfig = Object.assign({}, config, {
   },
   output: {
     libraryTarget: 'umd',
-    library: 'EasyPwa'
+    library: 'EasyPWA'
   },
   module: {
     rules: [

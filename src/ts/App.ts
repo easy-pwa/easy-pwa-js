@@ -1,13 +1,13 @@
-import Configuration from "./configuration/Configuration";
+import Configuration from "./Configuration/Configuration";
 import {ILogger} from "js-logger/src/types";
-import Logger from "./tool/Logger";
-import PwaManager from "./manager/PwaManager";
-import InstallManager, {default as InstallManagerClass} from "./manager/InstallManager";
-import PushManager, {default as PushManagerClass} from "./manager/PushManager";
-import ReadyEvent from "./event/ReadyEvent";
-import Translator from "./tool/Translator";
-import Debug from "./tool/Debug";
-import ConfigurationValidator from "./configuration/ConfigurationValidator";
+import Logger from "./Service/Logger";
+import PwaManager from "./Manager/PwaManager";
+import InstallManager, {default as InstallManagerClass} from "./Manager/InstallManager";
+import PushManager, {default as PushManagerClass} from "./Manager/PushManager";
+import ReadyEvent from "./Event/ReadyEvent";
+import Translator from "./Service/Translator";
+import Debug from "./Service/Debug";
+import ConfigurationValidator from "./Configuration/ConfigurationValidator";
 
 export default new class App {
     public configuration: Configuration;
@@ -18,28 +18,30 @@ export default new class App {
 
     public translator: Translator;
 
-    public manager?: PwaManager;
+    public pwaManager: PwaManager;
 
-    public installManager?: InstallManager;
+    public installManager: InstallManager;
 
-    public pushManager?: PushManager;
+    public pushManager: PushManager;
 
     public isReady = false;
 
     constructor() {
         this.initLogger();
         this.translator = new Translator();
+        this.pwaManager = new PwaManager();
+        this.installManager = new InstallManager();
+        this.pushManager = new PushManager();
     }
 
     public init(userConfiguration: Configuration): void {
+
         if (!('serviceWorker' in navigator)) {
             return;
         }
 
         const configuration = { ...new Configuration(), ...userConfiguration };
-        this.manager = new PwaManager();
-        this.installManager = new InstallManager();
-        this.pushManager = new PushManager();
+
 
         const errors = (new ConfigurationValidator()).validates(configuration);
         if (errors.length > 0) {
@@ -51,8 +53,8 @@ export default new class App {
         }
 
         this.configuration = configuration;
-
-        Promise.all([this.manager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
+        console.log('init', this.enableDebug );
+        Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
             this.isReady = true;
             window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
         });

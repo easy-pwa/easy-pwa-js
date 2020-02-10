@@ -1,6 +1,6 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
-import { WindowNavigator } from '../type';
-import PageChangingEvent from '../event/PageChangingEvent';
+import { WindowNavigator } from '../Type';
+import PageChangingEvent from '../Event/PageChangingEvent';
 import AbstractManager from "./AbstractManager";
 import App from "../App";
 
@@ -48,15 +48,15 @@ export default class PwaManager extends AbstractManager {
   }
 
   /**
-   * When you want to update app (get a service worker refresh)
+   * When you want to update app (get a Service worker refresh)
    */
   private forceUpdateApp(reg: ServiceWorkerRegistration): void {
     reg.waiting.postMessage('skipWaiting');
   }
 
   /**
-   * Register service worker
-   * @param swUrl Path to service worker
+   * Register Service worker
+   * @param swUrl Path to Service worker
    * @param options Options to pass to register
    */
   private registerServiceWorker(swUrl: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
@@ -101,14 +101,6 @@ export default class PwaManager extends AbstractManager {
         })
         .catch(reject);
     });
-  }
-
-  /**
-   * Get the service worker registration
-   * @return Get the service worker registration or null if it's bad registered.
-   */
-  public getServiceWorkerRegistration(): ServiceWorkerRegistration | null {
-    return this.serviceWorkerRegistration;
   }
 
   /**

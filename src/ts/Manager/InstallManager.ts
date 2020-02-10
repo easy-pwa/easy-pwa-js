@@ -1,8 +1,8 @@
 import { detect } from 'detect-browser';
-import { BeforeInstallPromptEvent } from '../type';
-import HelperAvailableEvent from '../event/HelperAvailableEvent';
+import { BeforeInstallPromptEvent } from '../Type';
+import HelperAvailableEvent from '../Event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
-import ReadyEvent from '../event/ReadyEvent';
+import ReadyEvent from '../Event/ReadyEvent';
 import AbstractManager from "./AbstractManager";
 import App from "../App";
 
@@ -31,13 +31,13 @@ export default class InstallManager extends AbstractManager {
     this.createInvitePopup(
       template({
         trans: App.translator.getTranslations(),
-        manifest: App.manager.getManifest(),
+        manifest: App.pwaManager.getManifest(),
       }),
     );
   }
 
   /**
-   * When event has been sent by browser, it's possible to call prompt method to add to home screen
+   * When Event has been sent by browser, it's possible to call prompt method to add to home screen
    */
   private showInstallPrompt(): void {
     if (this.homeScreenPrompt !== null) {
@@ -75,7 +75,7 @@ export default class InstallManager extends AbstractManager {
    * Check if a helper is available for the current browser
    */
   private helperIsAvailable(): boolean {
-    return !App.manager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
+    return !App.pwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
   }
 
   /**
@@ -144,7 +144,7 @@ export default class InstallManager extends AbstractManager {
   }
 
   /**
-   * Emit an event to indicate a helper is available for installing on the current browser
+   * Emit an Event to indicate a helper is available for installing on the current browser
    */
   private emitHelperAvailableEvent(): void {
     if (!this.isTimeToInvite()) {
@@ -164,7 +164,7 @@ export default class InstallManager extends AbstractManager {
   }
 
   /**
-   * Check if event to add home screen has been sent by browser (chrome/edge)
+   * Check if Event to add home screen has been sent by browser (chrome/edge)
    */
   private installPromptReady(): boolean {
     return this.homeScreenPrompt !== null;

@@ -1,6 +1,6 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
 import FirebaseAppMessaging from './FirebaseAppMessaging';
-import { FirebasePayloadMessage } from '../type';
+import { FirebasePayloadMessage } from '../Type';
 import App from '../App';
 
 export default class FirebaseProvider {

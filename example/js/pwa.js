@@ -14,7 +14,7 @@ Init
 
  */
 
-EasyPwa.init({
+EasyPWA.init({
   'swPath': './sw.js',
   'registrationOptions': {scope: './'},
   'debug': true,
@@ -29,7 +29,6 @@ Home Screen
  */
 
 window.addEventListener('easy-pwa-ready', function(e) {
-  var installManager = EasyPwa.installManager;
 
   window.addEventListener('easy-pwa-helper-available', function (e) {
     document.getElementById('homescreen_event_received').style.display = "block";
@@ -71,11 +70,11 @@ window.addEventListener('load', function(e) {
 
 window.addEventListener('easy-pwa-ready', function(e) {
   document.getElementById('bt_notification_permission').addEventListener('click', function () {
-    EasyPwa.pushManager.requestPermission();
+    EasyPWA.requestNotificationPermission();
   });
 
   document.getElementById('bt_notification_send').addEventListener('click', function () {
-    EasyPwa.pushManager.showNotification('Title', {
+    EasyPWA.showNotification('Title', {
       icon: 'images/icon512.png',
       body: 'A description for your notification.',
       vibrate: [20, 300, 20]

@@ -5,7 +5,7 @@ export default class ConfigurationValidator {
       const errors: Error[] = [];
 
       if (!config.swPath || typeof config.swPath !== 'string') {
-        errors.push(new Error('A service worker path should be defined'));
+        errors.push(new Error('A Service worker path should be defined'));
       }
 
       if (config.registrationOptions && typeof config.registrationOptions !== 'object') {

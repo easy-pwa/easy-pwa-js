@@ -1,4 +1,4 @@
-import FirebaseAppMessaging from "../push/FirebaseAppMessaging";
+import FirebaseAppMessaging from "../Push/FirebaseAppMessaging";
 
 export default class Configuration {
 

@@ -22,7 +22,6 @@
     "@firebase/util": "^0.2.40",
     "detect-browser": "^4.6.0",
     "js-logger": "^1.6.0",
-    "pwacompat": "^2.0.10",
     "twig": "^1.14.0",
     "web-manifest-reader": "^1.2.2"
   },
