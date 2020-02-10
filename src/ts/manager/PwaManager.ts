@@ -15,10 +15,11 @@ export default class PwaManager extends AbstractManager {
   private manifest?: WebManifest = null;
 
   public async init(): Promise<void> {
+    this.initPwaCompat();
     this.initOfflineClass();
     this.initPageChangingEvent();
     this.manifest = await manifest.read();
-    require('../../../node_modules/pwacompat/pwacompat.min.js');
+    //require('../../../node_modules/pwacompat/pwacompat.min.js');
     this.serviceWorkerRegistration = await this.registerServiceWorker(
         App.configuration.swPath,
         App.configuration.registrationOptions
@@ -153,5 +154,18 @@ export default class PwaManager extends AbstractManager {
     window.addEventListener('load', (): void => {
       setConnectionStatus(navigator.onLine);
     });
+  }
+
+  private initPwaCompat(): void {
+    if (!App.configuration.PWACompat) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.10/pwacompat.min.js');
+    script.setAttribute('async', '');
+    script.setAttribute('integrity', 'sha384-I1iiXcTSM6j2xczpDckV+qhhbqiip6FyD6R5CpuqNaWXvyDUvXN5ZhIiyLQ7uuTh');
+    script.setAttribute('crossorigin', 'anonymous');
+    document.head.appendChild(script);
   }
 }

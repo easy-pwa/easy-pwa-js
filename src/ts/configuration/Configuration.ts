@@ -20,4 +20,7 @@ export default class Configuration {
 
     // Initialized firebase app
     public firebaseApp?: FirebaseAppMessaging;
+
+    // Load PWACompat on your site
+    public PWACompat = true;
 }

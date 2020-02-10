@@ -36,6 +36,10 @@ export default class ConfigurationValidator {
         errors.push(new Error('firebaseApp should be an initialized instance.'));
       }
 
+      if (typeof config.PWACompat !== 'boolean') {
+        errors.push(new Error('PWACompat should be a boolean.'));
+      }
+
       return errors;
     }
 }
