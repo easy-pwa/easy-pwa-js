@@ -20,6 +20,8 @@ EasyPWA.init({
   'debug': true,
   'desktop': true,
   'firebaseApp': firebaseApp,
+}).then(function() {
+  console.log('EasyPWA initialized');
 });
 
 /*
@@ -28,27 +30,12 @@ Home Screen
 
  */
 
-window.addEventListener('easy-pwa-ready', function(e) {
-
-  window.addEventListener('easy-pwa-helper-available', function (e) {
-    document.getElementById('homescreen_event_received').style.display = "block";
-    e.detail.showInvite();
-  });
-
-  // The methods bellow shouldn't be called directly. It's just for the testing context.
-
-  document.getElementById('homescreen_helper_ios').addEventListener('click', function () {
-    installManager.showIOSHelper();
-  });
-
-  document.getElementById('homescreen_helper_firefox').addEventListener('click', function () {
-    installManager.showFirefoxHelper();
-  });
-
-  document.getElementById('homescreen_helper_samsung').addEventListener('click', function () {
-    installManager.showSamsungHelper();
-  });
+window.addEventListener('easy-pwa-helper-available', function (e) {
+  document.getElementById('homescreen_event_received').style.display = "block";
+  document.getElementById('homescreen_event_no_event').style.display = "none";
+  e.detail.showInvite();
 });
+
 /*
 
 Notification

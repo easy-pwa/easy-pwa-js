@@ -34,34 +34,35 @@ export default new class App {
         this.pushManager = new PushManager();
     }
 
-    public init(userConfiguration: Configuration): void {
+    public init(userConfiguration: Configuration): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!('serviceWorker' in navigator)) {
+                return reject();
+            }
 
-        if (!('serviceWorker' in navigator)) {
-            return;
-        }
-
-        const configuration = { ...new Configuration(), ...userConfiguration };
+            const configuration = {...new Configuration(), ...userConfiguration};
 
 
-        const errors = (new ConfigurationValidator()).validates(configuration);
-        if (errors.length > 0) {
-            errors.forEach(error => {
-                this.logger.error(error);
+            const errors = (new ConfigurationValidator()).validates(configuration);
+            if (errors.length > 0) {
+                errors.forEach(error => {
+                    this.logger.error(error);
+                });
+
+                return reject();
+            }
+
+            this.configuration = configuration;
+
+            return Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
+                this.isReady = true;
+                window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
+                if (this.configuration.debug) {
+                    this.enableDebug();
+                }
+                return resolve();
             });
-
-            return;
-        }
-
-        this.configuration = configuration;
-        console.log('init', this.enableDebug );
-        Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
-            this.isReady = true;
-            window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
         });
-
-        if (this.configuration.debug) {
-            this.enableDebug();
-        }
     }
 
     protected initLogger(): void {
