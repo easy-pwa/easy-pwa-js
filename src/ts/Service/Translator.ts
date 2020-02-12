@@ -1,5 +1,4 @@
 export default class Translator {
-
   private readonly lang: string;
 
   constructor() {
@@ -18,7 +17,7 @@ export default class Translator {
   }
 
   public static getLangName(): string {
-      const [currentLang] = navigator.language.split('-');
-      return currentLang;
+    const [currentLang] = navigator.language.split('-');
+    return currentLang;
   }
 }

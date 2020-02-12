@@ -1,4 +1,3 @@
 export default abstract class AbstractManager {
-
-    public abstract init(): Promise<void>;
+  public abstract init(): Promise<void>;
 }

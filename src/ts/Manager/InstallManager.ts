@@ -2,8 +2,8 @@ import { detect } from 'detect-browser';
 import HelperAvailableEvent from '../Event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
 import ReadyEvent from '../Event/ReadyEvent';
-import AbstractManager from "./AbstractManager";
-import App from "../App";
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * Methods for managing about Installing

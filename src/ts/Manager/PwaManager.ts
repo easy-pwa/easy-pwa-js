@@ -1,7 +1,7 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
 import PageChangingEvent from '../Event/PageChangingEvent';
-import AbstractManager from "./AbstractManager";
-import App from "../App";
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * All methods for managing PWA.
@@ -20,8 +20,8 @@ export default class PwaManager extends AbstractManager {
     this.manifest = await manifest.read();
 
     this.serviceWorkerRegistration = await this.registerServiceWorker(
-        App.configuration.swPath,
-        App.configuration.swRegistrationOptions
+      App.configuration.swPath,
+      App.configuration.swRegistrationOptions,
     );
   }
 

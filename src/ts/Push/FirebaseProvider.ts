@@ -3,7 +3,6 @@ import FirebaseAppMessaging from './FirebaseAppMessaging';
 import App from '../App';
 
 export default class FirebaseProvider {
-
   private static readonly KEY_STORAGE_TOKEN_SENT = 'easy-pwa-token-sent';
 
   private readonly firebaseApp: FirebaseAppMessaging;
@@ -14,7 +13,10 @@ export default class FirebaseProvider {
     this.firebaseApp = firebaseApp;
     this.messaging = firebaseApp.messaging();
     this.messaging.useServiceWorker(serviceWorker);
-    this.messaging.onTokenRefresh(() => { this.setTokenSent(false); this.getToken(); });
+    this.messaging.onTokenRefresh(() => {
+      this.setTokenSent(false);
+      this.getToken();
+    });
     this.messaging.onMessage(this.foregroundNotification);
   }
 
@@ -40,12 +42,15 @@ export default class FirebaseProvider {
           clearTimeout(timeout);
           if (token) {
             if (notify && !this.isTokenSent()) {
-              App.configuration.newTokenFetchedCallback(token).then(() => {
-                this.setTokenSent(true);
-                resolve(token);
-              }).catch(() => {
-                reject(new Error('An error is occurred when sending token to server.'));
-              });
+              App.configuration
+                .newTokenFetchedCallback(token)
+                .then(() => {
+                  this.setTokenSent(true);
+                  resolve(token);
+                })
+                .catch(() => {
+                  reject(new Error('An error is occurred when sending token to server.'));
+                });
             } else {
               resolve(token);
             }

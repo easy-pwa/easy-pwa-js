@@ -24,7 +24,7 @@ module.exports = {
       browser: true,
     },
     'overrides': [{
-      'files': ['sw-index.ts', 'src/ts/Serviceworker/**/*'],
+      'files': ['sw-index.ts', 'src/ts/ServiceWorker/**/*'],
       env: {
         serviceworker: true
       },
@@ -36,6 +36,7 @@ module.exports = {
       'files': ['Configuration.ts'],
       rules: {
         '@typescript-eslint/no-inferrable-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
       }
     }],
     settings: {

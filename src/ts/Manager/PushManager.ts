@@ -1,6 +1,6 @@
 import FirebaseProvider from '../Push/FirebaseProvider';
-import AbstractManager from "./AbstractManager";
-import App from "../App";
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * Methods for managing about Push
@@ -39,8 +39,8 @@ export default class PushManager extends AbstractManager {
    * @return Return a promise when notification is showed.
    */
   public showNotification(title: string, options: NotificationOptions): Promise<void> {
-    return navigator.serviceWorker.ready.then(
-        serviceWorkerRegistration => serviceWorkerRegistration.showNotification(title, options)
+    return navigator.serviceWorker.ready.then(serviceWorkerRegistration =>
+      serviceWorkerRegistration.showNotification(title, options),
     );
   }
 
@@ -71,10 +71,7 @@ export default class PushManager extends AbstractManager {
 
     return new Promise(resolve => {
       navigator.serviceWorker.ready.then(registration => {
-        this.firebaseInstance = new FirebaseProvider(
-            registration,
-            App.configuration.firebaseApp
-        );
+        this.firebaseInstance = new FirebaseProvider(registration, App.configuration.firebaseApp);
 
         resolve();
       });
