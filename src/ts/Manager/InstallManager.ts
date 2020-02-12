@@ -1,6 +1,5 @@
-import { detect } from 'detect-browser';
+import { detect as BrowserDetect } from 'detect-browser';
 import HelperAvailableEvent from '../Event/HelperAvailableEvent';
-import BrowserInfo from '../../model/BrowserInfo';
 import ReadyEvent from '../Event/ReadyEvent';
 import AbstractManager from './AbstractManager';
 import App from '../App';
@@ -252,7 +251,7 @@ export default class InstallManager extends AbstractManager {
    * Get Browser Info
    */
   private getBrowserInfo(): BrowserInfo {
-    const bo = detect();
+    const bo = BrowserDetect();
 
     return {
       os: bo.os,
