@@ -36,14 +36,6 @@ export default new (class App {
 
   public init(userConfiguration: Configuration): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (this.configuration.debug) {
-        this.enableDebug();
-      }
-
-      if (!('serviceWorker' in navigator)) {
-        return reject();
-      }
-
       const configuration = { ...new Configuration(), ...userConfiguration };
 
       const errors = new ConfigurationValidator().validates(configuration);
@@ -56,6 +48,14 @@ export default new (class App {
       }
 
       this.configuration = configuration;
+
+      if (this.configuration.debug) {
+        this.enableDebug();
+      }
+
+      if (!('serviceWorker' in navigator)) {
+        return reject();
+      }
 
       return Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
         this.isReady = true;

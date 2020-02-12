@@ -4,45 +4,54 @@
     <meta charset="utf-8">
     <title>Titre de la page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="app.css">
     <link rel="manifest" href="./manifest.json">
 </head>
 <body>
-    <h1>Easy PWA</h1>
-    <p>You can test Easy PWA.</p>
+    <main>
+        <h1>EasyPWA</h1>
+        <p>You can test some EasyPWA's features.</p>
 
-    <h3>Home screen</h3>
+        <section>
+            <h3>Home screen</h3>
 
-    <p id="homescreen_invite_event_received" style="display: none;">
-        Easy PWA has emitted the install event.
-        <button id="homescreen_invite_button">Show the invite banner</button>
-    </p>
+            <p id="homescreen_invite_event_received" style="display: none;">
+                Easy PWA has emitted the install event.
+                <button id="homescreen_invite_button">Show the invite banner</button>
+            </p>
 
-    <p id="homescreen_invite_no_event">
-        No event emitted. This browser is not supported or you have already clicked on.
-    </p>
+            <p id="homescreen_invite_no_event">
+                No event emitted. This browser is not supported or you have already clicked on.
+            </p>
+        </section>
+        <section>
+            <h3>Push Notifications</h3>
+            <div id="notifications_not_supported">
+                Notifications are not supported on your current browser.
+            </div>
+            <div id="notifications_supported" style="display: none;">
+                <p>
+                    Notification permission is currently: <strong><span id="permission"></span></strong><br />
+                    <small>If your permission is "denied", you have to go in your browser settings.</small>
+                </p>
+                <p>
+                    <button id="bt_notification_permission">Ask me permission</button>
+                </p>
+                <p>
+                    <button id="bt_notification_send">Send me a notification</button> (after you granted permission)
+                </p>
+                <p>
+                    Your firebase token fetched: <small><span id="notifications_token">none</span></small>
+                </p>
+            </div>
+        </section>
+        <section>
+            <h3>Other tools</h3>
+            <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.
+            You might want to show a loader for instance.
+        </section>
 
-    <h3>Push Notification</h3>
-    <div id="notifications_not_supported">
-        Notifications are not supported on your current browser.
-    </div>
-    <div id="notifications_supported" style="display: none;">
-        <p>
-            Notification permission is currently: <strong><span id="permission"></span></strong><br />
-            <small>If your permission is "denied", you have to go in your browser settings.</small>
-        </p>
-        <p>
-            <button id="bt_notification_permission">Ask me permission</button>
-        </p>
-        <p>
-            <button id="bt_notification_send">Send me a notification</button> (after you granted permission)
-        </p>
-        <p>
-            Your firebase token fetched: <small><span id="notifications_token">none</span></small>
-        </p>
-    </div>
-
-    <h3>Other tools</h3>
-    <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.
+    </main>
 
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>

@@ -1,5 +1,3 @@
-import FirebaseAppMessaging from '../Push/FirebaseAppMessaging';
-
 export default class Configuration {
   // Path to your service worker
   public swPath: string;

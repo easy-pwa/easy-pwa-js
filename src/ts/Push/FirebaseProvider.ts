@@ -1,5 +1,4 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
-import FirebaseAppMessaging from './FirebaseAppMessaging';
 import App from '../App';
 
 export default class FirebaseProvider {
@@ -36,24 +35,28 @@ export default class FirebaseProvider {
         reject(new Error('getToken timeout exceeded'));
       }, 25000);
 
+      const tokenFetchedSuccessfully = (token: string) => {
+        if (notify && !this.isTokenSent()) {
+          App.configuration
+            .newTokenFetchedCallback(token)
+            .then(() => {
+              this.setTokenSent(true);
+              resolve(token);
+            })
+            .catch(() => {
+              reject(new Error('An error is occurred when sending token to server.'));
+            });
+        } else {
+          resolve(token);
+        }
+      };
+
       this.messaging
         .getToken()
         .then((token?: string) => {
           clearTimeout(timeout);
           if (token) {
-            if (notify && !this.isTokenSent()) {
-              App.configuration
-                .newTokenFetchedCallback(token)
-                .then(() => {
-                  this.setTokenSent(true);
-                  resolve(token);
-                })
-                .catch(() => {
-                  reject(new Error('An error is occurred when sending token to server.'));
-                });
-            } else {
-              resolve(token);
-            }
+            tokenFetchedSuccessfully(token);
           } else {
             reject(new Error('Request permission before'));
           }

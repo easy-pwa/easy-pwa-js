@@ -27,18 +27,3 @@ interface BeforeInstallPromptEvent extends Event {
    */
   prompt(): Promise<void>;
 }
-
-/**
- * Payload Firebase message
- */
-interface FirebasePayloadMessage {
-  readonly notification: FirebasePayloadMessageNotification;
-}
-
-interface FirebasePayloadMessageNotification extends NotificationOptions {
-  readonly title: string;
-}
-
-interface WindowNavigator extends Navigator {
-  standalone?: boolean;
-}
