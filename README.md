@@ -1,4 +1,4 @@
-# Easy PWA
+# EasyPWA
 
 Tools for managing your Progressive Web App.
 
