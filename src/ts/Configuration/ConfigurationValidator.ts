@@ -8,7 +8,7 @@ export default class ConfigurationValidator {
         errors.push(new Error('A Service worker path should be defined'));
       }
 
-      if (config.registrationOptions && typeof config.registrationOptions !== 'object') {
+      if (config.swRegistrationOptions && typeof config.swRegistrationOptions !== 'object') {
         errors.push(new Error('registrationOptions should be an object.'));
       }
 

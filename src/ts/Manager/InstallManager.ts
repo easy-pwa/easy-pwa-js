@@ -1,5 +1,4 @@
 import { detect } from 'detect-browser';
-import { BeforeInstallPromptEvent } from '../Type';
 import HelperAvailableEvent from '../Event/HelperAvailableEvent';
 import BrowserInfo from '../../model/BrowserInfo';
 import ReadyEvent from '../Event/ReadyEvent';

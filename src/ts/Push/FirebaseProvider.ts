@@ -1,26 +1,20 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
 import FirebaseAppMessaging from './FirebaseAppMessaging';
-import { FirebasePayloadMessage } from '../Type';
 import App from '../App';
 
 export default class FirebaseProvider {
+
+  private static readonly KEY_STORAGE_TOKEN_SENT = 'easy-pwa-token-sent';
+
   private readonly firebaseApp: FirebaseAppMessaging;
 
   private readonly messaging: FirebaseMessaging;
 
-  private tokenFetchedCallback: (token: string) => void;
-
-  private foregroundMessageCallback: (payload: FirebasePayloadMessage) => void;
-
   constructor(serviceWorker: ServiceWorkerRegistration, firebaseApp: FirebaseAppMessaging) {
-    this.tokenFetchedCallback = (token: string): void => {
-      App.logger.info(`Token to send to server: ${token}`);
-    };
-
     this.firebaseApp = firebaseApp;
     this.messaging = firebaseApp.messaging();
     this.messaging.useServiceWorker(serviceWorker);
-    this.messaging.onTokenRefresh(this.fetchToken);
+    this.messaging.onTokenRefresh(() => { this.setTokenSent(false); this.getToken(); });
     this.messaging.onMessage(this.foregroundNotification);
   }
 
@@ -32,40 +26,9 @@ export default class FirebaseProvider {
   }
 
   /**
-   * @param callback Callback to execute if notification is received when user is currently on the site
+   * Get user token (and notify)
    */
-  public onForegroundNotification(callback: (payload: FirebasePayloadMessage) => void): void {
-    this.foregroundMessageCallback = callback;
-  }
-
-  /**
-   * When a token is fetched, function to execute (send it to server for example)
-   * @param callback
-   */
-  public onTokenFetched(callback: (token: string) => void): void {
-    this.tokenFetchedCallback = callback;
-  }
-
-  /**
-   * Fetch token and notify server
-   */
-  public fetchToken(): Promise<string | Error> {
-    return new Promise((resolve, reject): void => {
-      this.getToken()
-        .then((token: string) => {
-          this.tokenFetchedCallback(token);
-          resolve(token);
-        })
-        .catch((err: Error) => {
-          reject(new Error(`Error when fetching token ${err}`));
-        });
-    });
-  }
-
-  /**
-   * Get user token
-   */
-  public getToken(): Promise<string> {
+  public getToken(notify = true): Promise<string> {
     return new Promise<string>((resolve, reject): void => {
       const timeout = global.setTimeout(() => {
         reject(new Error('getToken timeout exceeded'));
@@ -76,7 +39,16 @@ export default class FirebaseProvider {
         .then((token?: string) => {
           clearTimeout(timeout);
           if (token) {
-            resolve(token);
+            if (notify && !this.isTokenSent()) {
+              App.configuration.newTokenFetchedCallback(token).then(() => {
+                this.setTokenSent(true);
+                resolve(token);
+              }).catch(() => {
+                reject(new Error('An error is occurred when sending token to server.'));
+              });
+            } else {
+              resolve(token);
+            }
           } else {
             reject(new Error('Request permission before'));
           }
@@ -89,7 +61,7 @@ export default class FirebaseProvider {
   }
 
   /**
-   * delete user token
+   * Delete user token
    */
   public deleteToken(token: string): Promise<string | Error> {
     return new Promise<string | Error>((resolve, reject): void => {
@@ -109,8 +81,8 @@ export default class FirebaseProvider {
    * ForegroundNotification
    */
   private foregroundNotification(payload: FirebasePayloadMessage): void {
-    if (this.foregroundMessageCallback) {
-      this.foregroundMessageCallback(payload);
+    if (App.configuration.foregroundNotification) {
+      App.configuration.foregroundNotification(payload);
       return;
     }
 
@@ -126,5 +98,17 @@ export default class FirebaseProvider {
         App.logger.info('Notification received in foreground and transmitted to SW.');
       });
     }
+  }
+
+  private isTokenSent(): boolean {
+    return localStorage.getItem(FirebaseProvider.KEY_STORAGE_TOKEN_SENT) !== null;
+  }
+
+  private setTokenSent(sent: boolean): void {
+    if (sent) {
+      return localStorage.setItem(FirebaseProvider.KEY_STORAGE_TOKEN_SENT, '1');
+    }
+
+    return localStorage.removeItem(FirebaseProvider.KEY_STORAGE_TOKEN_SENT);
   }
 }

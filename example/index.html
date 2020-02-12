@@ -12,9 +12,9 @@
 
     <h3>Home screen</h3>
 
-    <p id="homescreen_event_received" style="display: none;">
+    <p id="homescreen_invite_event_received" style="display: none;">
         Easy PWA has emitted the install event.
-        <button id="homescreen_invite_button" style="display: none;">Show the invite banner</button>
+        <button id="homescreen_invite_button">Show the invite banner</button>
     </p>
 
     <p id="homescreen_invite_no_event">
@@ -22,16 +22,24 @@
     </p>
 
     <h3>Push Notification</h3>
-    <p>
-        Notification permission is currently: <strong><span id="permission"></span></strong><br />
-        <small>If your permission is "denied", you have to go in your browser settings.</small>
-    </p>
-    <p>
-        <button id="bt_notification_permission">Ask me permission</button>
-    </p>
-    <p>
-        <button id="bt_notification_send">Send me a notification</button> (after you have granted permission)
-    </p>
+    <div id="notifications_not_supported">
+        Notifications are not supported on your current browser.
+    </div>
+    <div id="notifications_supported" style="display: none;">
+        <p>
+            Notification permission is currently: <strong><span id="permission"></span></strong><br />
+            <small>If your permission is "denied", you have to go in your browser settings.</small>
+        </p>
+        <p>
+            <button id="bt_notification_permission">Ask me permission</button>
+        </p>
+        <p>
+            <button id="bt_notification_send">Send me a notification</button> (after you granted permission)
+        </p>
+        <p>
+            Your firebase token fetched: <small><span id="notifications_token">none</span></small>
+        </p>
+    </div>
 
     <h3>Other tools</h3>
     <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.

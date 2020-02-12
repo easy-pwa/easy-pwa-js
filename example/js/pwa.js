@@ -20,6 +20,10 @@ EasyPWA.init({
   'debug': true,
   'desktop': true,
   'firebaseApp': firebaseApp,
+  'newTokenFetchedCallback': function(token) {
+    console.log('Token sent to the server', token);
+    return Promise.resolve();
+  }
 }).then(function() {
   console.log('EasyPWA initialized');
 });
@@ -31,9 +35,11 @@ Home Screen
  */
 
 window.addEventListener('easy-pwa-helper-available', function (e) {
-  document.getElementById('homescreen_event_received').style.display = "block";
-  document.getElementById('homescreen_event_no_event').style.display = "none";
-  e.detail.showInvite();
+  document.getElementById('homescreen_invite_event_received').style.display = "block";
+  document.getElementById('homescreen_invite_no_event').style.display = "none";
+  document.getElementById('homescreen_invite_button').addEventListener('click', () => {
+    e.detail.showInvite();
+  });
 });
 
 /*
@@ -41,16 +47,25 @@ window.addEventListener('easy-pwa-helper-available', function (e) {
 Notification
 
  */
+if (EasyPWA.isNotificationSupported()) {
+  document.getElementById('notifications_not_supported').style.display = "none";
+  document.getElementById('notifications_supported').style.display = "";
+}
 
-function setViewPermission(permission) {
+function setPermission(permission) {
   document.getElementById('permission').innerHTML = permission;
+  if (permission === 'granted') {
+    EasyPWA.firebase().getToken().then(function (token) {
+      document.getElementById('notifications_token').innerHTML = token;
+    });
+  }
 }
 
 window.addEventListener('load', function(e) {
   navigator.permissions.query({name: 'notifications'}).then(notificationPerm => {
-    setViewPermission(notificationPerm.state);
+    setPermission(notificationPerm.state);
     notificationPerm.onchange = () => {
-      setViewPermission(notificationPerm.state);
+      setPermission(notificationPerm.state);
     }
   });
 });
@@ -61,7 +76,7 @@ window.addEventListener('easy-pwa-ready', function(e) {
   });
 
   document.getElementById('bt_notification_send').addEventListener('click', function () {
-    EasyPWA.showNotification('Title', {
+    EasyPWA.showNotification('Title of your notification', {
       icon: 'images/icon512.png',
       body: 'A description for your notification.',
       vibrate: [20, 300, 20]

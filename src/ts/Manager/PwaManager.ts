@@ -1,5 +1,4 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
-import { WindowNavigator } from '../Type';
 import PageChangingEvent from '../Event/PageChangingEvent';
 import AbstractManager from "./AbstractManager";
 import App from "../App";
@@ -19,10 +18,10 @@ export default class PwaManager extends AbstractManager {
     this.initOfflineClass();
     this.initPageChangingEvent();
     this.manifest = await manifest.read();
-    //require('../../../node_modules/pwacompat/pwacompat.min.js');
+
     this.serviceWorkerRegistration = await this.registerServiceWorker(
         App.configuration.swPath,
-        App.configuration.registrationOptions
+        App.configuration.swRegistrationOptions
     );
   }
 

@@ -52,8 +52,6 @@
     "terser-webpack-plugin": "^2.3.4",
     "ts-loader": "^5.4.5",
     "twig-loader": "^0.5.1",
-    "typedoc": "^0.15.8",
-    "typedoc-plugin-markdown": "^2.2.16",
     "typescript": "^3.7.5",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
@@ -69,7 +67,7 @@
     "prettier": "prettier \"src/ts/**/*.ts\" --write",
     "watch": "webpack --watch --mode development",
     "dev": "webpack --mode development",
-    "build": "webpack --mode production && typedoc",
+    "build": "webpack --mode production",
     "start:dev": "webpack-dev-server --mode development"
   },
   "keywords": [

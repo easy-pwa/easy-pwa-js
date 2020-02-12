@@ -1,5 +1,4 @@
 import InstallManager from '../Manager/InstallManager';
-import { BeforeInstallPromptEvent } from '../Type';
 import AbstractEvent from './AbstractEvent';
 
 export default class HelperAvailableEvent extends AbstractEvent {

@@ -4,7 +4,7 @@
  *
  * Only current supported on Chrome and Android Webview.
  */
-export interface BeforeInstallPromptEvent extends Event {
+interface BeforeInstallPromptEvent extends Event {
   /**
    * Returns an array of DOMString items containing the platforms on which the Event was dispatched.
    * This is provided for user agents that want to present a choice of versions to the user such as,
@@ -31,14 +31,14 @@ export interface BeforeInstallPromptEvent extends Event {
 /**
  * Payload Firebase message
  */
-export interface FirebasePayloadMessage {
+interface FirebasePayloadMessage {
   readonly notification: FirebasePayloadMessageNotification;
 }
 
-export interface FirebasePayloadMessageNotification extends NotificationOptions {
+interface FirebasePayloadMessageNotification extends NotificationOptions {
   readonly title: string;
 }
 
-export interface WindowNavigator extends Navigator {
+interface WindowNavigator extends Navigator {
   standalone?: boolean;
 }

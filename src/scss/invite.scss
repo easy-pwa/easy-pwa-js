@@ -49,9 +49,11 @@
   .pwa-homescreen-invite {
     top: 0;
     border-color: #949494;
+    box-shadow: 0px 0px 500px black;
     @media screen and (min-width: $breakDesktop) {
       top: 5px;
       right: 10px;
+      box-shadow: none;
     }
   }
 }

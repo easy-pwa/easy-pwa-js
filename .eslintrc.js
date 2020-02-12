@@ -24,13 +24,18 @@ module.exports = {
       browser: true,
     },
     'overrides': [{
-      'files': ['service-worker-base.ts', 'src/ts/sw/**/*'],
+      'files': ['sw-index.ts', 'src/ts/Serviceworker/**/*'],
       env: {
         serviceworker: true
       },
       rules: {
         'no-restricted-globals': 'off',
         'no-throw-literal': 'off',
+      }
+    }, {
+      'files': ['Configuration.ts'],
+      rules: {
+        '@typescript-eslint/no-inferrable-types': 'off',
       }
     }],
     settings: {
