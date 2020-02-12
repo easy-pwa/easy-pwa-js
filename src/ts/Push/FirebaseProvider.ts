@@ -35,7 +35,7 @@ export default class FirebaseProvider {
         reject(new Error('getToken timeout exceeded'));
       }, 25000);
 
-      const tokenFetchedSuccessfully = (token: string) => {
+      const tokenFetchedSuccessfully = (token: string): void => {
         if (notify && !this.isTokenSent()) {
           App.configuration
             .newTokenFetchedCallback(token)
