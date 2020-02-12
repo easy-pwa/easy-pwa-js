@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: mkdir ./example/easy-pwa-js
+      - run: npm run build
       - run: cp -r ./dist/* ./example/easy-pwa-js/
       - run: sed -i 's/..\/dist/easy-pwa-js/g' ./example/index.html ./example/sw.js
       - name: deploy
