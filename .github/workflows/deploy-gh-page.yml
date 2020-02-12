@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - lib
+      - master
 
 jobs:
   deploy-gh-page:
