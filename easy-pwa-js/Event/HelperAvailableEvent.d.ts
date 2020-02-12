@@ -1,5 +1,4 @@
-import InstallManager from '../manager/InstallManager';
-import { BeforeInstallPromptEvent } from '../type';
+import InstallManager from '../Manager/InstallManager';
 import AbstractEvent from './AbstractEvent';
 export default class HelperAvailableEvent extends AbstractEvent {
     static readonly EVENT_NAME = "easy-pwa-helper-available";

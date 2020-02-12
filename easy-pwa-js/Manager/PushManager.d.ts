@@ -1,10 +1,11 @@
-import FirebaseProvider from '../push/FirebaseProvider';
-import FirebaseAppMessaging from '../push/FirebaseAppMessaging';
+import FirebaseProvider from '../Push/FirebaseProvider';
+import AbstractManager from './AbstractManager';
 /**
  * Methods for managing about Push
  */
-export default class PushManager {
+export default class PushManager extends AbstractManager {
     private firebaseInstance;
+    init(): Promise<void>;
     /**
      * Requests permission
      * @return Return a promise with the notification permission status.
@@ -23,9 +24,9 @@ export default class PushManager {
      */
     isNotificationSupported(): boolean;
     /**
-     * Get the Firebase provider. First time, you have to pass a firebase app initialized
-     * @param firebaseApp initialized firebase app
+     * Get the Firebase provider.
      * @return Firebase provider or null if init function was not called.
      */
-    firebase(firebaseApp?: FirebaseAppMessaging): FirebaseProvider | null;
+    firebase(): FirebaseProvider | null;
+    protected initFirebase(): Promise<void>;
 }

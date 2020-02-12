@@ -1,0 +1,21 @@
+import { ILogger } from 'js-logger/src/types';
+import Configuration from './Configuration/Configuration';
+import Logger from './Service/Logger';
+import PwaManager from './Manager/PwaManager';
+import InstallManager from './Manager/InstallManager';
+import PushManager from './Manager/PushManager';
+import Translator from './Service/Translator';
+declare const _default: {
+    configuration: Configuration;
+    logger: ILogger;
+    loggerParameter: Logger;
+    translator: Translator;
+    pwaManager: PwaManager;
+    installManager: InstallManager;
+    pushManager: PushManager;
+    isReady: boolean;
+    init(userConfiguration: Configuration): Promise<void>;
+    initLogger(): void;
+    enableDebug(): void;
+};
+export default _default;

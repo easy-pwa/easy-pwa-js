@@ -1,30 +1,18 @@
+import AbstractManager from './AbstractManager';
 /**
  * Methods for managing about Installing
  */
-export default class InstallManager {
-    private static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION;
+export default class InstallManager extends AbstractManager {
     private static readonly KEY_STORAGE_INVITATION;
     private homeScreenPrompt?;
-    private desktopPwaEnabled;
-    private inviteCriteria;
-    private intervalBetweenInvitation;
     constructor();
-    /**
-     * Set interval in day before to invite again
-     * @param dayInterval Interval in day between invitation. Set 0 if you want to disable our system.
-     */
-    setIntervalBetweenInvitation(dayInterval: number): void;
-    /**
-     * Add additional criteria before propose invite to install
-     * @param callback A function which has to respond a boolean. True if you are ready to show invite, false overwise
-     */
-    addInviteCriteria(callback: () => boolean): void;
+    init(): Promise<void>;
     /**
      * Show an automatic invite to add to Home Screen.
      */
     private showInvite;
     /**
-     * When event has been sent by browser, it's possible to call prompt method to add to home screen
+     * When Event has been sent by browser, it's possible to call prompt method to add to home screen
      */
     private showInstallPrompt;
     /**
@@ -39,10 +27,6 @@ export default class InstallManager {
      * Show the available helper
      */
     private showHelper;
-    /**
-     * Enable desktop Pwa
-     */
-    enableDesktopPwa(): void;
     /**
      * IOS Helper: this function should be only called to test
      */
@@ -64,11 +48,11 @@ export default class InstallManager {
      */
     private initEvents;
     /**
-     * Emit an event to indicate a helper is available for installing on the current browser
+     * Emit an Event to indicate a helper is available for installing on the current browser
      */
     private emitHelperAvailableEvent;
     /**
-     * Check if event to add home screen has been sent by browser (chrome/edge)
+     * Check if Event to add home screen has been sent by browser (chrome/edge)
      */
     private installPromptReady;
     /**
