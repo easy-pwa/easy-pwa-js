@@ -75,6 +75,5 @@
     "easy",
     "build",
     "tool"
-  ],
-  "typings": "./dist/ts/index.d.ts"
+  ]
 }

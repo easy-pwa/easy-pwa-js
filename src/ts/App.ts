@@ -36,6 +36,10 @@ export default new (class App {
 
   public init(userConfiguration: Configuration): Promise<void> {
     return new Promise((resolve, reject) => {
+      if (this.configuration.debug) {
+        this.enableDebug();
+      }
+
       if (!('serviceWorker' in navigator)) {
         return reject();
       }
@@ -56,9 +60,6 @@ export default new (class App {
       return Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
         this.isReady = true;
         window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
-        if (this.configuration.debug) {
-          this.enableDebug();
-        }
         return resolve();
       });
     });
