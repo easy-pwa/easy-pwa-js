@@ -5,27 +5,31 @@ var firebaseConfig = {
   messagingSenderId: "380272041893",
   appId: "1:380272041893:web:fa3bdc93937359eac9924c"
 };
-// Initialize Firebase
-var firebaseApp = firebase.initializeApp(firebaseConfig);
 
-/*
+window.addEventListener("load", function(event) {
+  // Initialize Firebase
+  var firebaseApp = firebase.initializeApp(firebaseConfig);
 
-Init
+  /*
 
- */
+  Init
 
-EasyPWA.init({
-  'swPath': './sw.js',
-  'registrationOptions': {scope: './'},
-  'debug': true,
-  'desktop': true,
-  'firebaseApp': firebaseApp,
-  'newTokenFetchedCallback': function(token) {
-    console.log('Token sent to the server', token);
-    return Promise.resolve();
-  }
-}).then(function() {
-  console.log('EasyPWA initialized');
+   */
+
+  EasyPWA.init({
+    'swPath': './sw.js',
+    'registrationOptions': {scope: './'},
+    'debug': true,
+    'desktop': true,
+    'firebaseApp': firebaseApp,
+    'newTokenFetchedCallback': function(token) {
+      console.log('Token sent to the server', token);
+      return Promise.resolve();
+    }
+  }).then(function() {
+    console.log('EasyPWA initialized');
+  });
+  
 });
 
 /*
