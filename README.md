@@ -1,4 +1,4 @@
-# Easy PWA
+# EasyPWA
 
 Tools for managing your Progressive Web App.
 
@@ -40,28 +40,26 @@ Add this script in your service worker:
 importScripts('https://cdn.jsdelivr.net/npm/easy-pwa-js@1.0/dist/sw.js');
 ```
 
-## How use it
+## How to use it
 
+#### Initialize EasyPWA
+For beginning, initialize EasyPWA with your configuration.
 ``` javascript
-EasyPwaManager.init('/example/sw.js', {scope: '/'}).then(function(reg) {
-    // All interaction with EasyPwaManager should be done when EasyPwaManager is successfully initialized.
-
-    EasyPwaManager.enableDebug(); // Enable debug for showing more information
-    
-    var installManager = EasyPwaManager.getInstallManager();
-    installManager.enableDesktopPwa(); // Enable desktop PWA
-
-    if (EasyPwaManager.isAppMode()) {
-        console.log('You are in app version');
-    }
+EasyPWA.init({
+    swPath: '/example/sw.js',
+    swRegistrationOptions: {scope: '/'},
+    debug: true,
+    desktop: true,
 });
 ```
 
 ### Invite the user to install your app
 
-If a helper is available for the current browser, an event is emitted.
+If a helper is available for the current browser, an event is automatically emitted by EasyPWA.
+You have to listen and interact with it.
 
 #### Automatic method
+With this method, a standard invite is showed:
 ``` javascript
 window.addEventListener('easy-pwa-helper-available', function(e) {
     e.detail.showInvite();
@@ -69,7 +67,9 @@ window.addEventListener('easy-pwa-helper-available', function(e) {
 ```
 
 #### For a custom invite
-html invite:
+If you want to create your own invite for a customized style.
+
+Example of your html invite:
 ```` html
 <div id="my_custom_invite">
 Install my app ?
@@ -107,164 +107,110 @@ var firebaseConfig = {
     appId: "..."
 };
 
-var firebaseApp = firebase.initializeApp(firebaseConfig); // firebase initializing
-window.addEventListener('easy-pwa-ready', function(e) {
-    var pushManager = EasyPwaManager.getPushManager();
-    var firebasePush = pushManager.firebase(firebaseApp);
+var myFirebaseApp = firebase.initializeApp(firebaseConfig); // firebase initializing
+```
 
-    pushManager.requestPermission().then( function() {
-        // Permissions granted
+Add in your config, the firebase app instance:
+``` javascript
+EasyPWA.init({
+    ...,
+    firebaseApp: myFirebaseApp,
+    newTokenFetchedCallback: (token) => {
+        // returns a promise
+        return fetch('http://.../send-token-to-server.php?token='+token);
+    },
+}
+```
+
+Always wait EasyPWA is fully initialized before.
+``` javascript
+window.addEventListener('easy-pwa-ready', function(e) {
+    EasyPWA.requestPermission().then( function() {
+        // Permissions is now granted
 
         // I don't have a token
-        firebasePwa.getToken().then( function(token) {
-           console.log('token', token);
-        });
-        
-        // Get a token a manage it (send to server for example)
-        firebasePwa.fetchToken().then( function(token) {
+        EasyPWA.firebase().getToken().then( function(token) {
            console.log('token', token);
         });
     });
 });
 ```
 
+## Available configuration
+A list of configuration elements if available [here](https://github.com/easy-pwa/easy-pwa-js/blob/master/src/ts/Configuration/Configuration.ts)
 
-## Use it
+## Available functions
 
-### PwaManager
-
-#### Initialize PwaManager
+### Initialize EasyPWA
 
 ```` javascript
-EasyPwaManager.init('./sw.js', {scope: './'}).then(function() {
-    console.log('Manager initialized. Get manifest and registered service worker.');
-});
+EasyPWA.init({...});
 ````
 
-#### Get your service worker reference
+### Get manifest data
 ```` javascript
-var mySw = EasyPwaManager.getServiceWorkerRegistration();
-````
-
-#### Get manifest data
-```` javascript
-var manifest = EasyPwaManager.getManifest();
+var manifest = EasyPWA.getManifest();
 console.log('The name is: '+manifest.name);
 ````
 
 
-#### Check if PWA is in standalone mode
+### Check if PWA is in standalone mode
 ```` javascript
-if (EasyPwaManager.isAppMode()) {
+if (EasyPWA.isAppMode()) {
     console.log('Site is open as an app');
 }
 ````
 
-#### Debug mode
-More information in your console for debugging your PWA.
+### Check if notification is supported on this current browser
 ```` javascript
-EasyPwaManager.enableDebug();
-````
-
-
-### Manage Home Screen Install
-Access to the home screen manager: `EasyPwaManager.getInstallManager()`
-
-
-#### Enable Desktop PWA (only Chrome)
-Propose install on desktop browsers.
-```` javascript
-EasyPwaManager.getInstallManager().enableDesktopPwa();
-````
-
-#### Set interval before invitation to install again
-When an event is proposed, set the number of days before invite again. (default: 50)
-```` javascript
-EasyPwaManager.getInstallManager().setIntervalBetweenInvitation(30);
-````
-
-#### Additional criteria before propose invite
-You can add criteria before propose invite. The callback function has to respond a boolean.
-```` javascript
-EasyPwaManager.getInstallManager().addInviteCriteria(function() {
-    if (user.id === 1) {
-        return false;
-    }
-
-    return true;
-});
-````
-
-### Manage Push notification
-Access to the Push Manager: `EasyPwaManager.getPushManager()`.
-
-#### Check if notification is supported on this current browser
-```` javascript
-if (EasyPwaManager.getPushManager().isNotificationSupported()) {
+if (EasyPWA.isNotificationSupported()) {
     console.log('Notification is supported on this browser.');
 }
 ````
 
-#### Request permission to send notification
+### Request permission to send notification
 First, you need to ask permission.
 ```` javascript
-EasyPwaManager.getPushManager().requestPermission().then(function() {
+EasyPWA.requestNotificationPermission().then(function() {
     console.log('Accepted. You can get a token with Firebase.');
 }).catch(function() {
     console.log('denied. User must authorize notifications in their bowser settings.');
 });
 ````
 
-#### Show a local notification
+### Show a local notification
 ```` javascript
-EasyPwaManager.getPushManager().showNotification('title', {
+EasyPWA.showNotification('title', {
     icon: ...,
     vibrate: [50, 300, 50]
 });
 ````
 
-#### Firebase
+### Firebase
 
 ##### Initialize Firebase
 ```` javascript
-var firebaseApp = firebase.initializeApp({...});
-EasyPwaManager.getPushManager().firebase(firebaseApp);
-````
-
-##### Manage token (send to server) when you fetch a token
-```` javascript
-EasyPwaManager.getPushManager().firebase().onTokenFetched( function(token) {
-    console.log('You fetch a new token, you can send it to server.');
+var myFirebaseApp = firebase.initializeApp({...});
+EasyPWA.init({
+    ...
+    firebaseApp: myFirebaseApp,
 });
 ````
 
-##### Get a token and manage it (previous declared callback is called)
+##### Get the token (and send it to the server if new)
 ```` javascript
-EasyPwaManager.getPushManager().firebase().fetchToken().then( function(token) {
-    console.log("new token: "+token);
-});
-````
-
-##### Get current token
-```` javascript
-PwaManager.getPushManager().firebase().getToken().then( function(token) {
+EasyPWA.firebase().getToken().then( function(token) {
     console.log('new token: '+token);
 });
 ````
 
 ##### Delete a token
 ```` javascript
-EasyPwaManager.getPushManager().firebase().deleteToken(token).then(function(){
+EasyPWA.firebase().deleteToken(token).then(function(){
     console.log('Token deleted');
 });
 ````
 
-##### Manage Foreground notification differently
-```` javascript
-EasyPwaManager.getPushManager().firebase().onForegroundNotification(function() {
-    console.log('Your are currently on the the site and you received a notification.');
-});
-````
 
 ### Available Events
 

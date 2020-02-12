@@ -1,59 +1,28 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
-import { default as InstallManagerClass } from './InstallManager';
-import { default as PushManagerClass } from './PushManager';
-import { Debug, InstallManager, logger, loggerParameter, PushManager } from '../service';
-import { WindowNavigator } from '../type';
-import PageChangingEvent from '../event/PageChangingEvent';
-import ReadyEvent from '../event/ReadyEvent';
+import PageChangingEvent from '../Event/PageChangingEvent';
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * All methods for managing PWA.
  */
-export default class PwaManager {
+export default class PwaManager extends AbstractManager {
   private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
 
   private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
 
   private manifest?: WebManifest = null;
 
-  /**
-   * Call this function, first.
-   * @param swPath The path to the service worker
-   * @param options options to pass to service worker registration.
-   * @return Return a promise when treatment is finished.
-   */
-  public async init(swPath: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
+  public async init(): Promise<void> {
+    this.initPwaCompat();
     this.initOfflineClass();
     this.initPageChangingEvent();
     this.manifest = await manifest.read();
-    require('../../../node_modules/pwacompat/pwacompat.min.js');
-    this.serviceWorkerRegistration = await this.registerServiceWorker(swPath, options);
 
-    window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
-
-    return this.serviceWorkerRegistration;
-  }
-
-  /**
-   * Get the Push Manager for managing push notification.
-   */
-  public getPushManager(): PushManagerClass {
-    if (!this.serviceWorkerRegistration) {
-      throw new Error('A Service worker has to be registered before.');
-    }
-
-    return PushManager;
-  }
-
-  /**
-   * Get the Install Manager for managing Home Screen.
-   */
-  public getInstallManager(): InstallManagerClass {
-    if (!this.serviceWorkerRegistration) {
-      throw new Error('A Service worker has to be registered before.');
-    }
-
-    return InstallManager;
+    this.serviceWorkerRegistration = await this.registerServiceWorker(
+      App.configuration.swPath,
+      App.configuration.swRegistrationOptions,
+    );
   }
 
   /**
@@ -78,15 +47,15 @@ export default class PwaManager {
   }
 
   /**
-   * When you want to update app (get a service worker refresh)
+   * When you want to update app (get a Service worker refresh)
    */
   private forceUpdateApp(reg: ServiceWorkerRegistration): void {
     reg.waiting.postMessage('skipWaiting');
   }
 
   /**
-   * Register service worker
-   * @param swUrl Path to service worker
+   * Register Service worker
+   * @param swUrl Path to Service worker
    * @param options Options to pass to register
    */
   private registerServiceWorker(swUrl: string, options?: RegistrationOptions): Promise<ServiceWorkerRegistration> {
@@ -134,28 +103,11 @@ export default class PwaManager {
   }
 
   /**
-   * Get the service worker registration
-   * @return Get the service worker registration or null if it's bad registered.
-   */
-  public getServiceWorkerRegistration(): ServiceWorkerRegistration | null {
-    return this.serviceWorkerRegistration;
-  }
-
-  /**
    * Get the manifest content.
    * @return Get the manifest's content if it was read successfully, null otherwise.
    */
   public getManifest(): WebManifest | null {
     return this.manifest;
-  }
-
-  /**
-   * Enable Debug mode. More information is showed in the console for helping to Debug your PWA.
-   */
-  public enableDebug(): void {
-    loggerParameter.enableDebug();
-    logger.warn('DEBUG ENABLED');
-    Debug.analyse();
   }
 
   /**
@@ -193,5 +145,18 @@ export default class PwaManager {
     window.addEventListener('load', (): void => {
       setConnectionStatus(navigator.onLine);
     });
+  }
+
+  private initPwaCompat(): void {
+    if (!App.configuration.PWACompat) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.10/pwacompat.min.js');
+    script.setAttribute('async', '');
+    script.setAttribute('integrity', 'sha384-I1iiXcTSM6j2xczpDckV+qhhbqiip6FyD6R5CpuqNaWXvyDUvXN5ZhIiyLQ7uuTh');
+    script.setAttribute('crossorigin', 'anonymous');
+    document.head.appendChild(script);
   }
 }

@@ -1,12 +1,20 @@
-import { PwaManager } from '../service';
-import FirebaseProvider from '../push/FirebaseProvider';
-import FirebaseAppMessaging from '../push/FirebaseAppMessaging';
+import FirebaseProvider from '../Push/FirebaseProvider';
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * Methods for managing about Push
  */
-export default class PushManager {
+export default class PushManager extends AbstractManager {
   private firebaseInstance: FirebaseProvider | null;
+
+  public init(): Promise<void> {
+    if (App.configuration.firebaseApp) {
+      return this.initFirebase();
+    }
+
+    return Promise.resolve();
+  }
 
   /**
    * Requests permission
@@ -31,7 +39,9 @@ export default class PushManager {
    * @return Return a promise when notification is showed.
    */
   public showNotification(title: string, options: NotificationOptions): Promise<void> {
-    return PwaManager.getServiceWorkerRegistration().showNotification(title, options);
+    return navigator.serviceWorker.ready.then(serviceWorkerRegistration =>
+      serviceWorkerRegistration.showNotification(title, options),
+    );
   }
 
   /**
@@ -43,23 +53,28 @@ export default class PushManager {
   }
 
   /**
-   * Get the Firebase provider. First time, you have to pass a firebase app initialized
-   * @param firebaseApp initialized firebase app
+   * Get the Firebase provider.
    * @return Firebase provider or null if init function was not called.
    */
-  public firebase(firebaseApp?: FirebaseAppMessaging): FirebaseProvider | null {
-    if (!firebaseApp.messaging) {
-      throw new Error('Firebase messaging script is not loaded.');
-    }
-
-    if (firebaseApp) {
-      this.firebaseInstance = new FirebaseProvider(PwaManager.getServiceWorkerRegistration(), firebaseApp);
-    }
-
+  public firebase(): FirebaseProvider | null {
     if (!this.firebaseInstance) {
       throw new Error('You have to provide a firebase app initialized');
     }
 
     return this.firebaseInstance;
+  }
+
+  protected initFirebase(): Promise<void> {
+    if (!App.configuration.firebaseApp.messaging) {
+      throw new Error('Firebase messaging script is not loaded.');
+    }
+
+    return new Promise(resolve => {
+      navigator.serviceWorker.ready.then(registration => {
+        this.firebaseInstance = new FirebaseProvider(registration, App.configuration.firebaseApp);
+
+        resolve();
+      });
+    });
   }
 }

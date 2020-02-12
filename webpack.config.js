@@ -56,17 +56,20 @@ let frontConfig = Object.assign({}, config, {
   },
   output: {
     libraryTarget: 'umd',
-    library: 'EasyPwaManager'
+    library: 'EasyPWA'
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /(node_modules)/,
         use: [
           'babel-loader',
-          'ts-loader'
-        ]
+          'ts-loader',
+        ],
+        include:
+          [
+            path.resolve("src"),
+          ]
       },
       {
         test: /\.scss$/i,

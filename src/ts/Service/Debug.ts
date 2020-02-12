@@ -1,6 +1,6 @@
 import { detect } from 'detect-browser';
 import manifest, { WebManifest, WebManifestIcon } from 'web-manifest-reader';
-import { logger } from '../service';
+import App from '../App';
 
 export default class Debug {
   private static readonly TXT: { [key: string]: string } = {
@@ -37,7 +37,7 @@ export default class Debug {
    * Info about current browser
    */
   private browser(): void {
-    logger.info(detect());
+    App.logger.info(detect());
   }
 
   /**
@@ -94,14 +94,14 @@ export default class Debug {
    * Show an ok in console
    */
   private showOk(txt: string): void {
-    logger.debug(`PWA Debug : OK - ${txt}`);
+    App.logger.debug(`PWA Debug : OK - ${txt}`);
   }
 
   /**
    * Show an error in console
    */
   private showErr(txt: string): void {
-    logger.error(`PWA Debug : ERR - ${txt}`);
+    App.logger.error(`PWA Debug : ERR - ${txt}`);
   }
 
   private showResult(txt: string, ok: boolean): void {

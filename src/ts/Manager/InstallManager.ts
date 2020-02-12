@@ -1,44 +1,24 @@
-import { detect } from 'detect-browser';
-import { BeforeInstallPromptEvent } from '../type';
-import { PwaManager, Translator, logger } from '../service';
-import HelperAvailableEvent from '../event/HelperAvailableEvent';
-import BrowserInfo from '../../model/BrowserInfo';
-import ReadyEvent from '../event/ReadyEvent';
+import { detect as BrowserDetect } from 'detect-browser';
+import HelperAvailableEvent from '../Event/HelperAvailableEvent';
+import ReadyEvent from '../Event/ReadyEvent';
+import AbstractManager from './AbstractManager';
+import App from '../App';
 
 /**
  * Methods for managing about Installing
  */
-export default class InstallManager {
-  private static readonly DEFAULT_INTERVAL_BETWEEN_INVITATION = 50;
-
+export default class InstallManager extends AbstractManager {
   private static readonly KEY_STORAGE_INVITATION = 'easy-pwa-last-invitation-answered';
 
   private homeScreenPrompt?: BeforeInstallPromptEvent = null;
 
-  private desktopPwaEnabled = false;
-
-  private inviteCriteria: () => boolean = () => true;
-
-  private intervalBetweenInvitation = InstallManager.DEFAULT_INTERVAL_BETWEEN_INVITATION;
-
   constructor() {
+    super();
     this.initEvents();
   }
 
-  /**
-   * Set interval in day before to invite again
-   * @param dayInterval Interval in day between invitation. Set 0 if you want to disable our system.
-   */
-  public setIntervalBetweenInvitation(dayInterval: number): void {
-    this.intervalBetweenInvitation = dayInterval;
-  }
-
-  /**
-   * Add additional criteria before propose invite to install
-   * @param callback A function which has to respond a boolean. True if you are ready to show invite, false overwise
-   */
-  public addInviteCriteria(callback: () => boolean): void {
-    this.inviteCriteria = callback;
+  public init(): Promise<void> {
+    return Promise.resolve();
   }
 
   /**
@@ -48,14 +28,14 @@ export default class InstallManager {
     const template = require('../../templates/invite.html.twig');
     this.createInvitePopup(
       template({
-        trans: Translator.getTranslations(),
-        manifest: PwaManager.getManifest(),
+        trans: App.translator.getTranslations(),
+        manifest: App.pwaManager.getManifest(),
       }),
     );
   }
 
   /**
-   * When event has been sent by browser, it's possible to call prompt method to add to home screen
+   * When Event has been sent by browser, it's possible to call prompt method to add to home screen
    */
   private showInstallPrompt(): void {
     if (this.homeScreenPrompt !== null) {
@@ -70,7 +50,7 @@ export default class InstallManager {
   private getHelperByBrowser(): Function | null {
     const bo = this.getBrowserInfo();
 
-    if (this.installPromptReady() && (this.desktopPwaEnabled || !RegExp('Windows|Linux').test(bo.os))) {
+    if (this.installPromptReady() && (App.configuration.desktop || !RegExp('Windows|Linux').test(bo.os))) {
       return this.showInstallPrompt;
     }
 
@@ -93,7 +73,7 @@ export default class InstallManager {
    * Check if a helper is available for the current browser
    */
   private helperIsAvailable(): boolean {
-    return !PwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
+    return !App.pwaManager.isAppMode() && typeof this.getHelperByBrowser() === 'function';
   }
 
   /**
@@ -107,18 +87,11 @@ export default class InstallManager {
   }
 
   /**
-   * Enable desktop Pwa
-   */
-  public enableDesktopPwa(): void {
-    this.desktopPwaEnabled = true;
-  }
-
-  /**
    * IOS Helper: this function should be only called to test
    */
   private showIOSHelper(): void {
     const template = require('../../templates/helper/ios.html.twig');
-    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-ios');
+    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-ios');
   }
 
   /**
@@ -126,7 +99,7 @@ export default class InstallManager {
    */
   private showFirefoxHelper(): void {
     const template = require('../../templates/helper/firefox.html.twig');
-    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-firefox');
+    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-firefox');
   }
 
   /**
@@ -134,7 +107,7 @@ export default class InstallManager {
    */
   private showSamsungHelper(): void {
     const template = require('../../templates/helper/samsung.html.twig');
-    this.createHelperPopup(template(Translator.getTranslations()), 'pwa-samsung');
+    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-samsung');
   }
 
   /**
@@ -150,10 +123,12 @@ export default class InstallManager {
   private initEvents(): void {
     window.addEventListener('beforeinstallprompt', (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
-      logger.info('Event beforeinstallprompt received.');
+      App.logger.info('Event beforeinstallprompt received.');
       this.homeScreenPrompt = e;
 
-      this.emitHelperAvailableEvent();
+      if (App.isReady) {
+        this.emitHelperAvailableEvent();
+      }
     });
 
     // Artificial helper is available right now
@@ -167,7 +142,7 @@ export default class InstallManager {
   }
 
   /**
-   * Emit an event to indicate a helper is available for installing on the current browser
+   * Emit an Event to indicate a helper is available for installing on the current browser
    */
   private emitHelperAvailableEvent(): void {
     if (!this.isTimeToInvite()) {
@@ -187,7 +162,7 @@ export default class InstallManager {
   }
 
   /**
-   * Check if event to add home screen has been sent by browser (chrome/edge)
+   * Check if Event to add home screen has been sent by browser (chrome/edge)
    */
   private installPromptReady(): boolean {
     return this.homeScreenPrompt !== null;
@@ -264,23 +239,19 @@ export default class InstallManager {
     if (lastInvitationAnswered) {
       const dateLastInvitationAnswered = new Date(lastInvitationAnswered);
       const diffDay = (new Date().getTime() - dateLastInvitationAnswered.getTime()) / 1000 / 86400;
-      if (diffDay < this.intervalBetweenInvitation) {
+      if (diffDay < App.configuration.intervalBetweenInvitation) {
         return false;
       }
     }
 
-    if (this.inviteCriteria) {
-      return this.inviteCriteria();
-    }
-
-    return true;
+    return App.configuration.additionalInviteCriteria();
   }
 
   /**
    * Get Browser Info
    */
   private getBrowserInfo(): BrowserInfo {
-    const bo = detect();
+    const bo = BrowserDetect();
 
     return {
       os: bo.os,

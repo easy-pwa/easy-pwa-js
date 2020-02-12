@@ -13,11 +13,19 @@ var firebaseApp = firebase.initializeApp(firebaseConfig);
 Init
 
  */
-EasyPwaManager.enableDebug();
 
-EasyPwaManager.init('./sw.js', {scope: './'}).then( function(reg) {
-  EasyPwaManager.getInstallManager().enableDesktopPwa();
-  EasyPwaManager.getPushManager().firebase(firebaseApp)
+EasyPWA.init({
+  'swPath': './sw.js',
+  'registrationOptions': {scope: './'},
+  'debug': true,
+  'desktop': true,
+  'firebaseApp': firebaseApp,
+  'newTokenFetchedCallback': function(token) {
+    console.log('Token sent to the server', token);
+    return Promise.resolve();
+  }
+}).then(function() {
+  console.log('EasyPWA initialized');
 });
 
 /*
@@ -26,54 +34,49 @@ Home Screen
 
  */
 
-window.addEventListener('easy-pwa-ready', function(e) {
-  var installManager = EasyPwaManager.getInstallManager();
-
-  window.addEventListener('easy-pwa-helper-available', function (e) {
-    document.getElementById('homescreen_event_received').style.display = "block";
+window.addEventListener('easy-pwa-helper-available', function (e) {
+  document.getElementById('homescreen_invite_event_received').style.display = "block";
+  document.getElementById('homescreen_invite_no_event').style.display = "none";
+  document.getElementById('homescreen_invite_button').addEventListener('click', () => {
     e.detail.showInvite();
   });
-
-  // The methods bellow shouldn't be called directly. It's just for the testing context.
-
-  document.getElementById('homescreen_helper_ios').addEventListener('click', function () {
-    installManager.showIOSHelper();
-  });
-
-  document.getElementById('homescreen_helper_firefox').addEventListener('click', function () {
-    installManager.showFirefoxHelper();
-  });
-
-  document.getElementById('homescreen_helper_samsung').addEventListener('click', function () {
-    installManager.showSamsungHelper();
-  });
 });
+
 /*
 
 Notification
 
  */
+if (EasyPWA.isNotificationSupported()) {
+  document.getElementById('notifications_not_supported').style.display = "none";
+  document.getElementById('notifications_supported').style.display = "";
+}
 
-function setViewPermission(permission) {
+function setPermission(permission) {
   document.getElementById('permission').innerHTML = permission;
+  if (permission === 'granted') {
+    EasyPWA.firebase().getToken().then(function (token) {
+      document.getElementById('notifications_token').innerHTML = token;
+    });
+  }
 }
 
 window.addEventListener('load', function(e) {
   navigator.permissions.query({name: 'notifications'}).then(notificationPerm => {
-    setViewPermission(notificationPerm.state);
+    setPermission(notificationPerm.state);
     notificationPerm.onchange = () => {
-      setViewPermission(notificationPerm.state);
+      setPermission(notificationPerm.state);
     }
   });
 });
 
 window.addEventListener('easy-pwa-ready', function(e) {
   document.getElementById('bt_notification_permission').addEventListener('click', function () {
-    EasyPwaManager.getPushManager().requestPermission();
+    EasyPWA.requestNotificationPermission();
   });
 
   document.getElementById('bt_notification_send').addEventListener('click', function () {
-    EasyPwaManager.getPushManager().showNotification('Title', {
+    EasyPWA.showNotification('Title of your notification', {
       icon: 'images/icon512.png',
       body: 'A description for your notification.',
       vibrate: [20, 300, 20]
