@@ -11,7 +11,3 @@ interface FetchEvent extends ExtendableEvent {
   respondWith(data: Promise<any>): void;
   readonly request: Request;
 }
-
-interface InstallEvent extends ExtendableEvent {
-  activeWorker: ServiceWorkerRegistration;
-}

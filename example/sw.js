@@ -18,4 +18,4 @@ Site have to respond something when there is no connection
 In this case, we just return a substitution page
 ---------------------
  */
-self.EasyPwaSW.pageSubstitutionPlugin().run('easy-pwa-substitution', './offline.html');
+self.EasyPwaSW.plugins.pageSubstitutionPlugin().run('easy-pwa-substitution', './offline.html');

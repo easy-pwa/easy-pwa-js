@@ -4,8 +4,8 @@ Tools for managing your Progressive Web App.
 
 ## Features
 * Manage PWA features easily
+* Each browser shows a specific helper to help people to install your app.
 * Manage Push Notifications easily.
-* A specific helper is showed for each browser to help people to install your app.
 
 ## Example
 
@@ -76,7 +76,7 @@ Install my app ?
 <button id="invite_accept">yes</button>
 <button id="invite_dismiss">no</button>
 </div>
-```` 
+````
 
 javascript invite:
 ```` javascript
@@ -214,7 +214,7 @@ EasyPWA.firebase().deleteToken(token).then(function(){
 
 ### Available Events
 
-#### Wait Easy PWA is fully initialized 
+#### Wait Easy PWA is fully initialized
 
 ```` javascript
 window.addEventListener('easy-pwa-ready', function(e) {
@@ -275,7 +275,7 @@ When you are offline, the css class "offline" is added on the body tag.
 
 Show a substitution page when the user is offline
 ```` javascript
-self.EasyPwaSW.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.html');
+self.EasyPwaSW.pageSubstitutionPlugin('easy-pwa-substitution', '/offline.html').run();
 ````
 
 

@@ -1,8 +1,11 @@
-import { detect as BrowserDetect } from 'detect-browser';
+import {detect as BrowserDetect} from 'detect-browser';
+
 import HelperAvailableEvent from '../Event/HelperAvailableEvent';
 import ReadyEvent from '../Event/ReadyEvent';
 import AbstractManager from './AbstractManager';
 import App from '../App';
+
+const tmpl = require('blueimp-tmpl');
 
 /**
  * Methods for managing about Installing
@@ -10,7 +13,7 @@ import App from '../App';
 export default class InstallManager extends AbstractManager {
   private static readonly KEY_STORAGE_INVITATION = 'easy-pwa-last-invitation-answered';
 
-  private homeScreenPrompt?: BeforeInstallPromptEvent = null;
+  private homeScreenPrompt: null|BeforeInstallPromptEvent = null;
 
   constructor() {
     super();
@@ -25,12 +28,10 @@ export default class InstallManager extends AbstractManager {
    * Show an automatic invite to add to Home Screen.
    */
   private async showInvite(): Promise<void> {
-    const template = require('../../templates/invite.html.twig');
-    this.createInvitePopup(
-      template({
+    this.createInvitePopup(tmpl(require('../../templates/invite.html'), {
         trans: App.translator.getTranslations(),
         manifest: App.pwaManager.getManifest(),
-      }),
+      })
     );
   }
 
@@ -48,21 +49,29 @@ export default class InstallManager extends AbstractManager {
    * Get the corresponding helper to the current browser. Helper differs between browsers
    */
   private getHelperByBrowser(): Function | null {
-    const bo = this.getBrowserInfo();
+    const system = BrowserDetect();
 
-    if (this.installPromptReady() && (App.configuration.desktop || !RegExp('Windows|Linux').test(bo.os))) {
+    if (system === null || system.os === null) {
+      return null;
+    }
+
+    const operatingSystem = system.os as string;
+    const browserName = system.name;
+    const browserVersion = parseFloat(system.version);
+
+    if (this.installPromptReady() && (App.configuration.desktop || !RegExp('Windows|Linux').test(operatingSystem))) {
       return this.showInstallPrompt;
     }
 
-    if (bo.os === 'iOS' && (bo.browser === 'safari' || bo.browser === 'ios') && bo.version >= 11.3) {
+    if (operatingSystem === 'iOS' && (browserName === 'safari' || browserName === 'ios') && browserVersion >= 11.3) {
       return this.showIOSHelper;
     }
 
-    if (bo.os === 'Android OS' && bo.browser === 'firefox') {
+    if (operatingSystem === 'Android OS' && browserName === 'firefox') {
       return this.showFirefoxHelper;
     }
 
-    if (bo.os === 'Android OS' && bo.browser === 'samsung' && bo.version >= 4) {
+    if (operatingSystem === 'Android OS' && browserName === 'samsung' && browserVersion >= 4) {
       return this.showSamsungHelper;
     }
 
@@ -87,27 +96,33 @@ export default class InstallManager extends AbstractManager {
   }
 
   /**
-   * IOS Helper: this function should be only called to test
+   * IOS Helper
    */
   private showIOSHelper(): void {
-    const template = require('../../templates/helper/ios.html.twig');
-    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-ios');
+    this.createHelperPopup(
+      tmpl(require('../../templates/helper/ios.html'), App.translator.getTranslations()),
+      'pwa-ios'
+    );
   }
 
   /**
-   * Firefox Helper: this function should be only called to test
+   * Firefox Helper
    */
   private showFirefoxHelper(): void {
-    const template = require('../../templates/helper/firefox.html.twig');
-    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-firefox');
+    this.createHelperPopup(
+      tmpl(require('../../templates/helper/firefox.html'), App.translator.getTranslations()),
+      'pwa-firefox'
+    );
   }
 
   /**
-   * Samsung Helper: this function should be only called to test
+   * Samsung Helper
    */
   private showSamsungHelper(): void {
-    const template = require('../../templates/helper/samsung.html.twig');
-    this.createHelperPopup(template(App.translator.getTranslations()), 'pwa-samsung');
+    this.createHelperPopup(
+      tmpl(require('../../templates/helper/samsung.html'), App.translator.getTranslations()),
+      'pwa-samsung'
+    );
   }
 
   /**
@@ -121,6 +136,7 @@ export default class InstallManager extends AbstractManager {
    * Init all events about add home screen
    */
   private initEvents(): void {
+    // @ts-ignore
     window.addEventListener('beforeinstallprompt', (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       App.logger.info('Event beforeinstallprompt received.');
@@ -149,15 +165,13 @@ export default class InstallManager extends AbstractManager {
       return;
     }
 
-    const event = new CustomEvent(HelperAvailableEvent.EVENT_NAME, {
-      detail: new HelperAvailableEvent(
-        this,
-        this.homeScreenPrompt,
-        this.inviteProcessed,
-        this.showInvite,
-        this.showHelper,
-      ),
-    });
+    const event = new HelperAvailableEvent(
+      this,
+      this.homeScreenPrompt,
+      this.inviteProcessed,
+      this.showInvite,
+      this.showHelper
+    );
     window.dispatchEvent(event);
   }
 
@@ -182,9 +196,8 @@ export default class InstallManager extends AbstractManager {
 
     const closeHelper = (): void => {
       document.body.classList.remove('pwa-helper-active');
-      // eslint-disable-next-line no-unused-expressions
+
       document.getElementsByClassName('pwa-homescreen-helper')[0]?.remove();
-      // eslint-disable-next-line no-unused-expressions
       document.getElementsByClassName('pwa-homescreen-helper-mask')[0]?.remove();
     };
 
@@ -221,7 +234,7 @@ export default class InstallManager extends AbstractManager {
       closeInvite();
     });
 
-    popupContent.getElementsByClassName('pwa-homescreen-invite-close')[0].addEventListener('click', e => {
+    popupContent.getElementsByClassName('pwa-homescreen-invite-close')[0].addEventListener('click', (e: Event) => {
       e.stopPropagation();
       closeInvite();
     });
@@ -245,18 +258,5 @@ export default class InstallManager extends AbstractManager {
     }
 
     return App.configuration.additionalInviteCriteria();
-  }
-
-  /**
-   * Get Browser Info
-   */
-  private getBrowserInfo(): BrowserInfo {
-    const bo = BrowserDetect();
-
-    return {
-      os: bo.os,
-      browser: bo.name,
-      version: parseFloat(bo.version),
-    };
   }
 }

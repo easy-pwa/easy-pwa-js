@@ -1,7 +1,7 @@
 import Configuration from './Configuration';
 
 export default class ConfigurationValidator {
-  public validates(config: Configuration): Error[] {
+  public static validates(config: Configuration): Error[] {
     const errors: Error[] = [];
 
     if (!config.swPath || typeof config.swPath !== 'string') {

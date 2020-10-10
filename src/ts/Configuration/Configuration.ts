@@ -1,6 +1,6 @@
 export default class Configuration {
   // Path to your service worker
-  public swPath: string;
+  public swPath: string = '/sw.js';
 
   // Options registration for the service worker
   public swRegistrationOptions: RegistrationOptions = {};

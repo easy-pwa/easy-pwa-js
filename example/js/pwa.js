@@ -38,7 +38,7 @@ window.addEventListener('easy-pwa-helper-available', function (e) {
   document.getElementById('homescreen_invite_event_received').style.display = "block";
   document.getElementById('homescreen_invite_no_event').style.display = "none";
   document.getElementById('homescreen_invite_button').addEventListener('click', () => {
-    e.detail.showInvite();
+    e.showInvite();
   });
 });
 

@@ -1,4 +1,5 @@
 import { FirebaseMessaging } from '@firebase/messaging-types';
+
 import App from '../App';
 
 export default class FirebaseProvider {
@@ -53,7 +54,7 @@ export default class FirebaseProvider {
 
       this.messaging
         .getToken()
-        .then((token?: string) => {
+        .then((token: string|null) => {
           clearTimeout(timeout);
           if (token) {
             tokenFetchedSuccessfully(token);
@@ -96,7 +97,7 @@ export default class FirebaseProvider {
 
     if (Object.prototype.hasOwnProperty.call(payload, 'notification')) {
       const notificationSettings = payload.notification;
-      notificationSettings.data = { ...notificationSettings.data };
+      notificationSettings.data = { ...notificationSettings.data, };
 
       // Request managed by FCM
       notificationSettings.data.FCM_MSG = {};

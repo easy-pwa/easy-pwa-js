@@ -1,4 +1,5 @@
 import { ILogger } from 'js-logger/src/types';
+
 import Configuration from './Configuration/Configuration';
 import Logger from './Service/Logger';
 import PwaManager from './Manager/PwaManager';
@@ -10,7 +11,7 @@ import Debug from './Service/Debug';
 import ConfigurationValidator from './Configuration/ConfigurationValidator';
 
 export default new (class App {
-  public configuration: Configuration;
+  public configuration: Configuration = new Configuration();
 
   public logger: ILogger;
 
@@ -27,7 +28,9 @@ export default new (class App {
   public isReady = false;
 
   constructor() {
-    this.initLogger();
+    this.loggerParameter = new Logger();
+    this.logger = this.loggerParameter.getLogger();
+
     this.translator = new Translator();
     this.pwaManager = new PwaManager();
     this.installManager = new InstallManager();
@@ -36,9 +39,9 @@ export default new (class App {
 
   public init(userConfiguration: Configuration): Promise<void> {
     return new Promise((resolve, reject) => {
-      const configuration = { ...new Configuration(), ...userConfiguration };
+      this.configuration = { ...this.configuration, ...userConfiguration, };
 
-      const errors = new ConfigurationValidator().validates(configuration);
+      const errors = ConfigurationValidator.validates(this.configuration);
       if (errors.length > 0) {
         errors.forEach(error => {
           this.logger.error(error);
@@ -46,8 +49,6 @@ export default new (class App {
 
         return reject();
       }
-
-      this.configuration = configuration;
 
       if (this.configuration.debug) {
         this.enableDebug();
@@ -57,18 +58,16 @@ export default new (class App {
         return reject();
       }
 
-      return Promise.all([this.pwaManager.init(), this.installManager.init(), this.pushManager.init()]).then(() => {
+      return Promise.all([
+        this.pwaManager.init(),
+        this.installManager.init(),
+        this.pushManager.init(),
+      ]).then(() => {
         this.isReady = true;
-        window.dispatchEvent(new Event(ReadyEvent.EVENT_NAME));
+        window.dispatchEvent(new ReadyEvent());
         return resolve();
       });
     });
-  }
-
-  protected initLogger(): void {
-    const logger = new Logger();
-    this.loggerParameter = logger;
-    this.logger = logger.getLogger();
   }
 
   protected enableDebug(): void {

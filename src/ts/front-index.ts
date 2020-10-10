@@ -1,7 +1,7 @@
 import '../scss/base.scss';
 import App from './App';
 
-module.exports = {
+const lib = {
   init: App.init.bind(App),
   isAppMode: App.pwaManager.isAppMode.bind(App.pwaManager),
   getManifest: App.pwaManager.getManifest.bind(App.pwaManager),
@@ -11,3 +11,6 @@ module.exports = {
   requestNotificationPermission: App.pushManager.requestPermission.bind(App.pushManager),
   firebase: App.pushManager.firebase.bind(App.pushManager),
 };
+
+module.exports = lib;
+export default lib;

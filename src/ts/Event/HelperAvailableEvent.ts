@@ -1,10 +1,8 @@
 import InstallManager from '../Manager/InstallManager';
-import AbstractEvent from './AbstractEvent';
 
-export default class HelperAvailableEvent extends AbstractEvent {
-  public static readonly EVENT_NAME = 'easy-pwa-helper-available';
+export default class HelperAvailableEvent extends CustomEvent<HelperAvailableEvent> {
 
-  public readonly beforeinstallprompt?: BeforeInstallPromptEvent;
+  public readonly beforeinstallprompt: null|BeforeInstallPromptEvent;
 
   public readonly inviteProcessed: Function;
 
@@ -16,12 +14,13 @@ export default class HelperAvailableEvent extends AbstractEvent {
 
   constructor(
     homeScreenManager: InstallManager,
-    event: BeforeInstallPromptEvent,
+    event: null|BeforeInstallPromptEvent,
     inviteProcessed: Function,
     showInvite: Function,
-    showHelper: Function,
+    showHelper: Function
   ) {
-    super();
+    super('easy-pwa-helper-available');
+
     this.beforeinstallprompt = event;
     this.inviteProcessed = inviteProcessed;
     this.showInviteFunction = showInvite;

@@ -1,19 +1,23 @@
-import PageSubstitutionPlugin from './Plugins/SubstitutionPage';
+import PluginManager from './Plugins/PluginManager';
 
 export default class ServiceWorkerManager {
+  protected sw: ServiceWorkerGlobalScope;
+
+  public plugins: PluginManager;
+
   constructor() {
+    this.plugins = new PluginManager();
+    this.sw = (self as unknown) as ServiceWorkerGlobalScope;
+
     this.initSkipWaiting();
   }
 
   private initSkipWaiting(): void {
-    self.addEventListener('message', (messageEvent): void => {
+
+    this.sw.addEventListener('message', (messageEvent): void => {
       if (messageEvent.data === 'skipWaiting') {
         skipWaiting();
       }
     });
-  }
-
-  public pageSubstitutionPlugin(): PageSubstitutionPlugin {
-    return new PageSubstitutionPlugin();
   }
 }
