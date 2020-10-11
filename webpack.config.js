@@ -11,7 +11,7 @@ const config = {
     open: true,
     openPage: '/example/',
     onListening: (server) => {
-      const [port,] = server.listeningApp.address();
+      const port = server.listeningApp.address().port;
       console.info("\n\nGo to => http://localhost:"+port+"/example/\n");
     },
   },

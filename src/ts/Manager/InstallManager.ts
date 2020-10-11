@@ -202,7 +202,7 @@ export default class InstallManager extends AbstractManager {
     };
 
     popupContent.addEventListener('click', closeHelper);
-    window.setTimeout(closeHelper, 9000);
+    window.setTimeout(closeHelper, 12000);
 
     document.body.appendChild(popupContent);
     document.body.appendChild(mask);

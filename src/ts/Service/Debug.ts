@@ -79,7 +79,7 @@ export default class Debug {
           this.showErr(Debug.TXT.SW_REGISTERED);
           reject();
         }
-      }, 5000);
+      }, 10000);
 
       navigator.serviceWorker.ready.then(reg => {
         this.sw = reg;
