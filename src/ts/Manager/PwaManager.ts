@@ -158,9 +158,8 @@ export default class PwaManager extends AbstractManager {
     }
 
     const script = document.createElement('script');
-    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.10/pwacompat.min.js');
+    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat');
     script.setAttribute('async', '');
-    script.setAttribute('integrity', 'sha384-I1iiXcTSM6j2xczpDckV+qhhbqiip6FyD6R5CpuqNaWXvyDUvXN5ZhIiyLQ7uuTh');
     script.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(script);
   }
