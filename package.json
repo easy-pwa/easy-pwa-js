@@ -25,7 +25,6 @@
     "fs": "0.0.1-security",
     "i": "^0.3.6",
     "js-logger": "^1.6.0",
-    "npm": "^6.14.8",
     "web-manifest-reader": "^1.2.3"
   },
   "devDependencies": {
@@ -61,7 +60,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "engines": {
-    "node": ">=13.5",
+    "node": ">=14.4",
     "npm": ">=6.13"
   },
   "scripts": {

@@ -24,7 +24,9 @@ export default class SubstitutionPage extends AbstractPlugin {
   private onFetched(event: FetchEvent): void {
     event.respondWith(
       fetch(event.request).catch(() => {
-        return caches.match(this.substitutionFile);
+        return caches.match(this.substitutionFile).then(
+          (response) => response || new Response('')
+        );
       })
     );
   }

@@ -1,5 +1,5 @@
 {
-  "name": "Progressive Web App",
+  "name": "easy-pwa-js",
   "short_name": "PWA",
   "description": "A progressive web app to test.",
   "start_url": "./",

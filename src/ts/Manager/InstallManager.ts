@@ -100,8 +100,7 @@ export default class InstallManager extends AbstractManager {
    */
   private showIOSHelper(): void {
     this.createHelperPopup(
-      tmpl(require('../../templates/helper/ios.html'), App.translator.getTranslations()),
-      'pwa-ios'
+      tmpl(require('../../templates/helper/ios.html'), App.translator.getTranslations())
     );
   }
 
@@ -110,8 +109,8 @@ export default class InstallManager extends AbstractManager {
    */
   private showFirefoxHelper(): void {
     this.createHelperPopup(
-      tmpl(require('../../templates/helper/firefox.html'), App.translator.getTranslations()),
-      'pwa-firefox'
+      tmpl(require('../../templates/helper/firefox.html'), App.translator.getTranslations())
+
     );
   }
 
@@ -120,8 +119,7 @@ export default class InstallManager extends AbstractManager {
    */
   private showSamsungHelper(): void {
     this.createHelperPopup(
-      tmpl(require('../../templates/helper/samsung.html'), App.translator.getTranslations()),
-      'pwa-samsung'
+      tmpl(require('../../templates/helper/samsung.html'), App.translator.getTranslations())
     );
   }
 
@@ -185,9 +183,8 @@ export default class InstallManager extends AbstractManager {
   /**
    * Create a helper popup
    */
-  private createHelperPopup(text: string, browserClass: string): void {
+  private createHelperPopup(text: string): void {
     const popupContent = document.createElement('div');
-    popupContent.classList.add(browserClass);
     popupContent.classList.add('pwa-homescreen-helper');
     popupContent.innerHTML = text;
 
