@@ -64,7 +64,7 @@
     "npm": ">=6.13"
   },
   "scripts": {
-    "prepare": "webpack --mode production",
+    "prepare": "rm -f node_modules/webpack-dev-server/node_modules/html-entities/lib/*.d.ts && webpack --mode production",
     "eslint": "eslint ./src --ext .ts,.js,.d.ts",
     "eslint-fix": "eslint ./src --ext .ts,.js,.d.ts --fix",
     "watch": "webpack --watch --mode development",
