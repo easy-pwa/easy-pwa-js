@@ -4,8 +4,8 @@ Tools for managing your Progressive Web App.
 
 ## Features
 * Manage PWA features easily
+* Each browser shows a specific helper to help people to install your app.
 * Manage Push Notifications easily.
-* A specific helper is showed for each browser to help people to install your app.
 
 ## Example
 
@@ -16,7 +16,7 @@ An example is available here:  [https://easy-pwa.github.io/easy-pwa-js/](https:/
 #### ES6
 
 ``` bash
-npm install easy-pwa-js
+npm install easy-pwa-js --save
 ```
 
 Use it in your modules:
@@ -55,14 +55,14 @@ EasyPWA.init({
 
 ### Invite the user to install your app
 
-If a helper is available for the current browser, an event is automatically emitted by EasyPWA.
+If a helper is available for the current browser, EasyPWA emits an event automatically.
 You have to listen and interact with it.
 
 #### Automatic method
-With this method, a standard invite is showed:
+With this method, EasyPWA shows a standard invite:
 ``` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
-    e.detail.showInvite();
+window.addEventListener('easy-pwa-helper-available', function(event) {
+    event.showInvite();
 });
 ```
 
@@ -76,28 +76,26 @@ Install my app ?
 <button id="invite_accept">yes</button>
 <button id="invite_dismiss">no</button>
 </div>
-```` 
+````
 
 javascript invite:
 ```` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
-    var helperAvailableEvent = e.detail;
-
+window.addEventListener('easy-pwa-helper-available', function(event) {
     document.getElementById('invite_accept').addEventListener('click', function() {
         document.getElementById('my_custom_invite').display = 'none';
-        helperAvailableEvent.acceptInvite();
+        event.acceptInvite();
     });
 
 document.getElementById('invite_dismiss').addEventListener('click', function() {
         document.getElementById('my_custom_invite').display = 'none';
-        helperAvailableEvent.dismissInvite();
+        event.dismissInvite();
     });
 });
 ````
 
 
 ### Enable push notifications (with Firebase)
-Add firebase library and initialize en new app.
+Add firebase library and initialize a new app.
 
 ``` javascript
 var firebaseConfig = {
@@ -137,7 +135,7 @@ window.addEventListener('easy-pwa-ready', function(e) {
 ```
 
 ## Available configuration
-A list of configuration elements if available [here](https://github.com/easy-pwa/easy-pwa-js/blob/master/src/ts/Configuration/Configuration.ts)
+A list of configuration elements if available [here](src/ts/Configuration/Configuration.ts)
 
 ## Available functions
 
@@ -161,7 +159,7 @@ if (EasyPWA.isAppMode()) {
 }
 ````
 
-### Check if notification is supported on this current browser
+### Check if the current browser supports notifications
 ```` javascript
 if (EasyPWA.isNotificationSupported()) {
     console.log('Notification is supported on this browser.');
@@ -214,21 +212,19 @@ EasyPWA.firebase().deleteToken(token).then(function(){
 
 ### Available Events
 
-#### Wait Easy PWA is fully initialized 
+#### Wait Easy PWA is fully initialized
 
 ```` javascript
 window.addEventListener('easy-pwa-ready', function(e) {
-    console.log('I'm ready!');
+    console.log('I\'m ready!');
 });
 ````
 
 #### Listening if install prompt is available
 
 ```` javascript
-window.addEventListener('easy-pwa-helper-available', function(e) {
+window.addEventListener('easy-pwa-helper-available', function(helperAvailableEvent) {
     console.log('A helper is available for this browser!');
-    var helperAvailableEvent = e.detail;
-
 
     helperAvailableEvent.showInvite();
     // OR
@@ -237,7 +233,7 @@ window.addEventListener('easy-pwa-helper-available', function(e) {
 });
 ````
 
-#### Detect page is changing
+#### Detect that page is changing
 In standalone mode, there are not browser elements visible. So, maybe, you would like to show a loader when page is changing.
 
 ```` javascript
@@ -275,7 +271,7 @@ When you are offline, the css class "offline" is added on the body tag.
 
 Show a substitution page when the user is offline
 ```` javascript
-self.EasyPwaSW.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.html');
+self.EasyPwaSW.plugins.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.html');
 ````
 
 

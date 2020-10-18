@@ -1,4 +1,5 @@
 import manifest, { WebManifest } from 'web-manifest-reader';
+
 import PageChangingEvent from '../Event/PageChangingEvent';
 import AbstractManager from './AbstractManager';
 import App from '../App';
@@ -7,11 +8,11 @@ import App from '../App';
  * All methods for managing PWA.
  */
 export default class PwaManager extends AbstractManager {
-  private onUpdateFoundCallback: (reg: ServiceWorkerRegistration) => void;
+  private onUpdateFoundCallback?: (reg: ServiceWorkerRegistration) => void;
 
-  private serviceWorkerRegistration?: ServiceWorkerRegistration = null;
+  private serviceWorkerRegistration: ServiceWorkerRegistration|null = null;
 
-  private manifest?: WebManifest = null;
+  private manifest: WebManifest|null = null;
 
   public async init(): Promise<void> {
     this.initPwaCompat();
@@ -21,7 +22,7 @@ export default class PwaManager extends AbstractManager {
 
     this.serviceWorkerRegistration = await this.registerServiceWorker(
       App.configuration.swPath,
-      App.configuration.swRegistrationOptions,
+      App.configuration.swRegistrationOptions
     );
   }
 
@@ -50,7 +51,7 @@ export default class PwaManager extends AbstractManager {
    * When you want to update app (get a Service worker refresh)
    */
   private forceUpdateApp(reg: ServiceWorkerRegistration): void {
-    reg.waiting.postMessage('skipWaiting');
+    return reg.waiting?.postMessage('skipWaiting');
   }
 
   /**
@@ -70,6 +71,10 @@ export default class PwaManager extends AbstractManager {
           if (reg.active) {
             reg.addEventListener('updatefound', (): void => {
               const worker = reg.installing;
+              if (worker === null) {
+                throw new Error('Installing should be not null');
+              }
+
               worker.addEventListener('statechange', (): void => {
                 if (worker.state === 'installed') {
                   if (this.onUpdateFoundCallback) {
@@ -153,9 +158,8 @@ export default class PwaManager extends AbstractManager {
     }
 
     const script = document.createElement('script');
-    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.10/pwacompat.min.js');
+    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/pwacompat');
     script.setAttribute('async', '');
-    script.setAttribute('integrity', 'sha384-I1iiXcTSM6j2xczpDckV+qhhbqiip6FyD6R5CpuqNaWXvyDUvXN5ZhIiyLQ7uuTh');
     script.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(script);
   }

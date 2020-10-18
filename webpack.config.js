@@ -13,18 +13,18 @@ const config = {
     onListening: (server) => {
       const port = server.listeningApp.address().port;
       console.info("\n\nGo to => http://localhost:"+port+"/example/\n");
-    }
+    },
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.d.ts', '.js'],
+    extensions: ['.ts', '.d.ts', '.js', '.html'],
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [new TerserPlugin(),],
   },
   plugins: [
     new LodashModuleReplacementPlugin(),
@@ -32,9 +32,9 @@ const config = {
   ],
 };
 
-const swConfig = Object.assign({}, config, {
+const swConfig = {...{}, ...config, ...{
   entry: {
-    'sw': './src/ts/sw-index.ts'
+    'sw': './src/ts/sw-index.ts',
   },
   module: {
     rules: [
@@ -43,20 +43,20 @@ const swConfig = Object.assign({}, config, {
         exclude: /(node_modules)/,
         use: [
           'babel-loader',
-          'ts-loader'
-        ]
+          'ts-loader',
+        ],
       },
-    ]
-  }
-});
+    ],
+  },
+},};
 
-let frontConfig = Object.assign({}, config, {
+const frontConfig = {...{}, ...config, ...{
   entry: {
     'front': './src/ts/front-index.ts',
   },
   output: {
     libraryTarget: 'umd',
-    library: 'EasyPWA'
+    library: 'EasyPWA',
   },
   module: {
     rules: [
@@ -68,30 +68,33 @@ let frontConfig = Object.assign({}, config, {
         ],
         include:
           [
-            path.resolve("src"),
-          ]
+            path.resolve('src'),
+          ],
       },
       {
         test: /\.scss$/i,
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader'
+          'sass-loader',
         ],
       },
       {
-        test: /\.twig$/,
+        test: /\.html$/,
         use: {
-          loader: 'twig-loader',
+          loader: 'raw-loader',
           options: {
             // See options section below
           },
-        }
-      }
+        },
+      },
     ],
   },
-});
+  node: {
+    fs: 'empty',
+  },
+},};
 
 module.exports = [
-  frontConfig, swConfig
+  frontConfig, swConfig,
 ];

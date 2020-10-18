@@ -18,7 +18,22 @@ module.exports = {
       'import/extensions': ['error', {
          'ts': 'never'
       }],
-      'import/no-named-default': 'off'
+      'import/no-named-default': 'off',
+      'no-unused-expressions': 'off',
+      'quotes': 'error',
+      'semi': 'error',
+      'comma-dangle': ['error', {
+        'arrays': 'always',
+        'objects': 'always',
+      }],
+      '@typescript-eslint/ban-ts-ignore': 'off',
+      'import/order': [
+        'error',
+        {
+          "newlines-between": 'always',
+          'groups': [['builtin', 'external',], ['internal', 'parent', 'sibling', 'index']]
+        },
+      ],
     },
     env: {
       browser: true,

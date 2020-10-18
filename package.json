@@ -20,9 +20,11 @@
     "@firebase/app-types": "^0.5.3",
     "@firebase/messaging-types": "^0.2.3",
     "@firebase/util": "^0.2.50",
-    "detect-browser": "^4.6.0",
+    "blueimp-tmpl": "^3.19.0",
+    "detect-browser": "^5.1.1",
+    "fs": "0.0.1-security",
+    "i": "^0.3.6",
     "js-logger": "^1.6.0",
-    "twig": "^1.15.1",
     "web-manifest-reader": "^1.2.3"
   },
   "devDependencies": {
@@ -44,28 +46,27 @@
     "json-loader": "^0.5.7",
     "lodash-webpack-plugin": "^0.11.5",
     "node-sass": "^4.14.1",
-    "prettier": "^1.18.2",
+    "path": "^0.12.7",
     "progress-bar-webpack-plugin": "^1.12.1",
     "raw-loader": "^0.5.1",
+    "remove-files-webpack-plugin": "^1.4.4",
     "sass-loader": "^7.3.1",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^2.3.7",
     "ts-loader": "^5.4.5",
-    "twig-loader": "^0.5.4",
-    "typescript": "^3.9.6",
+    "typescript": "^4.0.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
   "engines": {
-    "node": ">=13.5",
+    "node": ">=14.4",
     "npm": ">=6.13"
   },
   "scripts": {
     "prepare": "rm -f node_modules/webpack-dev-server/node_modules/html-entities/lib/*.d.ts && webpack --mode production",
     "eslint": "eslint ./src --ext .ts,.js,.d.ts",
     "eslint-fix": "eslint ./src --ext .ts,.js,.d.ts --fix",
-    "prettier": "prettier \"src/ts/**/*.ts\" --write",
     "watch": "webpack --watch --mode development",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
@@ -81,6 +82,10 @@
     "web",
     "app",
     "home",
-    "screen"
-  ]
+    "screen",
+    "notification",
+    "install",
+    "application"
+  ],
+  "types": "dist/types/front-index.d.ts"
 }

@@ -1,13 +1,13 @@
 <span class="pwa-homescreen-invite-content">
-    {% if manifest.icons and manifest.icons.length > 0 %}
-        <img src="{{ manifest.icons[0].src }}" class="pwa-homescreen-invite-icon" />
-    {% endif %}
+    {% if (o.manifest.icons && o.manifest.icons.length > 0) { %}
+        <img src="{%=o.manifest.icons[0].src%}" class="pwa-homescreen-invite-icon" />
+    {% } %}
     Installer <strong>
-        {% if manifest.name|length <= 20 %}
-            {{ manifest.name  }}
-        {% else %}
-            {{ manifest.short_name  }}
-        {% endif %}
+        {% if(o.manifest.name.length <= 20) { %}
+            {%=o.manifest.name %}
+        {% } else { %}
+            {%=o.manifest.short_name  %}
+        {% } %}
     </strong>
 </span>
 <span class="pwa-homescreen-invite-close">

@@ -17,7 +17,7 @@ export default class Translator {
   }
 
   public static getLangName(): string {
-    const [currentLang] = navigator.language.split('-');
+    const [currentLang,] = navigator.language.split('-');
     return currentLang;
   }
 }

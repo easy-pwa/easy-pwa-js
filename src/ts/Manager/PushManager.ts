@@ -6,7 +6,7 @@ import App from '../App';
  * Methods for managing about Push
  */
 export default class PushManager extends AbstractManager {
-  private firebaseInstance: FirebaseProvider | null;
+  private firebaseInstance: FirebaseProvider | null = null;
 
   public init(): Promise<void> {
     if (App.configuration.firebaseApp) {
@@ -40,7 +40,7 @@ export default class PushManager extends AbstractManager {
    */
   public showNotification(title: string, options: NotificationOptions): Promise<void> {
     return navigator.serviceWorker.ready.then(serviceWorkerRegistration =>
-      serviceWorkerRegistration.showNotification(title, options),
+      serviceWorkerRegistration.showNotification(title, options)
     );
   }
 
@@ -64,17 +64,14 @@ export default class PushManager extends AbstractManager {
     return this.firebaseInstance;
   }
 
-  protected initFirebase(): Promise<void> {
-    if (!App.configuration.firebaseApp.messaging) {
+  protected async initFirebase(): Promise<void> {
+    if (!App.configuration.firebaseApp || !App.configuration.firebaseApp.messaging) {
       throw new Error('Firebase messaging script is not loaded.');
     }
 
-    return new Promise(resolve => {
-      navigator.serviceWorker.ready.then(registration => {
-        this.firebaseInstance = new FirebaseProvider(registration, App.configuration.firebaseApp);
-
-        resolve();
-      });
-    });
+    this.firebaseInstance = new FirebaseProvider(
+      await navigator.serviceWorker.ready,
+      App.configuration.firebaseApp
+    );
   }
 }

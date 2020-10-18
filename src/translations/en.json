@@ -6,7 +6,10 @@
       "label": "Add to Home Screen"
     },
     "firefox": {
-      "text": "You can easily add this web site to your Home screen to have instant access and browser faster with an app-like experience."
+      "text_1": "To install this web app,",
+      "text_2": "tap on",
+      "text_3": "then ",
+      "label": "Install"
     },
     "samsung": {
       "text": "To install this web app and enjoy an optimal experience, simply press one the icon indicated one your browser."
