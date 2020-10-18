@@ -15,7 +15,6 @@ declare const _default: {
     pushManager: PushManager;
     isReady: boolean;
     init(userConfiguration: Configuration): Promise<void>;
-    initLogger(): void;
     enableDebug(): void;
 };
 export default _default;

@@ -1,4 +1,4 @@
 import Configuration from './Configuration';
 export default class ConfigurationValidator {
-    validates(config: Configuration): Error[];
+    static validates(config: Configuration): Error[];
 }

@@ -4,7 +4,7 @@ import AbstractManager from './AbstractManager';
  */
 export default class InstallManager extends AbstractManager {
     private static readonly KEY_STORAGE_INVITATION;
-    private homeScreenPrompt?;
+    private homeScreenPrompt;
     constructor();
     init(): Promise<void>;
     /**
@@ -28,15 +28,15 @@ export default class InstallManager extends AbstractManager {
      */
     private showHelper;
     /**
-     * IOS Helper: this function should be only called to test
+     * IOS Helper
      */
     private showIOSHelper;
     /**
-     * Firefox Helper: this function should be only called to test
+     * Firefox Helper
      */
     private showFirefoxHelper;
     /**
-     * Samsung Helper: this function should be only called to test
+     * Samsung Helper
      */
     private showSamsungHelper;
     /**
@@ -67,8 +67,4 @@ export default class InstallManager extends AbstractManager {
      * Check criteria for proposing install.
      */
     private isTimeToInvite;
-    /**
-     * Get Browser Info
-     */
-    private getBrowserInfo;
 }

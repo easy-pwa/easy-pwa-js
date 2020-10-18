@@ -4,9 +4,9 @@ import AbstractManager from './AbstractManager';
  * All methods for managing PWA.
  */
 export default class PwaManager extends AbstractManager {
-    private onUpdateFoundCallback;
-    private serviceWorkerRegistration?;
-    private manifest?;
+    private onUpdateFoundCallback?;
+    private serviceWorkerRegistration;
+    private manifest;
     init(): Promise<void>;
     /**
      * Check if site is launched in fullscreen (app)
