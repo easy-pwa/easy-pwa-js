@@ -7,7 +7,6 @@ import InstallManager from './Manager/InstallManager';
 import PushManager from './Manager/PushManager';
 import ReadyEvent from './Event/ReadyEvent';
 import Translator from './Service/Translator';
-import Debug from './Service/Debug';
 import ConfigurationValidator from './Configuration/ConfigurationValidator';
 
 export default new (class App {
@@ -73,7 +72,5 @@ export default new (class App {
   protected enableDebug(): void {
     this.loggerParameter.enableDebug();
     this.logger.warn('DEBUG ENABLED');
-
-    new Debug().analyse();
   }
 })();
