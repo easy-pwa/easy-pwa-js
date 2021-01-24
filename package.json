@@ -81,7 +81,9 @@
     "screen",
     "notification",
     "install",
-    "application"
+    "application",
+    "offline",
+    "light"
   ],
   "types": "dist/types/front-index.d.ts"
 }
