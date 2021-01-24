@@ -4,8 +4,7 @@ declare const lib: {
     isAppMode: () => boolean;
     getManifest: () => import("web-manifest-reader").WebManifest | null;
     isNotificationSupported: () => boolean;
-    showNotification: (title: string, options: NotificationOptions) => Promise<void>;
+    hasNotificationPermission: () => boolean;
     requestNotificationPermission: () => Promise<NotificationPermission>;
-    firebase: () => import("./Push/FirebaseProvider").default | null;
 };
 export default lib;
