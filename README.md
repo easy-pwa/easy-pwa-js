@@ -94,31 +94,7 @@ document.getElementById('invite_dismiss').addEventListener('click', function() {
 ````
 
 
-### Enable push notifications (with Firebase)
-Add firebase library and initialize a new app.
-
-``` javascript
-var firebaseConfig = {
-    apiKey: "...",
-    projectId: "...",
-    messagingSenderId: "...",
-    appId: "..."
-};
-
-var myFirebaseApp = firebase.initializeApp(firebaseConfig); // firebase initializing
-```
-
-Add in your config, the firebase app instance:
-``` javascript
-EasyPWA.init({
-    ...,
-    firebaseApp: myFirebaseApp,
-    newTokenFetchedCallback: (token) => {
-        // returns a promise
-        return fetch('http://.../send-token-to-server.php?token='+token);
-    },
-}
-```
+### Push notifications
 
 Always wait EasyPWA is fully initialized before.
 ``` javascript
@@ -126,10 +102,7 @@ window.addEventListener('easy-pwa-ready', function(e) {
     EasyPWA.requestPermission().then( function() {
         // Permissions is now granted
 
-        // I don't have a token
-        EasyPWA.firebase().getToken().then( function(token) {
-           console.log('token', token);
-        });
+        new Notification('A notification');
     });
 });
 ```
@@ -175,40 +148,6 @@ EasyPWA.requestNotificationPermission().then(function() {
     console.log('denied. User must authorize notifications in their bowser settings.');
 });
 ````
-
-### Show a local notification
-```` javascript
-EasyPWA.showNotification('title', {
-    icon: ...,
-    vibrate: [50, 300, 50]
-});
-````
-
-### Firebase
-
-##### Initialize Firebase
-```` javascript
-var myFirebaseApp = firebase.initializeApp({...});
-EasyPWA.init({
-    ...
-    firebaseApp: myFirebaseApp,
-});
-````
-
-##### Get the token (and send it to the server if new)
-```` javascript
-EasyPWA.firebase().getToken().then( function(token) {
-    console.log('new token: '+token);
-});
-````
-
-##### Delete a token
-```` javascript
-EasyPWA.firebase().deleteToken(token).then(function(){
-    console.log('Token deleted');
-});
-````
-
 
 ### Available Events
 
@@ -262,18 +201,6 @@ When you are offline, the css class "offline" is added on the body tag.
     display: block;
 }
 ````
-
-## Service worker
-
-### Plugins
-
-#### Substitution Page
-
-Show a substitution page when the user is offline
-```` javascript
-self.EasyPwaSW.plugins.pageSubstitutionPlugin().run('easy-pwa-substitution', '/offline.html');
-````
-
 
 ## External library included
 

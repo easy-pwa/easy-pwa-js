@@ -44,24 +44,25 @@
                     <p>
                         <button id="bt_notification_send" class="btn btn-primary d-block">Send me a notification</button> (after you granted permission)
                     </p>
-                    <p>
-                        Your firebase token fetched: <small><span id="notifications_token">none</span></small>
-                    </p>
                 </div>
             </div>
         </section>
         <section class="card" >
             <div class="card-body">
-                <h3 class="card-title">Other tools</h3>
+                <h3 class="card-title">Offline</h3>
+                <p>Test to switch offline.</p>
+                <p class="text-offline">You are offline!</p>
+            </div>
+        </section>
+        <section class="card" >
+            <div class="card-body">
+                <h3 class="card-title">Loader</h3>
                 <a href="index.html">Refresh page</a>: in standalone mode, an event is emitted to inform you.
                 You might want to show a loader for instance.
             </div>
         </section>
-
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
     <script type="module" src="../dist/front.js"></script>
     <script type="module" src="./js/pwa.js"></script>
 </body>
