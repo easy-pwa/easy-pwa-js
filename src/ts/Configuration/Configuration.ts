@@ -18,17 +18,6 @@ export default class Configuration {
   // A function which has to respond a boolean: true if you are ready to show invite, false otherwise
   public additionalInviteCriteria: () => boolean = () => true;
 
-  // An initialized firebase app if you want to use firebase
-  public firebaseApp?: FirebaseAppMessaging;
-
   // Load PWACompat on your site.
   public PWACompat: boolean = true;
-
-  // Called function when a new token is fetched to manage it (for instance, send to server).
-  public newTokenFetchedCallback: (token: string) => Promise<any> = () => {
-    return Promise.resolve();
-  };
-
-  // Notifications can be managed differently when user is currently on the website.
-  public foregroundNotification?: (payload: FirebasePayloadMessage) => void;
 }

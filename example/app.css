@@ -12,3 +12,13 @@ h1 {
 section {
     margin: 25px 0;
 }
+
+.text-offline {
+    display: none;
+}
+
+.offline .text-offline {
+    display: block;
+    font-size: 30px;
+    color: red;
+}

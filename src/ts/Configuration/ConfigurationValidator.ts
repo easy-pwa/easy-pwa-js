@@ -32,20 +32,8 @@ export default class ConfigurationValidator {
       errors.push(new Error('additionalInviteCriteria should be a function and respond a boolean.'));
     }
 
-    if (typeof config.firebaseApp !== 'undefined' && typeof config.firebaseApp !== 'object') {
-      errors.push(new Error('firebaseApp should be an initialized instance.'));
-    }
-
     if (typeof config.PWACompat !== 'boolean') {
       errors.push(new Error('PWACompat should be a boolean.'));
-    }
-
-    if (typeof config.newTokenFetchedCallback !== 'undefined' && typeof config.newTokenFetchedCallback !== 'function') {
-      errors.push(new Error('newTokenFetchedCallback should be a function and respond a promise.'));
-    }
-
-    if (typeof config.foregroundNotification !== 'undefined' && typeof config.foregroundNotification !== 'function') {
-      errors.push(new Error('foregroundNotification should be a function.'));
     }
 
     return errors;
